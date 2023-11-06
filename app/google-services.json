@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "184481755560",
+    "project_id": "edufund-58799",
+    "storage_bucket": "edufund-58799.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184481755560:android:44a1f06be8e1d522152d9d",
+        "android_client_info": {
+          "package_name": "com.example.madassignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqXSyh1oIUshG1Umxcrn3pD1BwGV9ni9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
