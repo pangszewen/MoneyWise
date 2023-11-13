@@ -39,7 +39,7 @@
         app:layout_anchor="@id/bottomForumAppBar"
         app:layout_anchorGravity="top|center"
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/outline_forum_24">
+        app:srcCompat="@drawable/outline_forum_white">
 
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
