@@ -107,7 +107,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/orange_grey_rectangle"
+            android:background="@drawable/rectangle_rounded_corners"
             android:backgroundTint="@color/orange_grey"
             android:contentDescription="buttonToExpensesFromHome"
             app:layout_constraintEnd_toEndOf="parent"
