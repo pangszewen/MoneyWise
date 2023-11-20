@@ -22,6 +22,16 @@ public class ForumTopic {
         this.commentID = new ArrayList<>();
     }
 
+    public ForumTopic(String topicID, String userID, LocalDateTime datePosted, String subject, String description, int likes, ArrayList<String> commentID) {
+        this.topicID = topicID;
+        this.userID = userID;
+        this.datePosted = datePosted;
+        this.subject = subject;
+        this.description = description;
+        this.likes = likes;
+        this.commentID = commentID;
+    }
+
     public String getTopicID() {
         return topicID;
     }

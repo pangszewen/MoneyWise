@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/topic_row_container"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/rectangle_rounded_corners_grey" />
+
+    <TextView
+        android:id="@+id/topic_row_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:text="Topic Subject"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/topic_row_container"
+        app:layout_constraintStart_toStartOf="@+id/topic_row_container"
+        app:layout_constraintTop_toTopOf="@+id/topic_row_container" />
+
+    <TextView
+        android:id="@+id/topic_row_likes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" people liked"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/topic_row_container"
+        app:layout_constraintStart_toStartOf="@+id/topic_row_container" />
+
+    <TextView
+        android:id="@+id/topic_row_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date posted: "
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/topic_row_container"
+        app:layout_constraintEnd_toEndOf="@+id/topic_row_container" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
