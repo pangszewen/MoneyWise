@@ -89,7 +89,6 @@ public class Forum_MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         RVForum = findViewById(R.id.RVForum);
-        RVForum.setHasFixedSize(true);
         forumTopics = new ArrayList<>();
 
         CollectionReference collectionReference = db.collection("FORUM_TOPIC");
