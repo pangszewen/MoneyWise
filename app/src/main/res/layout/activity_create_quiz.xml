@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".quiz.Create_Quiz">
+
+    <LinearLayout
+        android:id="@+id/quiztop"
+        android:layout_width="match_parent"
+        android:layout_height="109dp"
+        android:background="@color/blue_grey"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/round_arrow_back_black" />
+
+        <TextView
+            android:id="@+id/addQuiz_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="63dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Create Quiz"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/title_text"
+        android:layout_width="356dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="28dp"
+        android:hint="Title"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quiztop" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:paddingTop="5dp"
+        android:layout_height="400dp"
+        app:layout_constraintTop_toBottomOf="@+id/title_text"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+    <LinearLayout
+        android:id="@+id/questionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        app:layout_constraintTop_toBottomOf="@id/title_text">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_text">
+
+        <EditText
+            android:id="@+id/QuestionEditText"
+            android:layout_width="356dp"
+            android:layout_height="100dp"
+            android:height="48dp"
+            android:hint="Question"
+            android:inputType="textMultiLine"
+            android:lines="1"
+            android:paddingTop="60dp"
+            android:textSize="20dp" />
+
+        <RadioGroup
+            android:id="@+id/correctAns_radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/option1_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:height="48dp"
+                android:ems="10"
+                android:hint="Option 1"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/option2_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:height="48dp"
+                android:ems="10"
+                android:hint="Option 2"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/option3_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:height="48dp"
+                android:ems="10"
+                android:hint="Option 3"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/option4_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:height="48dp"
+                android:ems="10"
+                android:hint="Option 4"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+
+        </RadioGroup>
+    </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/CreateQuizButton"
+        android:layout_width="168dp"
+        android:layout_height="61dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="16dp"
+        android:text="Create Quiz"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageButton
+        android:id="@+id/addQuesButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="180dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/CreateQuizButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/baseline_add_black" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

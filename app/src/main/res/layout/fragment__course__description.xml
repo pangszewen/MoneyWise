@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".quiz.Fragment_Course_Description">
+
+    <LinearLayout
+        android:id="@+id/linear_layout_inside_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/course_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="60dp"
+            android:hint="Course Title..."
+            android:textSize="26dp"
+            android:fontFamily="@font/donegal_one"/>
+
+        <EditText
+            android:id="@+id/course_desc_text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="60dp"
+            android:hint="Add course description..."
+            android:textSize="18dp"
+            android:fontFamily="@font/donegal_one"/>
+
+        <TextView
+            android:id="@+id/tutor_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/donegal_one"
+            android:text="Tutor"
+            android:textSize="24dp"
+            android:textStyle="bold"></TextView>
+
+        <FrameLayout
+            android:layout_width="350dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="30dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/blue_rectangle" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:paddingTop="20dp"
+                android:paddingLeft="20dp"
+                android:layout_gravity="left"
+                android:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/lecturer_name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ms/Mr..."
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_gravity="left"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="130dp"/>
+
+            <TextView
+                android:id="@+id/learning_advisor_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Learning Advisor"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_gravity="left"
+                android:layout_marginTop="70dp"
+                android:layout_marginLeft="130dp"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/donegal_one"
+            android:text="Info"
+            android:textSize="24dp"
+            android:textStyle="bold"></TextView>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alignmentMode="alignMargins"
+            android:columnCount="2"
+            android:columnOrderPreserved="false"
+            android:padding="16dp"
+            android:layout_marginLeft="20dp"
+            android:rowCount="5">
+
+            <!-- Students -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Students"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/numberOfStudents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:layout_marginLeft="40dp"
+                android:text="(number of students)" />
+
+            <!-- Level -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Level"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/levelValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:textSize="16dp"
+                android:text="(level)" />
+
+            <!-- Mode -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mode"
+
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/modeValue"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="(mode)" />
+
+            <!-- Language -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Language"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/languageValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:layout_marginLeft="40dp"
+                android:text="(language)">
+            </TextView>
+
+            <!-- Qualifications -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Qualifications"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/qualificationsValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:layout_marginLeft="40dp"
+                android:text="(qualifications)" />
+
+        </GridLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
