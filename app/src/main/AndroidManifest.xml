@@ -18,6 +18,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".quiz.activity_course_display"
+            android:exported="false"
+            android:label="@string/title_activity_course_display"
+            android:theme="@style/Theme.MADAssignment" />
+        <activity
+            android:name=".quiz.activity_display_course"
+            android:exported="false" />
+        <activity
             android:name=".quiz.Quiz_Page"
             android:exported="false" />
         <activity
