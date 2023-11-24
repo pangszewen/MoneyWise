@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.madassignment.Firebase;
 import com.example.madassignment.MainActivity;
@@ -51,6 +54,7 @@ public class Forum_MainActivity extends AppCompatActivity {
     Firebase firebase = new Firebase();
     ArrayList<ForumTopic> forumTopics;
     FloatingActionButton fab_add_topic;
+    Button btn_myTopic;
 
     public Forum_MainActivity(){}
 
@@ -79,11 +83,21 @@ public class Forum_MainActivity extends AppCompatActivity {
             }
         });
 
+        btn_myTopic = findViewById(R.id.btn_myTopic);
+        btn_myTopic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Forum_MainActivity.this, Forum_MyTopic_Activity.class));
+                finish();
+            }
+        });
+
         fab_add_topic = findViewById(R.id.fab_add_topic);
         fab_add_topic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Forum_MainActivity.this, Forum_CreateTopic_Activity.class));
+                finish();
             }
         });
 
@@ -97,84 +111,43 @@ public class Forum_MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 ArrayList<ForumTopic> forumTopicList = new ArrayList<>();
                 for(QueryDocumentSnapshot dc : task.getResult()){
-                    Log.d("TAG", dc.getData().toString());
                     ForumTopic topic = convertDocumentToForumTopic(dc);
                     forumTopicList.add(topic);
-                    Log.d("TAG", String.valueOf(forumTopicList.size()));
                 }
                 forumAdapter = new Forum_Adapter(Forum_MainActivity.this, forumTopicList);
-                prepareRecyclerView(forumTopicList);
+                prepareRecyclerView(RVForum, forumTopicList);
             }
         });
     }
 
-    public void prepareRecyclerView(ArrayList<ForumTopic> object){
+    public void prepareRecyclerView(RecyclerView RV, ArrayList<ForumTopic> object){
         Log.d("TAG", "prepareRecyclerView");
         Log.d("TAG", String.valueOf(object.size()));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        RVForum.setLayoutManager(linearLayoutManager);
-        preAdapter(object);
+        RV.setLayoutManager(linearLayoutManager);
+        preAdapter(RV, object);
     }
 
-    public void preAdapter(ArrayList<ForumTopic> object){
+    public void preAdapter(RecyclerView RV, ArrayList<ForumTopic> object){
         forumAdapter = new Forum_Adapter(this, object);
-        RVForum.setAdapter(forumAdapter);
-    }
-
-    public List<ForumTopic> setForumTopics(String userID){
-        List<ForumTopic> filteredForumTopics = new ArrayList<>();
-        for(ForumTopic topic : forumTopics){
-            if(topic.getUserID().equals(userID))
-                filteredForumTopics.add(topic);
-        }
-        return filteredForumTopics;
+        RV.setAdapter(forumAdapter);
     }
 
     public ForumTopic convertDocumentToForumTopic(QueryDocumentSnapshot dc){
-        String topicID = dc.getId();
-        String userID = dc.get("userID").toString();
-        String dateString = dc.get("datePosted").toString(); // Replace this with your string
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        LocalDateTime datePosted = LocalDateTime.parse(dateString, formatter);
-        String subject = dc.get("subject").toString();
-        String description = dc.get("description").toString();
+        ForumTopic topic = new ForumTopic();
+        topic.setTopicID(dc.getId());
+        topic.setUserID(dc.get("userID").toString());
+        topic.setDatePosted(dc.get("datePosted").toString());
+        topic.setSubject(dc.get("subject").toString());
+        topic.setDescription(dc.get("description").toString());
 
         // cast the returned Object to Long, then convert it to an int
-        Long likesLong = (Long) dc.get("likes");
-        int likes = likesLong != null ? likesLong.intValue() : 0;
+        topic.setLikes((Long)dc.get("likes"));
 
         // Firestore retrieves List objects as List<Object> and not as ArrayList<String>
-        List<Object> commentIDObjects = (List<Object>) dc.get("commentID");
-        ArrayList<String> commentID = new ArrayList<>();
-        if (commentIDObjects != null) {
-            for (Object obj : commentIDObjects) {
-                if (obj instanceof String) {
-                    commentID.add((String) obj);
-                }
-            }
-        }
-        return new ForumTopic(topicID, userID, datePosted, subject, description, likes, commentID);
-    }
+        topic.setCommentID ((List<Object>) dc.get("commentID"));
 
-    public void getForumData(){
-        CollectionReference collectionReference = db.collection("FORUM_TOPIC");
-        collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if(error != null){
-                    Log.d("Firestore error", Objects.requireNonNull(error.getMessage()));
-                    return;
-                }
-                assert value != null;
-                for(DocumentChange dc : value.getDocumentChanges()){
-                    if(dc.getType() == DocumentChange.Type.ADDED){
-                        forumTopics.add(dc.getDocument().toObject(ForumTopic.class));
-                    }
-                    forumAdapter.notifyDataSetChanged();
-                }
-            }
-        });
+        return topic;
     }
 
     /*
@@ -187,5 +160,4 @@ public class Forum_MainActivity extends AppCompatActivity {
     }
 
      */
-
 }

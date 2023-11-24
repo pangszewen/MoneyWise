@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.madassignment.Firebase;
@@ -18,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -36,18 +38,30 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     Random rand = new Random();
     EditText ETTopicSubject, ETTopicDescription;
     Button btn_createTopic;
+    ImageButton backButton_createTopic;
     ArrayList<ForumTopic> forumData = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Forum_MainActivity forumMainActivity = new Forum_MainActivity();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_create_topic);
+        db = FirebaseFirestore.getInstance();
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ETTopicSubject = findViewById(R.id.ETTopicSubject);
         ETTopicDescription = findViewById(R.id.ETTopicDescription);
         btn_createTopic = findViewById(R.id.btn_createTopic);
+        backButton_createTopic = findViewById(R.id.backButton_createTopic);
+
+        backButton_createTopic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btn_createTopic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,21 +69,33 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
                 String TopicSubject = ETTopicSubject.getText().toString();
                 String TopicDescription = ETTopicDescription.getText().toString();
                 createTopic(TopicSubject, TopicDescription);
-                startActivity(new Intent(Forum_CreateTopic_Activity.this, Forum_MainActivity.class));
+                Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MainActivity.class);
+                startActivity(intent);
             }
         });
     }
 
     private void createTopic(String TopicSubject, String TopicDescription){
-        String topicID = generateTopicID();
-        String userID = "L0000000";
-        ForumTopic newTopic = new ForumTopic(topicID, userID, TopicSubject, TopicDescription);
-        Log.d("TAG", "topic created" + newTopic.getTopicID() + ": " + newTopic.getSubject());
-        insertTopicIntoDatabase(newTopic);
+        Log.d("TAG", "createTopic");
+        Forum_MainActivity forumMainActivity = new Forum_MainActivity();
+        CollectionReference collectionReference = db.collection("FORUM_TOPIC");
+        collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {;
+                ArrayList<ForumTopic> forumTopicList = new ArrayList<>();
+                for(QueryDocumentSnapshot dc : task.getResult()){
+                    ForumTopic topic =  forumMainActivity.convertDocumentToForumTopic(dc);
+                    forumTopicList.add(topic);
+                }
+                String topicID = generateTopicID(forumTopicList);
+                String userID = "L0000000";
+                ForumTopic newTopic = new ForumTopic(topicID, userID, TopicSubject, TopicDescription);
+                insertTopicIntoDatabase(newTopic);
+            }
+        });
     }
 
     private void insertTopicIntoDatabase(ForumTopic topic){
-        db = FirebaseFirestore.getInstance();
         Map<String, Object> map = new HashMap<>();
         map.put("userID", topic.getUserID());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -93,30 +119,24 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         });
     }
 
-    private String generateTopicID(){
+    private String generateTopicID(ArrayList<ForumTopic> topics){
         String newID = null;
         while(true) {
             int randomNum = rand.nextInt(1000000);
             newID = "T" + String.format("%07d", randomNum); //T0001000
-            if(checkDuplicatedTopicID(newID))
+            if(checkDuplicatedTopicID(newID, topics))
                 break;
         }
         Log.d("TAG", "This is new topicID " + newID);
         return newID;
     }
 
-    private boolean checkDuplicatedTopicID(String newID){
-        firebase.getForumData();
-        forumData = new ArrayList<>(firebase.getForumTopics());
-        for(ForumTopic topic: forumData){
-            Log.d("TAG", "iterate through documents");
-            Log.d("TAG", topic.getTopicID());
+    private boolean checkDuplicatedTopicID(String newID, ArrayList<ForumTopic> topics){
+        for(ForumTopic topic: topics){
             if(newID.equals(topic.getTopicID()))
                 return false;
         }
         Log.d("TAG", "This is checked topic ID " + newID);
         return true;
     }
-
-
 }

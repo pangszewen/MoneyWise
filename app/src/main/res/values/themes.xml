@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.MADAssignment" parent="Base.Theme.MADAssignment" />
+
+    <style name="ButtonTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+
 </resources>

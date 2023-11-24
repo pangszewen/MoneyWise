@@ -4,9 +4,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#F0F0F0</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="cream_yellow">#FFFEEC</color>
     <color name="light_yellow">#FDFD97</color>
     <color name="yellow">#FDDD5C</color>
-    <color name="dark_yellow">#FFC449</color>
+    <color name="dark_yellow">#FFB024</color>
     <color name="blue_grey">#AFC9CF</color>
     <color name="sky_blue">#789FCC</color>
     <color name="blue">#27437B</color>

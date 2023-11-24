@@ -39,22 +39,34 @@
         android:id="@+id/topic_row_likes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" people liked"
+        android:text="0"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/topic_row_container"
-        app:layout_constraintStart_toStartOf="@+id/topic_row_container" />
+        app:layout_constraintStart_toEndOf="@+id/like_icon" />
 
     <TextView
         android:id="@+id/topic_row_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date posted: "
+        android:text="Date Posted"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/topic_row_container"
         app:layout_constraintEnd_toEndOf="@+id/topic_row_container" />
+
+    <ImageView
+        android:id="@+id/like_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/outline_thumb_up_black"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/topic_row_container"
+        app:layout_constraintStart_toStartOf="@+id/topic_row_container"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

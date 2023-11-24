@@ -1,6 +1,7 @@
 package com.example.madassignment.forum;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +24,6 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
     Context context;
 
     public Forum_Adapter(Context context, ArrayList<ForumTopic> forumTopics){
-        Log.d("TAG", "Forum_Adapter");
-        Log.d("TAG", String.valueOf(forumTopics.size()));
         this.forumTopics = forumTopics;
         this.context = context;
     }
@@ -46,8 +45,27 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
         String formattedTopicDate = topicDate.format(formatter);
 
         holder.topicSubject.setText(topicSubject);
-        holder.topicLikes.setText(String.valueOf(topicLikes) + holder.topicLikes.getText());
-        holder.topicDate.setText(holder.topicDate.getText() + formattedTopicDate);
+        holder.topicLikes.setText(String.valueOf(topicLikes));
+        holder.topicDate.setText(formattedTopicDate);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TAG", "clicked");
+                Log.d("TAG", forumTopic.getSubject());
+                Intent intent = new Intent(context, Forum_IndividualTopic_Activity.class);
+                // must be String
+                intent.putExtra("topicID", forumTopic.getTopicID());
+                intent.putExtra("userID", forumTopic.getUserID());
+                intent.putExtra("datePosted", forumTopic.getDatePosted().toString());
+                intent.putExtra("subject", forumTopic.getSubject());
+                intent.putExtra("description", forumTopic.getDescription());
+                intent.putExtra("likes", Integer.toString(forumTopic.getLikes()));
+                intent.putExtra("commentID", forumTopic.getCommentID().toString());
+                Log.d("TAG", "inserted into intent: " + intent.getStringExtra("topicID"));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
