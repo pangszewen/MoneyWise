@@ -2,6 +2,8 @@ package com.example.madassignment.forum;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,11 +40,13 @@ import java.util.Random;
 
 public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     FirebaseFirestore db;
+    Discussion_Adapter discussionAdapter;
     Random rand = new Random();
     TextView TVSubject, TVAuthor, TVDatePosted, TVDescription;
     EditText ETComment;
     Button btn_comment;
     ImageButton backButton_individualTopic;
+    RecyclerView RVIndividualTopicDiscussion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         ETComment = findViewById(R.id.ETComment);
         btn_comment = findViewById(R.id.btn_postComment);
         backButton_individualTopic = findViewById(R.id.backButton_individualTopic);
+        RVIndividualTopicDiscussion = findViewById(R.id.RVIndividualTopicDiscussion);
         ForumTopic topic = new ForumTopic();
 
         Log.d("TAG", getIntent().getStringExtra("topicID"));
@@ -94,6 +99,34 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        CollectionReference collectionReference = db.collection("FORUM_COMMENT");
+        collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ArrayList<ForumComment> forumDiscussion = new ArrayList<>();
+                for(QueryDocumentSnapshot dc : task.getResult()){
+                    ForumComment comment = convertDocumentToForumComment(dc);
+                    forumDiscussion.add(comment);
+                }
+                //discussionAdapter = new Discussion_Adapter(Forum_IndividualTopic_Activity.this, forumDiscussion);
+                prepareRecyclerView(RVIndividualTopicDiscussion, forumDiscussion);
+            }
+        });
+
+    }
+
+    public void prepareRecyclerView(RecyclerView RV, ArrayList<ForumComment> object){
+        Log.d("TAG", "prepareRecyclerView");
+        Log.d("TAG", String.valueOf(object.size()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        RV.setLayoutManager(linearLayoutManager);
+        preAdapter(RV, object);
+    }
+
+    public void preAdapter(RecyclerView RV, ArrayList<ForumComment> object){
+        discussionAdapter = new Discussion_Adapter(this, object);
+        RV.setAdapter(discussionAdapter);
     }
 
     private void createComment(ForumTopic topic, String content){

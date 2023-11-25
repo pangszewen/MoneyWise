@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/rectangle_rounded_corners_yellow"
+                android:background="@drawable/rectangle_rounded_corners_light_cream_yellow_with_border"
                 android:backgroundTint="@color/sky_blue"
                 android:fontFamily="@font/donegal_one"
                 android:paddingLeft="50dp"

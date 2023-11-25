@@ -54,6 +54,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
                 Log.d("TAG", "clicked");
                 Log.d("TAG", forumTopic.getSubject());
                 Intent intent = new Intent(context, Forum_IndividualTopic_Activity.class);
+                // pass data from this activity to another activity
                 // must be String
                 intent.putExtra("topicID", forumTopic.getTopicID());
                 intent.putExtra("userID", forumTopic.getUserID());

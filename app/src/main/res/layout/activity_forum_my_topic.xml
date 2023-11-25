@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/IVUpperAppBarForumMyTopics"
-        app:srcCompat="@drawable/rectangle_rounded_corners_cream_yellow" />
+        app:srcCompat="@drawable/rectangle_rounded_corners_light_cream_yellow" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RVMyTopics"

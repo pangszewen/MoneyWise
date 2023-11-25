@@ -128,7 +128,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/rectangle_rounded_corners_cream_yellow"
+        android:background="@drawable/rectangle_rounded_corners_light_cream_yellow"
         android:orientation="vertical"
         android:padding="10dp">
 
