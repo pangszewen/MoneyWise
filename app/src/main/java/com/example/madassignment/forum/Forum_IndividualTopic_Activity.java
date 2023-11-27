@@ -142,7 +142,8 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 ArrayList<ForumComment> forumDiscussion = new ArrayList<>();
                 for(QueryDocumentSnapshot dc : task.getResult()){
                     ForumComment comment = convertDocumentToForumComment(dc);
-                    forumDiscussion.add(comment);
+                    if(comment.getTopicID().equals(topic.getTopicID()))
+                        forumDiscussion.add(comment);
                 }
                 //discussionAdapter = new Discussion_Adapter(Forum_IndividualTopic_Activity.this, forumDiscussion);
                 prepareRecyclerView(RVIndividualTopicDiscussion, forumDiscussion);
