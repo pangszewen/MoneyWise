@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -52,9 +53,10 @@ public class Forum_MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     FirebaseFirestore db;
     Firebase firebase = new Firebase();
-    ArrayList<ForumTopic> forumTopics;
+    List<ForumTopic> forumTopics;
     FloatingActionButton fab_add_topic;
     Button btn_myTopic;
+    SwipeRefreshLayout RVForumRefresh;
 
     public Forum_MainActivity(){}
 
@@ -103,13 +105,28 @@ public class Forum_MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         RVForum = findViewById(R.id.RVForum);
+        setUpRVForum();
+
+        RVForumRefresh = findViewById(R.id.RVForumRefresh);
+        RVForumRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setUpRVForum();
+                RVForumRefresh.setRefreshing(false);
+            }
+        });
+
+
+    }
+
+    public void setUpRVForum(){
         forumTopics = new ArrayList<>();
 
         CollectionReference collectionReference = db.collection("FORUM_TOPIC");
         collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                ArrayList<ForumTopic> forumTopicList = new ArrayList<>();
+                List<ForumTopic> forumTopicList = new ArrayList<>();
                 for(QueryDocumentSnapshot dc : task.getResult()){
                     ForumTopic topic = convertDocumentToForumTopic(dc);
                     forumTopicList.add(topic);
@@ -118,9 +135,10 @@ public class Forum_MainActivity extends AppCompatActivity {
                 prepareRecyclerView(RVForum, forumTopicList);
             }
         });
+
     }
 
-    public void prepareRecyclerView(RecyclerView RV, ArrayList<ForumTopic> object){
+    public void prepareRecyclerView(RecyclerView RV, List<ForumTopic> object){
         Log.d("TAG", "prepareRecyclerView");
         Log.d("TAG", String.valueOf(object.size()));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -128,7 +146,7 @@ public class Forum_MainActivity extends AppCompatActivity {
         preAdapter(RV, object);
     }
 
-    public void preAdapter(RecyclerView RV, ArrayList<ForumTopic> object){
+    public void preAdapter(RecyclerView RV, List<ForumTopic> object){
         forumAdapter = new Forum_Adapter(this, object);
         RV.setAdapter(forumAdapter);
     }
@@ -145,7 +163,9 @@ public class Forum_MainActivity extends AppCompatActivity {
         topic.setLikes((Long)dc.get("likes"));
 
         // Firestore retrieves List objects as List<Object> and not as ArrayList<String>
-        topic.setCommentID ((List<Object>) dc.get("commentID"));
+        Log.d("TAG", dc.get("commentID").toString());
+        topic.setCommentID ((List<String>) dc.get("commentID"));
+        Log.d("TAG", "from topic: " + topic.getCommentID().toString());
 
         return topic;
     }

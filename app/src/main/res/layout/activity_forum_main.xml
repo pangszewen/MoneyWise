@@ -13,12 +13,19 @@
         app:layout_constraintTop_toBottomOf="@id/ForumMainSearchContainer"
         app:layout_constraintLeft_toLeftOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RVForum"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/RVForumRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RVForum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 

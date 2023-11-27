@@ -15,7 +15,7 @@ public class ForumTopic {
     private String subject;
     private String description;
     private int likes;
-    private ArrayList<String> commentID;
+    private List<String> commentID;
 
     public ForumTopic(){
 
@@ -31,7 +31,7 @@ public class ForumTopic {
         this.commentID = new ArrayList<>();
     }
 
-    public ForumTopic(String topicID, String userID, LocalDateTime datePosted, String subject, String description, int likes, ArrayList<String> commentID) {
+    public ForumTopic(String topicID, String userID, LocalDateTime datePosted, String subject, String description, int likes, List<String> commentID) {
         this.topicID = topicID;
         this.userID = userID;
         this.datePosted = datePosted;
@@ -98,29 +98,22 @@ public class ForumTopic {
         this.likes = likes != null ? likes.intValue() : 0;
     }
 
-    public ArrayList<String> getCommentID() {
+    public List<String> getCommentID() {
         return commentID;
     }
 
-    public void setCommentID(ArrayList<String> commentID) {
+    public void setCommentID(List<String> commentID) {
         this.commentID = commentID;
     }
 
-    public void setCommentID(List<Object> commentIDObjects){
-        ArrayList<String> commentID = new ArrayList<>();
-        if (commentIDObjects != null) {
-            for (Object obj : commentIDObjects) {
-                if (obj instanceof String) {
-                    commentID.add((String) obj);
-                }
-            }
-        }
-        this.commentID = commentID;
-    }
 
     public void setCommentID(String commentString){
-        commentString = commentString.substring(1,commentString.length()-1);
-        String[] commentArray = commentString.split(",");
-        this.commentID = new ArrayList<>(Arrays.asList(commentArray));
+        if(commentString.length()>2) {
+            commentString = commentString.substring(1, commentString.length() - 1);
+            String[] commentArray = commentString.split(",");
+            this.commentID = new ArrayList<>(Arrays.asList(commentArray));
+        }else{
+            this.commentID = new ArrayList<>();
+        }
     }
 }

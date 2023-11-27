@@ -132,23 +132,45 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <TextView
-            android:id="@+id/TVDiscussionContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="Discussion"
-            android:textColor="@color/black"
-            android:textStyle="bold"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RVIndividualTopicDiscussion"
+        <LinearLayout
+            android:id="@+id/discussionTitleContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <TextView
+                android:id="@+id/TVDiscussionContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Discussion"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
 
+            <TextView
+                android:id="@+id/TVNumberOfDiscussion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="()"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/RVIndividualTopicDiscussionRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RVIndividualTopicDiscussion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +19,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -42,14 +45,17 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     FirebaseFirestore db;
     Discussion_Adapter discussionAdapter;
     Random rand = new Random();
-    TextView TVSubject, TVAuthor, TVDatePosted, TVDescription;
+    TextView TVSubject, TVAuthor, TVDatePosted, TVDescription, TVNumberOfDiscussion;
     EditText ETComment;
     Button btn_comment;
     ImageButton backButton_individualTopic;
     RecyclerView RVIndividualTopicDiscussion;
+    SwipeRefreshLayout RVIndividualTopicDiscussionRefresh;
+    ForumTopic topic = new ForumTopic();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Forum_MainActivity forumMainActivity = new Forum_MainActivity();
         Log.d("TAG","IndividualTopic");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_individual_topic);
@@ -58,11 +64,12 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         TVAuthor = findViewById(R.id.TVAuthor);
         TVDatePosted = findViewById(R.id.TVDatePosted);
         TVDescription = findViewById(R.id.TVDescription);
+        TVNumberOfDiscussion = findViewById(R.id.TVNumberOfDiscussion);
         ETComment = findViewById(R.id.ETComment);
         btn_comment = findViewById(R.id.btn_postComment);
         backButton_individualTopic = findViewById(R.id.backButton_individualTopic);
         RVIndividualTopicDiscussion = findViewById(R.id.RVIndividualTopicDiscussion);
-        ForumTopic topic = new ForumTopic();
+        RVIndividualTopicDiscussionRefresh = findViewById(R.id.RVIndividualTopicDiscussionRefresh);
 
         Log.d("TAG", getIntent().getStringExtra("topicID"));
         topic.setTopicID(getIntent().getStringExtra("topicID"));
@@ -72,8 +79,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         topic.setDescription(getIntent().getStringExtra("description"));
         topic.setLikes(Integer.parseInt(getIntent().getStringExtra("likes")));
         topic.setCommentID(getIntent().getStringExtra("commentID"));
-
-        Log.d("TAG", topic.getSubject());
+        Log.d("TAG", getIntent().getStringExtra("commentID"));
 
         TVSubject.setText(topic.getSubject());
         TVAuthor.setText(TVAuthor.getText() + "Mary");
@@ -81,6 +87,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         String formattedTopicDate = topic.getDatePosted().format(formatterString);
         TVDatePosted.setText(TVDatePosted.getText() + formattedTopicDate);
         TVDescription.setText(topic.getDescription());
+        setTVNumberOfDiscussion();
 
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +95,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 if(ETComment.getText()!=null){
                     String comment = ETComment.getText().toString();
                     createComment(topic, comment);
+                    ETComment.setText(null);
                 }
             }
         });
@@ -100,6 +108,33 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
             }
         });
 
+        RVIndividualTopicDiscussionRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setUpRVIndividualTopicDiscussion();
+                setTVNumberOfDiscussion();
+                RVIndividualTopicDiscussionRefresh.setRefreshing(false);
+            }
+        });
+
+        setUpRVIndividualTopicDiscussion();
+    }
+
+    public void setTVNumberOfDiscussion(){
+        DocumentReference ref = db.collection("FORUM_TOPIC").document(topic.getTopicID());
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot dc = task.getResult();
+                TextView TVNumberOfDiscussion = findViewById(R.id.TVNumberOfDiscussion);
+                ForumTopic topic = convertDocumentToForumTopic(dc);
+                Log.d("TAG", topic.getCommentID().toString());
+                TVNumberOfDiscussion.setText("(" + topic.getCommentID().size() + ")");
+            }
+        });
+    }
+
+    public void setUpRVIndividualTopicDiscussion(){
         CollectionReference collectionReference = db.collection("FORUM_COMMENT");
         collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -113,7 +148,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 prepareRecyclerView(RVIndividualTopicDiscussion, forumDiscussion);
             }
         });
-
     }
 
     public void prepareRecyclerView(RecyclerView RV, ArrayList<ForumComment> object){
@@ -170,17 +204,12 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
 
     public void updateCommentInTopic(ForumComment comment){
         DocumentReference ref = db.collection("FORUM_TOPIC").document(comment.getTopicID());
-        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        ref.update("commentID", FieldValue.arrayUnion(comment.getCommentID())).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot dc = task.getResult();
-                ForumTopic topic = convertDocumentToForumTopic(dc);
-                ArrayList<String> commentID = topic.getCommentID();
-                commentID.add(comment.getCommentID());
-                ref.update("comment", commentID);
+            public void onSuccess(Void unused) {
+
             }
         });
-
     }
 
     private String generateCommentID(ForumTopic topic, ArrayList<ForumComment> comments){
@@ -226,7 +255,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         topic.setLikes((Long)dc.get("likes"));
 
         // Firestore retrieves List objects as List<Object> and not as ArrayList<String>
-        topic.setCommentID ((List<Object>) dc.get("commentID"));
+        topic.setCommentID ((List<String>) dc.get("commentID"));
 
         return topic;
     }

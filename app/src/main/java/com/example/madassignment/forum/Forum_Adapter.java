@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_AdapterVH> {
-    ArrayList<ForumTopic> forumTopics = new ArrayList<>();
+    List<ForumTopic> forumTopics = new ArrayList<>();
     Context context;
 
-    public Forum_Adapter(Context context, ArrayList<ForumTopic> forumTopics){
+    public Forum_Adapter(Context context, List<ForumTopic> forumTopics){
         this.forumTopics = forumTopics;
         this.context = context;
     }
@@ -43,16 +43,18 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
         LocalDateTime topicDate = forumTopic.getDatePosted();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedTopicDate = topicDate.format(formatter);
+        int topicComments = forumTopic.getCommentID().size();
 
         holder.topicSubject.setText(topicSubject);
         holder.topicLikes.setText(String.valueOf(topicLikes));
         holder.topicDate.setText(formattedTopicDate);
+        holder.topicComments.setText(String.valueOf(topicComments));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("TAG", "clicked");
-                Log.d("TAG", forumTopic.getSubject());
+                Log.d("TAG", forumTopic.getCommentID().toString());
                 Intent intent = new Intent(context, Forum_IndividualTopic_Activity.class);
                 // pass data from this activity to another activity
                 // must be String
@@ -63,7 +65,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
                 intent.putExtra("description", forumTopic.getDescription());
                 intent.putExtra("likes", Integer.toString(forumTopic.getLikes()));
                 intent.putExtra("commentID", forumTopic.getCommentID().toString());
-                Log.d("TAG", "inserted into intent: " + intent.getStringExtra("topicID"));
+                Log.d("TAG", "inserted into intent: " + intent.getStringExtra("commentID"));
                 context.startActivity(intent);
             }
         });
@@ -75,12 +77,13 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
     }
 
     public static class Forum_AdapterVH extends RecyclerView.ViewHolder{
-        TextView topicSubject, topicLikes, topicDate;
+        TextView topicSubject, topicLikes, topicDate, topicComments;
         public Forum_AdapterVH(@NonNull View itemView) {
             super(itemView);
             topicSubject = itemView.findViewById(R.id.topic_row_subject);
             topicLikes = itemView.findViewById(R.id.topic_row_likes);
             topicDate = itemView.findViewById(R.id.topic_row_date);
+            topicComments = itemView.findViewById(R.id.topic_row_comments);
         }
     }
 

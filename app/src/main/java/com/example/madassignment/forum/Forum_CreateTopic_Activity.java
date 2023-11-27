@@ -28,6 +28,7 @@ import org.checkerframework.checker.units.qual.A;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -39,7 +40,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     EditText ETTopicSubject, ETTopicDescription;
     Button btn_createTopic;
     ImageButton backButton_createTopic;
-    ArrayList<ForumTopic> forumData = new ArrayList<>();
+    List<ForumTopic> forumData = new ArrayList<>();
 
 
     @Override
@@ -82,7 +83,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {;
-                ArrayList<ForumTopic> forumTopicList = new ArrayList<>();
+                List<ForumTopic> forumTopicList = new ArrayList<>();
                 for(QueryDocumentSnapshot dc : task.getResult()){
                     ForumTopic topic =  forumMainActivity.convertDocumentToForumTopic(dc);
                     forumTopicList.add(topic);
@@ -119,7 +120,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         });
     }
 
-    private String generateTopicID(ArrayList<ForumTopic> topics){
+    private String generateTopicID(List<ForumTopic> topics){
         String newID = null;
         while(true) {
             int randomNum = rand.nextInt(1000000);
@@ -131,7 +132,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         return newID;
     }
 
-    private boolean checkDuplicatedTopicID(String newID, ArrayList<ForumTopic> topics){
+    private boolean checkDuplicatedTopicID(String newID, List<ForumTopic> topics){
         for(ForumTopic topic: topics){
             if(newID.equals(topic.getTopicID()))
                 return false;

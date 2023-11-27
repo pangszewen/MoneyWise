@@ -48,8 +48,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:layout_marginLeft="10dp"/>
+
+            <ImageView
+                android:id="@+id/comments_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:src="@drawable/outline_comment_black"/>
+
+            <TextView
+                android:id="@+id/topic_row_comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="240dp"/>
+                android:layout_marginRight="170dp"/>
 
             <TextView
                 android:id="@+id/topic_row_date"
