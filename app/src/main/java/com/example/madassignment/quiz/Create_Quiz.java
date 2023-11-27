@@ -69,7 +69,7 @@ public class Create_Quiz extends AppCompatActivity {
 //        });
     }
 
-    public void addQuestionLayout(){
+    public void addQuestionLayout() {
         LayoutInflater inflater = getLayoutInflater();
         View questionLayout = inflater.inflate(R.layout.layout_question, null);
 
@@ -90,5 +90,6 @@ public class Create_Quiz extends AppCompatActivity {
         LinearLayout questionContainer = findViewById(R.id.questionContainer);
         questionContainer.addView(questionLayout);
     }
+
 
 }

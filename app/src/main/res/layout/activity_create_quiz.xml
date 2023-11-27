@@ -92,6 +92,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:id="@+id/questionContainer"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/title_input"
+                app:layout_constraintLeft_toLeftOf="parent">
             <TextView
                 android:id="@+id/question_text"
                 android:layout_width="wrap_content"
@@ -130,118 +137,116 @@
                 app:layout_constraintTop_toBottomOf="@+id/question_text" />
 
             <LinearLayout
-                android:id="@+id/questionContainer"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/question_input"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/question_input">
-
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@color/grey"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title_text">
+                app:layout_constraintTop_toBottomOf="@id/question_input"
+                app:layout_constraintLeft_toLeftOf="parent"
+                >
 
                     <RadioGroup
                         android:id="@+id/correctAns_radioGroup"
                         android:layout_width="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/question_input"
                         android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:background="@color/grey"
                         android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                        <RadioButton
+                            android:id="@+id/radioButton1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp" />
 
-                            <RadioButton
-                                android:id="@+id/radioButton1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <EditText
-                                android:id="@+id/option1_text"
-                                android:layout_width="260dp"
-                                android:layout_height="60dp"
-                                android:height="48dp"
-                                android:ems="5"
-                                android:hint="Option 1"
-                                android:inputType="textMultiLine"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:id="@+id/radioButton2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <EditText
-                                android:id="@+id/option2_text"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:height="48dp"
-                                android:ems="10"
-                                android:hint="Option 2"
-                                android:inputType="textMultiLine"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                        <RadioButton
+                            android:id="@+id/radioButton2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp" />
 
                             <RadioButton
                                 android:id="@+id/radioButton3"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <EditText
-                                android:id="@+id/option3_text"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:height="48dp"
-                                android:ems="10"
-                                android:hint="Option 3"
-                                android:inputType="textMultiLine"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                                android:layout_height="50dp" />
 
                             <RadioButton
                                 android:id="@+id/radioButton4"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <EditText
-                                android:id="@+id/option4_text"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:height="48dp"
-                                android:ems="10"
-                                android:hint="Option 4"
-                                android:inputType="textMultiLine"
-                                android:textSize="16sp" />
-                        </LinearLayout>
+                                android:layout_height="50dp" />
                     </RadioGroup>
-                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/question_input"
+                app:layout_constraintLeft_toRightOf="@id/correctAns_radioGroup"
+                android:orientation="vertical">
+            <EditText
+                android:id="@+id/option1_text"
+                android:layout_width="260dp"
+                android:layout_height="50dp"
+                android:height="48dp"
+                android:ems="5"
+                android:background="@color/grey"
+                android:hint="Option 1"
+                android:inputType="textMultiLine"
+                app:layout_constraintLeft_toRightOf="@id/correctAns_radioGroup"
+                app:layout_constraintTop_toBottomOf="@id/question_input"
+
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/option2_text"
+                android:layout_width="260dp"
+                android:layout_height="50dp"
+                android:background="@color/grey"
+                android:layout_weight="1"
+                android:height="48dp"
+                android:ems="10"
+                android:hint="Option 2"
+                android:inputType="textMultiLine"
+                app:layout_constraintLeft_toRightOf="@id/correctAns_radioGroup"
+                app:layout_constraintTop_toBottomOf="@id/option1_text"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/option3_text"
+                android:layout_width="260dp"
+                android:layout_height="50dp"
+                android:background="@color/grey"
+                android:layout_weight="1"
+                android:height="48dp"
+                android:ems="10"
+                android:hint="Option 3"
+                app:layout_constraintLeft_toRightOf="@id/correctAns_radioGroup"
+                app:layout_constraintTop_toBottomOf="@id/option2_text"
+                android:inputType="textMultiLine"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/option4_text"
+                android:layout_width="260dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@color/grey"
+                android:height="48dp"
+                android:ems="10"
+                app:layout_constraintLeft_toRightOf="@id/correctAns_radioGroup"
+                app:layout_constraintTop_toBottomOf="@id/option3_text"
+                android:hint="Option 4"
+                android:inputType="textMultiLine"
+                android:textSize="16sp" />
+            </LinearLayout>
+            </LinearLayout>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
 
     <Button
