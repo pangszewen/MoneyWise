@@ -12,26 +12,14 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/course_title_text"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="60dp"
-            android:hint="Course Title..."
-            android:textSize="26dp"
-            android:fontFamily="@font/donegal_one"/>
-
-        <EditText
             android:id="@+id/course_desc_text"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="60dp"
             android:hint="Add course description..."
-            android:textSize="18dp"
-            android:fontFamily="@font/donegal_one"/>
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tutor_text"
@@ -39,7 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="30dp"
-            android:fontFamily="@font/donegal_one"
             android:text="Tutor"
             android:textSize="24dp"
             android:textStyle="bold"></TextView>
@@ -54,15 +41,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/blue_rectangle" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:paddingTop="20dp"
-                android:paddingLeft="20dp"
-                android:layout_gravity="left"
-                android:src="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/lecturer_name_text"
@@ -93,7 +71,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="30dp"
-            android:fontFamily="@font/donegal_one"
             android:text="Info"
             android:textSize="24dp"
             android:textStyle="bold"></TextView>

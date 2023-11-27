@@ -2,7 +2,6 @@ package com.example.madassignment.forum;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +18,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,9 +42,9 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         db.collection("FORUM_TOPIC");
 
-        ETTopicSubject = findViewById(R.id.ETTopicSubject);
-        ETTopicDescription = findViewById(R.id.ETTopicDescription);
-        btn_createTopic = findViewById(R.id.btn_createTopic);
+        ETTopicSubject = findViewById(R.id.title_input);
+        ETTopicDescription = findViewById(R.id.question_input);
+        btn_createTopic = findViewById(R.id.create_quiz_button);
 
         btn_createTopic.setOnClickListener(new View.OnClickListener() {
             @Override

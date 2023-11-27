@@ -31,7 +31,7 @@
         app:layout_constraintTop_toTopOf="@+id/IVUpperAppBarForumCreateTopic" />
 
     <View
-        android:id="@+id/IVCreateTopicBoc"
+        android:id="@+id/create_quiz_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
@@ -47,7 +47,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
-        android:id="@+id/ETTopicSubject"
+        android:id="@+id/title_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
@@ -61,10 +61,10 @@
         android:padding="20dp"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TVTopicSubject" />
+        app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
     <TextView
-        android:id="@+id/TVTopicSubject"
+        android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -74,11 +74,11 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/IVCreateTopicBoc"
-        app:layout_constraintTop_toTopOf="@+id/IVCreateTopicBoc" />
+        app:layout_constraintStart_toStartOf="@+id/create_quiz_frame"
+        app:layout_constraintTop_toTopOf="@+id/create_quiz_frame" />
 
     <TextView
-        android:id="@+id/TVTopicDescription"
+        android:id="@+id/question_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -88,11 +88,11 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/IVCreateTopicBoc"
-        app:layout_constraintTop_toBottomOf="@+id/ETTopicSubject" />
+        app:layout_constraintStart_toStartOf="@+id/create_quiz_frame"
+        app:layout_constraintTop_toBottomOf="@+id/title_input" />
 
     <EditText
-        android:id="@+id/ETTopicDescription"
+        android:id="@+id/question_input"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:layout_marginLeft="50dp"
@@ -112,22 +112,22 @@
         android:gravity="top"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TVTopicDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/question_text" />
 
     <Button
-        android:id="@+id/btn_createTopic"
+        android:id="@+id/create_quiz_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/dark_yellow"
         android:text="CREATE"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        app:layout_constraintBottom_toBottomOf="@+id/IVCreateTopicBoc"
+        app:layout_constraintBottom_toBottomOf="@+id/create_quiz_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETTopicDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/question_input" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/back_button"
         android:layout_width="54dp"
         android:layout_height="58dp"
         android:layout_marginStart="10dp"

@@ -61,6 +61,6 @@ public class Fragment_CompleetQuiz_Low extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment__compleet_quiz__low, container, false);
+        return inflater.inflate(R.layout.fragment__complete_quiz__low, container, false);
     }
 }
