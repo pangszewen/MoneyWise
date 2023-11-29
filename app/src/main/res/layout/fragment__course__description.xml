@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,13 +13,24 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/course_desc_text"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginLeft="20dp"
+            android:id="@+id/description_input"
+            android:layout_width="376dp"
+            android:layout_height="113dp"
+            android:background="@drawable/rectangle_rounded_corners"
+            android:backgroundTint="@color/grey"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:hint="Add course description..."
+            android:layout_gravity="center_horizontal"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="What is this course about?"
+            android:paddingTop="15dp"
+            android:paddingLeft="20dp"
+            android:inputType="textMultiLine"
+            android:maxLines="30"
+            android:overScrollMode="always"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:scrollHorizontally="false"
             android:textSize="18dp" />
 
         <TextView
@@ -30,6 +42,7 @@
             android:text="Tutor"
             android:textSize="24dp"
             android:textStyle="bold"></TextView>
+
 
         <FrameLayout
             android:layout_width="350dp"
@@ -46,12 +59,12 @@
                 android:id="@+id/lecturer_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="130dp"
+                android:layout_marginTop="30dp"
                 android:text="Ms/Mr..."
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_gravity="left"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="130dp"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/learning_advisor_text"
@@ -63,6 +76,16 @@
                 android:layout_gravity="left"
                 android:layout_marginTop="70dp"
                 android:layout_marginLeft="130dp"/>
+
+            <ImageButton
+                android:id="@+id/tutor_image"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:src="@drawable/baseline_add_photo_alternate_24" />
+
         </FrameLayout>
 
         <TextView
@@ -75,100 +98,130 @@
             android:textSize="24dp"
             android:textStyle="bold"></TextView>
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alignmentMode="alignMargins"
-            android:columnCount="2"
-            android:columnOrderPreserved="false"
-            android:padding="16dp"
-            android:layout_marginLeft="20dp"
-            android:rowCount="5">
+        <LinearLayout
+            android:layout_width="342dp"
+            android:layout_height="180dp"
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/blue_rectangle"
+            android:orientation="vertical">
 
-            <!-- Students -->
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Students"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/numberOfStudents"
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Students"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/numberOfStudents"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:paddingTop="10dp"
+                    android:text="(number of students)"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:layout_marginLeft="40dp"
-                android:text="(number of students)" />
+                android:paddingLeft="20dp">
 
-            <!-- Level -->
-            <TextView
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Level"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/levelValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:paddingTop="10dp"
+                    android:text="(level)"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Level"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:paddingLeft="20dp">
 
-            <TextView
-                android:id="@+id/levelValue"
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Mode"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/modeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:paddingTop="10dp"
+                    android:text="(mode)"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:textSize="16dp"
-                android:text="(level)" />
+                android:paddingLeft="20dp">
 
-            <!-- Mode -->
-            <TextView
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Language"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/languageValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:paddingTop="10dp"
+                    android:text="(language)"
+                    android:textSize="16dp"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mode"
+                android:paddingLeft="20dp">
 
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Qualifications"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/modeValue"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:text="(mode)" />
+                <TextView
+                    android:id="@+id/qualificationsValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:paddingTop="10dp"
+                    android:text="(qualifications)"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
-            <!-- Language -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Language"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/languageValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:layout_marginLeft="40dp"
-                android:text="(language)">
-            </TextView>
-
-            <!-- Qualifications -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Qualifications"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/qualificationsValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:layout_marginLeft="40dp"
-                android:text="(qualifications)" />
-
-        </GridLayout>
-
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>
