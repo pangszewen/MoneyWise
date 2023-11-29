@@ -5,5 +5,25 @@
     android:layout_height="match_parent"
     tools:context=".quiz.Fragment_Course_Lessons">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+    <LinearLayout
+        android:id="@+id/lessonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"></LinearLayout>
+    </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_lesson_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="320dp"
+        android:backgroundTint="@color/blue_grey"
+        android:clickable="true"
+        android:src="@drawable/baseline_add_black"
+        tools:layout_editor_absoluteX="328dp"
+        tools:layout_editor_absoluteY="557dp" />
 </FrameLayout>

@@ -24,8 +24,8 @@ public class Create_Course extends AppCompatActivity {
         descButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                descButton.setTextColor(getResources().getColorStateList(R.color.button_colour));
-                lessonButton.setTextColor(getResources().getColorStateList(R.color.button_colour));
+                descButton.setTextColor(getResources().getColor(R.color.dark_blue));
+                lessonButton.setTextColor(getResources().getColor(R.color.blue_grey));
                 replaceFragment(new Fragment_Course_Description());
             }
         });
@@ -33,8 +33,8 @@ public class Create_Course extends AppCompatActivity {
         lessonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                descButton.setTextColor(getResources().getColorStateList(R.color.button_colour));
-                lessonButton.setTextColor(getResources().getColorStateList(R.color.button_colour));
+                descButton.setTextColor(getResources().getColor(R.color.blue_grey));
+                lessonButton.setTextColor(getResources().getColor(R.color.dark_blue));
                 replaceFragment(new Fragment_Course_Lessons());
             }
         });
@@ -43,6 +43,7 @@ public class Create_Course extends AppCompatActivity {
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame)
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.commit();
     }
 }

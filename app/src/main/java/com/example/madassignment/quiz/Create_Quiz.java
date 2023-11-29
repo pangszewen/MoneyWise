@@ -135,7 +135,8 @@ public class Create_Quiz extends AppCompatActivity {
         saveQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addQuizTitle(title_input);
+                EditText title = findViewById(R.id.title_input);
+                addQuizTitle(title);
             }
 
             public void addQuizTitle(EditText title_input) {

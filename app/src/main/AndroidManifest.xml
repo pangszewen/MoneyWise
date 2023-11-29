@@ -30,16 +30,16 @@
             android:exported="false" />
         <activity
             android:name=".quiz.Create_Course"
-            android:exported="false" />
-        <activity
-            android:name=".quiz.Create_Quiz"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".quiz.Create_Quiz"
+            android:exported="true"/>
         <activity
             android:name=".forum.Forum_CreateTopic_Activity"
             android:exported="false"
