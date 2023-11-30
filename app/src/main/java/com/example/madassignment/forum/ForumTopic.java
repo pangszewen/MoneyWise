@@ -1,7 +1,12 @@
 package com.example.madassignment.forum;
 
+import android.util.Log;
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ForumTopic {
     private String topicID;
@@ -10,7 +15,11 @@ public class ForumTopic {
     private String subject;
     private String description;
     private int likes;
-    private ArrayList<String> commentID;
+    private List<String> commentID;
+
+    public ForumTopic(){
+
+    }
 
     public ForumTopic(String topicID, String userID, String subject, String description) {
         this.topicID = topicID;
@@ -21,6 +30,17 @@ public class ForumTopic {
         this.likes = 0;
         this.commentID = new ArrayList<>();
     }
+
+    public ForumTopic(String topicID, String userID, LocalDateTime datePosted, String subject, String description, int likes, List<String> commentID) {
+        this.topicID = topicID;
+        this.userID = userID;
+        this.datePosted = datePosted;
+        this.subject = subject;
+        this.description = description;
+        this.likes = likes;
+        this.commentID = commentID;
+    }
+
 
     public String getTopicID() {
         return topicID;
@@ -44,6 +64,10 @@ public class ForumTopic {
 
     public void setDatePosted(LocalDateTime datePosted) {
         this.datePosted = datePosted;
+    }
+    public void setDatePosted(String datePosted){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        this.datePosted = LocalDateTime.parse(datePosted, formatter);
     }
 
     public String getSubject() {
@@ -70,11 +94,26 @@ public class ForumTopic {
         this.likes = likes;
     }
 
-    public ArrayList<String> getCommentID() {
+    public void setLikes(Long likes){
+        this.likes = likes != null ? likes.intValue() : 0;
+    }
+
+    public List<String> getCommentID() {
         return commentID;
     }
 
-    public void setCommentID(ArrayList<String> commentID) {
+    public void setCommentID(List<String> commentID) {
         this.commentID = commentID;
+    }
+
+
+    public void setCommentID(String commentString){
+        if(commentString.length()>2) {
+            commentString = commentString.substring(1, commentString.length() - 1);
+            String[] commentArray = commentString.split(",");
+            this.commentID = new ArrayList<>(Arrays.asList(commentArray));
+        }else{
+            this.commentID = new ArrayList<>();
+        }
     }
 }
