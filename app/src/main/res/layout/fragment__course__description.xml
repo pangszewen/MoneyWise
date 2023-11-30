@@ -20,7 +20,7 @@
             android:id="@+id/description_input"
             android:layout_width="376dp"
             android:layout_height="113dp"
-            android:background="@drawable/rectangle_rounded_corners"
+            android:background="@drawable/rectangle_rounded_corners_light_cream_yellow_with_border"
             android:backgroundTint="@color/grey"
             android:layout_marginTop="20dp"
             android:layout_gravity="center_horizontal"

@@ -8,15 +8,16 @@ public class Course {
     private String courseTitle;
     private String advisorID;
     private LocalDateTime dateCreated;
-    private String description;
+    private String courseDesc;
 
     public Course(){
     }
 
-    public Course(String courseID, String advisorID, String courseTitle){
+    public Course(String courseID, String advisorID, String courseTitle, String courseDesc){
         this.courseID = courseID;
         this.advisorID = advisorID;
         this.courseTitle = courseTitle;
+        this.courseDesc = courseDesc;
     }
 
     public String getCourseID() {
@@ -52,11 +53,11 @@ public class Course {
         this.dateCreated = LocalDateTime.parse(dateCreated, formatter);
     }
 
-    public String getDescription() {
-        return description;
+    public String getCourseDesc() {
+        return courseDesc;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCourseDesc(String description) {
+        this.courseDesc = description;
     }
 }

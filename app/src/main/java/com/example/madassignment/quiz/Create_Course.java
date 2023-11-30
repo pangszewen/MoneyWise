@@ -33,17 +33,15 @@ public class Create_Course extends AppCompatActivity {
     FirebaseFirestore db;
     CollectionReference collectionReference;
     Random rand = new Random();
+    EditText descInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_course);
-//        Fragment_Course_Description fragment = (Fragment_Course_Description) getSupportFragmentManager().findFragmentById(R.id.fragment_course);
-//        View view = fragment.getView();
         db = FirebaseFirestore.getInstance();
 
         EditText titleInput = findViewById(R.id.course_title_input);
-//        EditText desc = view.findViewById(R.id.description_input);
         Button saveButton = findViewById(R.id.save_course_button);
 
         Button descButton=findViewById(R.id.descButton);
@@ -71,13 +69,19 @@ public class Create_Course extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String courseTitle = titleInput.getText().toString();
-                createCourse(courseTitle);
+                String courseDesc = descInput.getText().toString();
+                Fragment_Course_Description fragment = (Fragment_Course_Description) getSupportFragmentManager().findFragmentById(R.id.fragment_course);
+                System.out.println("Fragment "+fragment);
+                view = fragment.getView();
+                createCourse(courseTitle, courseDesc);
+                descInput = view.findViewById(R.id.description_input);
+
             }
         });
     }
 
-    private void createCourse(String courseTitle) {
-        Log.d("TAG", "createTitle");
+    private void createCourse(String courseTitle, String courseDesc) {
+        Log.d("TAG", "createCourse");
         CollectionReference collectionReference = db.collection("COURSE");
         collectionReference.orderBy("dateCreated", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -89,7 +93,7 @@ public class Create_Course extends AppCompatActivity {
                 }
                 String courseID = generateCourseID(courseList);
                 String advisorID = "A0000001";
-                Course newCourse = new Course(courseID, advisorID, courseTitle);
+                Course newCourse = new Course(courseID, advisorID, courseTitle, courseDesc);
                 insertTopicIntoDatabase(newCourse);
             }
         });
@@ -98,9 +102,10 @@ public class Create_Course extends AppCompatActivity {
     public Course convertDocumentToCourse(QueryDocumentSnapshot dc){
         Course course = new Course();
         course.setCourseID(dc.getId());
-        course.setAdvisorID(dc.get("userID").toString());
-        course.setDateCreated(dc.get("datePosted").toString());
-        course.setCourseTitle(dc.get("subject").toString());
+        course.setAdvisorID(dc.get("advisorID").toString());
+        course.setDateCreated(dc.get("dateCreated").toString());
+        course.setCourseTitle(dc.get("title").toString());
+        course.setCourseDesc(dc.get("description").toString());
         return course;
     }
 
@@ -118,14 +123,15 @@ public class Create_Course extends AppCompatActivity {
 //        String formattedDateTime = course.getDateCreated().format(formatter);
 //        map.put("dateCreated", formattedDateTime);
         map.put("title", course.getCourseTitle());
+        map.put("description", course.getCourseDesc());
         db.collection("COURSE").document(course.getCourseID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    Toast.makeText(Create_Course.this, "Topic Successfully Posted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Create_Course.this, "Successfully Saved Course", Toast.LENGTH_SHORT).show();
                     Log.d("TAG", "uploaded");
                 }else {
-                    Toast.makeText(Create_Course.this, "Topic Failed to Post", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Create_Course.this, "Fail to Create Course", Toast.LENGTH_SHORT).show();
                     Log.d("TAG", "Failed");
                 }
             }

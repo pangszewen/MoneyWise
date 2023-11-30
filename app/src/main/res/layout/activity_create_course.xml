@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/rectangle_rounded_corners"
+                android:background="@drawable/rectangle_rounded_corners_light_cream_yellow"
                 android:backgroundTint="@color/orange_grey"
                 android:ems="10"
                 android:hint="Type the course title here..."
