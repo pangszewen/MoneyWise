@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@drawable/login_reg_background"
+    tools:context=".login_register.Select_Role_Activity">
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@color/transparent"
+        android:backgroundTint="#33363F"
+        android:layout_gravity="left"
+        app:srcCompat="@drawable/round_arrow_back_black" />
+
+    <TextView
+        android:id="@+id/txtSelectyourrole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/dongle_regular"
+        android:textSize="56sp"
+        android:text="Select your role" />
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:id="@+id/linearColumnLearner"
+        android:layout_width="215dp"
+        android:layout_height="226dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical"
+        android:background="@drawable/rectangle_rounded_corners_dark_yellow"
+        android:backgroundTint="#FFDC39">
+        <ImageView
+            android:id="@+id/learner_icon"
+            android:layout_width="136dp"
+            android:layout_height="136dp"
+            android:layout_marginTop="32dp"
+            app:srcCompat="@drawable/learner_icon" />
+        <TextView
+            android:id="@+id/LEARNER_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/learner"
+            android:textSize="45sp"
+            android:textColor="#FFFF"
+            android:fontFamily="@font/dongle_regular"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:id="@+id/linearColumnAdvisor"
+        android:layout_width="215dp"
+        android:layout_height="226dp"
+        android:orientation="vertical"
+        android:background="@drawable/rectangle_rounded_corners_dark_yellow"
+        android:backgroundTint="#028796">
+        <ImageView
+            android:id="@+id/advisor_icon"
+            android:layout_width="136dp"
+            android:layout_height="136dp"
+            android:layout_marginTop="32dp"
+            app:srcCompat="@drawable/advisor_icon" />
+        <TextView
+            android:id="@+id/ADVISOR_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/advisor"
+            android:textSize="45sp"
+            android:textColor="#FFFF"
+            android:fontFamily="@font/dongle_regular"/>
+    </LinearLayout>
+</LinearLayout>
