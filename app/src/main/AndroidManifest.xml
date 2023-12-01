@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".quiz.Edit_Quiz_Info"
+            android:exported="false" />
+        <activity
             android:name=".forum.Forum_IndividualTopic_Activity"
             android:exported="false" />
         <activity
@@ -40,7 +43,7 @@
             android:exported="false" />
         <activity
             android:name=".quiz.Create_Course"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,7 +52,7 @@
         </activity>
         <activity
             android:name=".quiz.Create_Quiz"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".forum.Forum_CreateTopic_Activity"
             android:exported="false"

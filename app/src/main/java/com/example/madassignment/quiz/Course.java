@@ -9,15 +9,20 @@ public class Course {
     private String advisorID;
     private LocalDateTime dateCreated;
     private String courseDesc;
+    private String courseLevel;
+    private String courseLanguage;
+    private String courseMode;
+
+    private Integer courseNumOfStudents;
 
     public Course(){
     }
 
-    public Course(String courseID, String advisorID, String courseTitle, String courseDesc){
+    public Course(String courseID, String advisorID, String courseTitle, Integer courseNumOfStudents){
         this.courseID = courseID;
         this.advisorID = advisorID;
         this.courseTitle = courseTitle;
-        this.courseDesc = courseDesc;
+        this.courseNumOfStudents = courseNumOfStudents;
     }
 
     public String getCourseID() {
@@ -59,5 +64,37 @@ public class Course {
 
     public void setCourseDesc(String description) {
         this.courseDesc = description;
+    }
+
+    public String getCourseLevel() {
+        return courseLevel;
+    }
+
+    public void setCourseLevel(String courseLevel) {
+        this.courseLevel = courseLevel;
+    }
+
+    public String getCourseLanguage() {
+        return courseLanguage;
+    }
+
+    public void setCourseLanguage(String courseLanguage) {
+        this.courseLanguage = courseLanguage;
+    }
+
+    public String getCourseMode() {
+        return courseMode;
+    }
+
+    public void setCourseMode(String courseMode) {
+        this.courseMode = courseMode;
+    }
+
+    public Integer getCourseNumOfStudents() {
+        return courseNumOfStudents;
+    }
+
+    public void setCourseNumOfStudents(Integer courseNumOfStudents) {
+        this.courseNumOfStudents = getCourseNumOfStudents()+1;
     }
 }

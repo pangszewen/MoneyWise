@@ -31,9 +31,12 @@ import java.util.Random;
 
 public class Create_Course extends AppCompatActivity {
     FirebaseFirestore db;
+    public String courseID;
     CollectionReference collectionReference;
     Random rand = new Random();
-    EditText descInput;
+    Boolean saveState = false;
+    String savedTitleText;
+    EditText titleInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +44,36 @@ public class Create_Course extends AppCompatActivity {
         setContentView(R.layout.activity_create_course);
         db = FirebaseFirestore.getInstance();
 
-        EditText titleInput = findViewById(R.id.course_title_input);
-        Button saveButton = findViewById(R.id.save_course_button);
-
+        titleInput = findViewById(R.id.course_title_input);
         Button descButton=findViewById(R.id.descButton);
         Button lessonButton=findViewById(R.id.lessonButton);
+
+        String fragmentTag = getIntent().getStringExtra("DescFrag");
+
+        if (fragmentTag != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            Fragment fragmentToShow;
+
+            if (fragmentTag.equals("DescriptionFragment")) {
+                fragmentToShow = new Fragment_Course_Description();
+                fragmentTransaction.replace(R.id.frameLayout, fragmentToShow);
+                fragmentTransaction.commit();
+            }
+        }
+//
+//        if (savedInstanceState != null) {
+//            savedTitleText = savedInstanceState.getString("savedTitleText", "");
+//            titleInput.setText(savedTitleText);
+//        }
 
         descButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String courseTitle = titleInput.getText().toString();
+                if (!courseTitle.isEmpty() && !saveState)
+                    createCourse(courseTitle);
                 descButton.setTextColor(getResources().getColor(R.color.dark_blue));
                 lessonButton.setTextColor(getResources().getColor(R.color.blue_grey));
                 replaceFragment(new Fragment_Course_Description());
@@ -64,23 +88,16 @@ public class Create_Course extends AppCompatActivity {
                 replaceFragment(new Fragment_Course_Lessons());
             }
         });
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String courseTitle = titleInput.getText().toString();
-                String courseDesc = descInput.getText().toString();
-                Fragment_Course_Description fragment = (Fragment_Course_Description) getSupportFragmentManager().findFragmentById(R.id.fragment_course);
-                System.out.println("Fragment "+fragment);
-                view = fragment.getView();
-                createCourse(courseTitle, courseDesc);
-                descInput = view.findViewById(R.id.description_input);
-
-            }
-        });
     }
 
-    private void createCourse(String courseTitle, String courseDesc) {
+//    @Override
+//    protected void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        savedTitleText = titleInput.getText().toString();
+//        outState.putString("savedTitleText", savedTitleText);
+//    }
+
+    private void createCourse(String courseTitle) {
         Log.d("TAG", "createCourse");
         CollectionReference collectionReference = db.collection("COURSE");
         collectionReference.orderBy("dateCreated", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -91,9 +108,9 @@ public class Create_Course extends AppCompatActivity {
                     Course course = convertDocumentToCourse(dc);
                     courseList.add(course);
                 }
-                String courseID = generateCourseID(courseList);
-                String advisorID = "A0000001";
-                Course newCourse = new Course(courseID, advisorID, courseTitle, courseDesc);
+                courseID = generateCourseID(courseList);
+                String advisorID = "A0000001"; // Need to change
+                Course newCourse = new Course(courseID, advisorID, courseTitle, 0);
                 insertTopicIntoDatabase(newCourse);
             }
         });
@@ -106,13 +123,17 @@ public class Create_Course extends AppCompatActivity {
         course.setDateCreated(dc.get("dateCreated").toString());
         course.setCourseTitle(dc.get("title").toString());
         course.setCourseDesc(dc.get("description").toString());
+        course.setCourseLevel(dc.get("level").toString());
+        course.setCourseLanguage(dc.get("language").toString());
+        course.setCourseMode(dc.get("mode").toString());
+        course.setCourseNumOfStudents(Integer.parseInt(dc.get("num of students").toString()));
         return course;
     }
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.replace(R.id.frameLayout, fragment, "DescriptionFragment");
         fragmentTransaction.commit();
     }
 
@@ -124,10 +145,15 @@ public class Create_Course extends AppCompatActivity {
 //        map.put("dateCreated", formattedDateTime);
         map.put("title", course.getCourseTitle());
         map.put("description", course.getCourseDesc());
+        map.put("level", course.getCourseLevel());
+        map.put("language", course.getCourseLanguage());
+        map.put("mode", course.getCourseMode());
+        map.put("num of students", course.getCourseNumOfStudents());
         db.collection("COURSE").document(course.getCourseID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
+                    saveState = true;
                     Toast.makeText(Create_Course.this, "Successfully Saved Course", Toast.LENGTH_SHORT).show();
                     Log.d("TAG", "uploaded");
                 }else {

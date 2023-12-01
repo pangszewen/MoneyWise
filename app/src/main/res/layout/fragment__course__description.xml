@@ -107,6 +107,7 @@
             android:textStyle="bold"></TextView>
 
         <ImageButton
+            android:id="@+id/edit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="3dp"
@@ -116,7 +117,6 @@
             android:background="@color/transparent">
         </ImageButton>
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="350dp"
             android:layout_height="185dp"
@@ -240,9 +240,17 @@
                     android:text="(qualifications)"
                     android:textSize="16dp" />
             </LinearLayout>
-
         </LinearLayout>
+        <Button
+            android:id="@+id/saveDescButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_rounded_corner_blue_grey"
+            android:text="Save"
+            android:textSize="18dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+        </Button>
     </LinearLayout>
     </ScrollView>
-
 </FrameLayout>
