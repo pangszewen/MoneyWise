@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/titleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:fontFamily="@font/donegal_one"
+        android:textSize="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:id="@+id/setBudgetET"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:hint="Input Budget (RM) " />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="#6b6b6b">
+
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:fontFamily="@font/donegal_one"
+            android:backgroundTint="@color/transparent"/>
+
+        <Button
+            android:id="@+id/buttonOK"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:fontFamily="@font/donegal_one"
+            android:backgroundTint="@color/transparent"/>
+    </LinearLayout>
+
+
+</LinearLayout>
