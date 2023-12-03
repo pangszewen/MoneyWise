@@ -5,26 +5,24 @@
     android:id="@+id/book"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Base.Theme.Expenses"
     tools:context=".Expenses.BookFragment">
 
     <TextView
         android:id="@+id/TVAddBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
         android:layout_marginEnd="183dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="13dp"
         android:elevation="10dp"
         android:fontFamily="@font/donegal_one"
         android:text="Add Book"
         android:textColor="#4f77aa"
         android:textSize="13dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toEndOf="@+id/defBookIcon"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/defBookIcon" />
 
     <TextView
         android:id="@+id/defBook"
@@ -290,7 +288,7 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/addButton"
+            android:id="@+id/addExpenseButton"
             android:layout_width="63dp"
             android:layout_height="63dp"
             android:layout_marginEnd="30dp"

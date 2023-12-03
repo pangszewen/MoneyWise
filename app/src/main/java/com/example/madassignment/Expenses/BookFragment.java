@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,7 +76,7 @@ public class BookFragment extends Fragment {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.constraintLayout2, fragment);
-        fragmentTransaction.addToBackStack(null);
+        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -83,9 +84,15 @@ public class BookFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Assuming your ConstraintLayout has the ID 'book'
-        view.findViewById(R.id.addButton).setOnClickListener(v -> {
+        Button addExpenseButton = view.findViewById(R.id.addExpenseButton);
+        addExpenseButton.setOnClickListener(v -> {
             // Replace with the fragment you want to navigate to
             replaceFragment(new CalculatorFragment());
+
+            // Make the button invisible
+            //addExpenseButton.setVisibility(View.INVISIBLE);
+            // If you want to use View.GONE instead, use the following line:
+            // addExpenseButton.setVisibility(View.GONE);
         });
     }
 

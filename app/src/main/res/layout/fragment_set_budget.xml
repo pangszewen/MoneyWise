@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:theme="@style/Base.Theme.Expenses"
     tools:context=".Expenses.SetBudgetFragment">
 
 
@@ -78,10 +79,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="RMxxx"
+            android:text="RM"
             android:fontFamily="@font/donegal_one"
             android:textSize="18dp"
-            android:layout_marginLeft="105dp"/>
+            android:layout_marginLeft="78dp"/>
+
+        <EditText
+            android:id="@+id/ETBudgetDB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="no set"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/transparent"
+            android:fontFamily="@font/donegal_one"
+            android:textSize="18dp"/>
 
         <ImageView
             android:id="@+id/imageView6"
@@ -94,6 +105,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="371dp"
         android:layout_height="395dp"
         android:layout_marginTop="7dp"
@@ -135,10 +147,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="182dp"
+                android:text="RM"
                 android:fontFamily="@font/donegal_one"
-                android:text="RMxxx"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_marginLeft="156dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetMeal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/donegal_one"
+                android:textSize="18dp"/>
 
             <ImageView
                 android:id="@+id/imageView7"
@@ -182,10 +204,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="178dp"
+                android:text="RM"
                 android:fontFamily="@font/donegal_one"
-                android:text="RMxxx"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_marginLeft="152dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetDaily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/donegal_one"
+                android:textSize="18dp"/>
 
             <ImageView
                 android:id="@+id/imageView8"
@@ -229,10 +261,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="137dp"
+                android:text="RM"
                 android:fontFamily="@font/donegal_one"
-                android:text="RMxxx"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_marginLeft="110dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetTransport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/donegal_one"
+                android:textSize="18dp"/>
 
             <ImageView
                 android:id="@+id/imageView9"
@@ -276,10 +318,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="102dp"
+                android:text="RM"
                 android:fontFamily="@font/donegal_one"
-                android:text="RMxxx"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_marginLeft="75dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetCommunicate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/donegal_one"
+                android:textSize="18dp"/>
 
             <ImageView
                 android:id="@+id/imageView10"
@@ -323,10 +375,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="131dp"
+                android:text="RM"
                 android:fontFamily="@font/donegal_one"
-                android:text="RMxxx"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_marginLeft="105dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetRecreation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/donegal_one"
+                android:textSize="18dp"/>
 
             <ImageView
                 android:id="@+id/imageView11"
@@ -370,10 +432,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="157dp"
+                android:text="RM"
                 android:fontFamily="@font/donegal_one"
-                android:text="RMxxx"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_marginLeft="133dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetMedical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/donegal_one"
+                android:textSize="18dp"/>
 
             <ImageView
                 android:id="@+id/imageView12"
@@ -413,14 +485,24 @@
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/tvBudgetOther"
+                android:id="@+id/tvBudgetOthers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="165dp"
+                android:text="RM"
                 android:fontFamily="@font/donegal_one"
-                android:text="RMxxx"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_marginLeft="141dp"/>
+
+            <EditText
+                android:id="@+id/ETBudgetOthers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="no set"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/donegal_one"
+                android:textSize="18dp"/>
 
             <ImageView
                 android:id="@+id/imageView13"
@@ -433,6 +515,19 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="33dp"
+        android:backgroundTint="#6b6b6b"
+        android:fontFamily="@font/donegal_one"
+        android:text="Done"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
