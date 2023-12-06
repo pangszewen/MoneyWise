@@ -12,18 +12,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.madassignment.Firebase;
 import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -33,13 +31,14 @@ import java.util.Map;
 import java.util.Random;
 
 public class Forum_CreateTopic_Activity extends AppCompatActivity {
-    Firebase firebase = new Firebase();
     FirebaseFirestore db;
     CollectionReference collectionReference;
     Random rand = new Random();
     EditText ETTopicSubject, ETTopicDescription;
     Button btn_createTopic;
     ImageButton backButton_createTopic;
+    FirebaseAuth auth;
+    FirebaseUser user;
     List<ForumTopic> forumData = new ArrayList<>();
 
 
@@ -49,7 +48,8 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_create_topic);
         db = FirebaseFirestore.getInstance();
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        auth=FirebaseAuth.getInstance();
+        user= auth.getCurrentUser();
 
         ETTopicSubject = findViewById(R.id.ETTopicSubject);
         ETTopicDescription = findViewById(R.id.ETTopicDescription);
@@ -59,7 +59,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         backButton_createTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MainActivity.class);
+                Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MyTopic_Activity.class);
                 startActivity(intent);
             }
         });
@@ -77,7 +77,6 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     }
 
     private void createTopic(String TopicSubject, String TopicDescription){
-        Log.d("TAG", "createTopic");
         Forum_MainActivity forumMainActivity = new Forum_MainActivity();
         CollectionReference collectionReference = db.collection("FORUM_TOPIC");
         collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -89,7 +88,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
                     forumTopicList.add(topic);
                 }
                 String topicID = generateTopicID(forumTopicList);
-                String userID = "L0000000";
+                String userID = user.getUid();
                 ForumTopic newTopic = new ForumTopic(topicID, userID, TopicSubject, TopicDescription);
                 insertTopicIntoDatabase(newTopic);
             }
@@ -111,10 +110,8 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
                     Toast.makeText(Forum_CreateTopic_Activity.this, "Topic Successfully Posted", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG", "uploaded");
                 }else {
                     Toast.makeText(Forum_CreateTopic_Activity.this, "Topic Failed to Post", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG", "Failed");
                 }
             }
         });
@@ -128,7 +125,6 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
             if(checkDuplicatedTopicID(newID, topics))
                 break;
         }
-        Log.d("TAG", "This is new topicID " + newID);
         return newID;
     }
 
@@ -137,7 +133,6 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
             if(newID.equals(topic.getTopicID()))
                 return false;
         }
-        Log.d("TAG", "This is checked topic ID " + newID);
         return true;
     }
 }

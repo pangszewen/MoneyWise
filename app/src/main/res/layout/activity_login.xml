@@ -86,7 +86,6 @@
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:layout_gravity="center_horizontal"
-            style="@style/ButtonTheme"
             android:backgroundTint="@color/sky_blue"
             android:fontFamily="@font/dongle_regular"
             android:text="@string/login"

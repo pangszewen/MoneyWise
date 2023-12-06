@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="170dp"/>
+                android:layout_marginRight="150dp"/>
 
             <TextView
                 android:id="@+id/topic_row_date"

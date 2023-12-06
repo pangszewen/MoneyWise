@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -26,6 +27,7 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
     FirebaseFirestore db;
     RecyclerView RVMyTopics;
     ImageButton backButton_myTopic;
+    FloatingActionButton fab_add_topic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,15 @@ public class Forum_MyTopic_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Forum_MyTopic_Activity.this, Forum_MainActivity.class));
+            }
+        });
+
+        fab_add_topic = findViewById(R.id.fab_add_topic);
+        fab_add_topic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Forum_MyTopic_Activity.this, Forum_CreateTopic_Activity.class));
+                finish();
             }
         });
 

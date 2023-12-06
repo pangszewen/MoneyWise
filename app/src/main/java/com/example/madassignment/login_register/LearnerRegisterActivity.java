@@ -149,6 +149,7 @@ public class LearnerRegisterActivity extends AppCompatActivity{
                                     userdetails.put("gender",gender);
                                     userdetails.put("role","Learner");
                                     userdetails.put("age",age);
+                                    userdetails.put("qualification", null);
                                     documentReference.set(userdetails).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {

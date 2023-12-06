@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.madassignment.Firebase;
 import com.example.madassignment.R;
 
 import java.time.LocalDateTime;
@@ -39,22 +38,20 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
     public void onBindViewHolder(@androidx.annotation.NonNull Forum_AdapterVH holder, int position) {
         ForumTopic forumTopic = forumTopics.get(position);
         String topicSubject = forumTopic.getSubject();
-        int topicLikes = forumTopic.getLikes();
+        List<String> topicLikes = forumTopic.getLikes();
         LocalDateTime topicDate = forumTopic.getDatePosted();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedTopicDate = topicDate.format(formatter);
         int topicComments = forumTopic.getCommentID().size();
 
         holder.topicSubject.setText(topicSubject);
-        holder.topicLikes.setText(String.valueOf(topicLikes));
+        holder.topicLikes.setText(String.valueOf(topicLikes.size()));
         holder.topicDate.setText(formattedTopicDate);
         holder.topicComments.setText(String.valueOf(topicComments));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TAG", "clicked");
-                Log.d("TAG", forumTopic.getCommentID().toString());
                 Intent intent = new Intent(context, Forum_IndividualTopic_Activity.class);
                 // pass data from this activity to another activity
                 // must be String
@@ -63,9 +60,8 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
                 intent.putExtra("datePosted", forumTopic.getDatePosted().toString());
                 intent.putExtra("subject", forumTopic.getSubject());
                 intent.putExtra("description", forumTopic.getDescription());
-                intent.putExtra("likes", Integer.toString(forumTopic.getLikes()));
+                intent.putExtra("likes", forumTopic.getLikes().toString());
                 intent.putExtra("commentID", forumTopic.getCommentID().toString());
-                Log.d("TAG", "inserted into intent: " + intent.getStringExtra("commentID"));
                 context.startActivity(intent);
             }
         });

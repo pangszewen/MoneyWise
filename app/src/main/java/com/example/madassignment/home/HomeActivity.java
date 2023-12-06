@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -39,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         MenuItem menuItemDisable = bottomNavigationView.getMenu().findItem(R.id.iconHome);
         menuItemDisable.setEnabled(false);
         welcome=findViewById(R.id.TVWelcome);
+
         //need set welcome text
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
