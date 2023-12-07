@@ -17,7 +17,7 @@
         android:elevation="10dp"
         android:fontFamily="@font/donegal_one"
         android:text="Add Book"
-        android:textColor="#4f77aa"
+        android:textColor="@color/blue"
         android:textSize="13dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
         android:elevation="10dp"
         android:fontFamily="@font/donegal_one"
         android:text="Default Book"
-        android:textColor="#4f77aa"
+        android:textColor="@color/blue"
         android:textSize="13dp"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/view" />
@@ -84,7 +84,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/view"
         app:srcCompat="@drawable/baseline_add_box_24"
-        app:tint="#4f77aa" />
+        app:tint="@color/lighter_blue" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -123,7 +123,7 @@
                 android:layout_marginEnd="272dp"
                 android:fontFamily="@font/donegal_one"
                 android:text="Expenses"
-                android:textColor="#7b5c4b"
+                android:textColor="@color/brown"
                 android:textSize="15dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -138,7 +138,7 @@
                 android:layout_marginEnd="275dp"
                 android:fontFamily="@font/donegal_one"
                 android:text="2023-10"
-                android:textColor="#7b5c4b"
+                android:textColor="@color/brown"
                 android:textSize="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -177,7 +177,7 @@
                 android:layout_marginTop="9dp"
                 android:fontFamily="@font/donegal_one"
                 android:text="Balance"
-                android:textColor="#808080"
+                android:textColor="@color/dark_grey"
                 android:textSize="15dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TVBalance" />
@@ -190,7 +190,7 @@
                 android:layout_marginTop="9dp"
                 android:fontFamily="@font/donegal_one"
                 android:text="Budget"
-                android:textColor="#808080"
+                android:textColor="@color/dark_grey"
                 android:textSize="15dp"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toBottomOf="@+id/TVBudget" />
@@ -203,7 +203,7 @@
                 android:layout_marginTop="9dp"
                 android:fontFamily="@font/donegal_one"
                 android:text="Expense"
-                android:textColor="#808080"
+                android:textColor="@color/dark_grey"
                 android:textSize="15dp"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toBottomOf="@+id/TVExpense" />
@@ -216,7 +216,7 @@
                 android:layout_marginTop="60dp"
                 android:fontFamily="@font/donegal_one"
                 android:text="RM0"
-                android:textColor="#008000"
+                android:textColor="@color/green"
                 android:textSize="15dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -230,7 +230,7 @@
                 android:layout_marginTop="60dp"
                 android:fontFamily="@font/donegal_one"
                 android:text="RM0"
-                android:textColor="#990000"
+                android:textColor="@color/maroon"
                 android:textSize="15dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
@@ -277,7 +277,7 @@
             android:layout_height="393dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:background="#f3f3f3"
+            android:background="@color/grey"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
@@ -293,7 +293,7 @@
             android:layout_height="63dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="150dp"
-            android:backgroundTint="#ffebf3"
+            android:backgroundTint="@color/pink"
             android:drawableTop="@drawable/pencil_svgrepo_com"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

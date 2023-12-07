@@ -11,8 +11,14 @@
     <color name="dark_yellow">#FFB024</color>
     <color name="blue_grey">#AFC9CF</color>
     <color name="sky_blue">#789FCC</color>
+    <color name="lighter_blue">#4F77AA</color>
     <color name="blue">#27437B</color>
     <color name="dark_blue">#211A4C</color>
     <color name="maroon">#980000</color>
     <color name="orange_grey">#F0EAE0</color>
+    <color name="beige">#F6E6D1</color>
+    <color name="dark_grey">#777B7E</color>
+    <color name="brown">#7B5C4B</color>
+    <color name="green">#008000</color>
+    <color name="pink">#FFEBF3</color>
 </resources>

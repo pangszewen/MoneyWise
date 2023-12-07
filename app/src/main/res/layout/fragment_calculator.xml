@@ -12,7 +12,7 @@
         android:id="@+id/calcLinear"
         android:layout_width="412dp"
         android:layout_height="573dp"
-        android:background="#f6e6d1"
+        android:background="@color/beige"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -30,7 +30,7 @@
                 android:layout_width="15dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#f6e6d1"
+                android:backgroundTint="@color/beige"
                 android:src="@drawable/cross_svgrepo_com" />
 
 
@@ -44,7 +44,7 @@
                 android:fontFamily="@font/donegal_one"
                 android:gravity="center_horizontal"
                 android:text="Add Expense"
-                android:textColor="#990000"
+                android:textColor="@color/maroon"
                 android:textSize="25dp" />
 
             <ImageButton
@@ -52,7 +52,7 @@
                 android:layout_width="15dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#f6e6d1"
+                android:backgroundTint="@color/beige"
                 android:src="@drawable/tick_svgrepo_com" />
 
 
@@ -72,7 +72,7 @@
                     android:layout_width="73dp"
                     android:layout_height="66dp"
                     android:layout_marginLeft="24dp"
-                    android:backgroundTint="#fffeec"
+                    android:backgroundTint="@color/light_cream_yellow"
                     android:drawableTop="@drawable/hamburger_burger_svgrepo_com" />
 
                 <Button
@@ -80,7 +80,7 @@
                     android:layout_width="73dp"
                     android:layout_height="66dp"
                     android:layout_marginLeft="24dp"
-                    android:backgroundTint="#fffeec"
+                    android:backgroundTint="@color/light_cream_yellow"
                     android:drawableTop="@drawable/groceries_grocery_svgrepo_com" />
 
                 <Button
@@ -88,7 +88,7 @@
                     android:layout_width="73dp"
                     android:layout_height="66dp"
                     android:layout_marginLeft="24dp"
-                    android:backgroundTint="#fffeec"
+                    android:backgroundTint="@color/light_cream_yellow"
                     android:drawableTop="@drawable/bus_svgrepo_com" />
 
                 <Button
@@ -96,7 +96,7 @@
                     android:layout_width="73dp"
                     android:layout_height="66dp"
                     android:layout_marginLeft="24dp"
-                    android:backgroundTint="#fffeec"
+                    android:backgroundTint="@color/light_cream_yellow"
                     android:drawableTop="@drawable/smartphone_touch_screen_svgrepo_com" />
 
 
@@ -112,7 +112,7 @@
                     android:layout_height="66dp"
                     android:layout_marginLeft="24dp"
                     android:layout_marginTop="3dp"
-                    android:backgroundTint="#fffeec"
+                    android:backgroundTint="@color/light_cream_yellow"
                     android:drawableTop="@drawable/cinema_screen_cinema_svgrepo_com" />
 
                 <Button
@@ -121,7 +121,7 @@
                     android:layout_height="66dp"
                     android:layout_marginLeft="24dp"
                     android:layout_marginTop="3dp"
-                    android:backgroundTint="#fffeec"
+                    android:backgroundTint="@color/light_cream_yellow"
                     android:drawableTop="@drawable/medical_kit_svgrepo_com" />
 
                 <Button
@@ -130,7 +130,7 @@
                     android:layout_height="66dp"
                     android:layout_marginLeft="24dp"
                     android:layout_marginTop="3dp"
-                    android:backgroundTint="#fffeec"
+                    android:backgroundTint="@color/light_cream_yellow"
                     android:drawableTop="@drawable/more_circle_horizontal_svgrepo_com" />
 
 
@@ -142,7 +142,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="450dp"
-            android:background="#ffb449"
+            android:background="@color/dark_yellow"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -198,7 +198,7 @@
                 android:layout_height="227dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginTop="10dp"
-                android:background="#d9d9d9"
+                android:background="@color/grey"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -213,7 +213,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="13dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="4dp"
                         android:text="7"
                         android:textSize="26dp"
@@ -225,7 +225,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="17dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="4dp"
                         android:text="8"
                         android:textSize="26dp"
@@ -237,7 +237,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="17dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="4dp"
                         android:text="9"
                         android:textSize="26dp"
@@ -256,7 +256,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="13dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="4dp"
                         android:text="4"
                         android:textSize="26dp"
@@ -268,7 +268,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="17dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="4dp"
                         android:text="5"
                         android:textSize="26dp"
@@ -280,7 +280,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="17dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="4dp"
                         android:text="6"
                         android:textSize="26dp"
@@ -299,7 +299,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="13dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="4dp"
                         android:text="1"
                         android:textSize="26dp"
@@ -311,7 +311,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="17dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="4dp"
                         android:text="2"
                         android:textSize="26dp"
@@ -323,7 +323,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="17dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="4dp"
                         android:text="3"
                         android:textSize="26dp"
@@ -342,7 +342,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="13dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="0dp"
                         android:text="."
                         android:textSize="30dp"
@@ -354,7 +354,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="17dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:paddingTop="4dp"
                         android:text="0"
                         android:textSize="26dp"
@@ -366,7 +366,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginLeft="17dp"
-                        android:backgroundTint="#777b7e"
+                        android:backgroundTint="@color/dark_grey"
                         android:padding="16dp"
                         app:cornerRadius="36dp"
                         app:icon="@drawable/baseline_cancel_24"
