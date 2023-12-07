@@ -7,20 +7,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.madassignment.R;
+import com.example.madassignment.login_register.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,18 +55,25 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     TextView TVSubject, TVAuthor, TVDatePosted, TVDescription, TVNumberOfDiscussion;
     EditText ETComment;
     Button btn_comment;
-    ImageButton backButton_individualTopic;
+    ImageButton backButton_individualTopic, likeButton;
+    ProgressBar progressBar;
     RecyclerView RVIndividualTopicDiscussion;
     SwipeRefreshLayout RVIndividualTopicDiscussionRefresh;
+    FirebaseAuth auth;
+    FirebaseUser user;
+    String userID, previousClass;
     ForumTopic topic = new ForumTopic();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Forum_MainActivity forumMainActivity = new Forum_MainActivity();
-        Log.d("TAG","IndividualTopic");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_individual_topic);
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        userID = user.getUid();
         TVSubject = findViewById(R.id.TVSubject);
         TVAuthor = findViewById(R.id.TVAuthor);
         TVDatePosted = findViewById(R.id.TVDatePosted);
@@ -70,33 +84,54 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         backButton_individualTopic = findViewById(R.id.backButton_individualTopic);
         RVIndividualTopicDiscussion = findViewById(R.id.RVIndividualTopicDiscussion);
         RVIndividualTopicDiscussionRefresh = findViewById(R.id.RVIndividualTopicDiscussionRefresh);
+        likeButton = findViewById(R.id.likeButton);
+        progressBar = findViewById(R.id.progressBar);
 
-        Log.d("TAG", getIntent().getStringExtra("topicID"));
         topic.setTopicID(getIntent().getStringExtra("topicID"));
         topic.setUserID(getIntent().getStringExtra("userID"));
         topic.setDatePosted(getIntent().getStringExtra("datePosted"));
         topic.setSubject(getIntent().getStringExtra("subject"));
         topic.setDescription(getIntent().getStringExtra("description"));
-        topic.setLikes(Integer.parseInt(getIntent().getStringExtra("likes")));
+        topic.setLikes(getIntent().getStringExtra("likes"));
         topic.setCommentID(getIntent().getStringExtra("commentID"));
-        Log.d("TAG", getIntent().getStringExtra("commentID"));
+        previousClass = getIntent().getStringExtra("class");
 
+        db = FirebaseFirestore.getInstance();
+        DocumentReference ref = db.collection("USER_DETAILS").document(topic.getUserID());
+        ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User user = convertDocumentToUser(documentSnapshot);
+                TVAuthor.setText(TVAuthor.getText() + user.getName());
+            }
+        });
         TVSubject.setText(topic.getSubject());
-        TVAuthor.setText(TVAuthor.getText() + "Mary");
         DateTimeFormatter formatterString = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedTopicDate = topic.getDatePosted().format(formatterString);
         TVDatePosted.setText(TVDatePosted.getText() + formattedTopicDate);
         TVDescription.setText(topic.getDescription());
         setTVNumberOfDiscussion();
+        setTVNumberOfLikes();
+        setLikeButtonColor();
 
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ETComment.getText()!=null){
-                    String comment = ETComment.getText().toString();
+                String comment = ETComment.getText().toString();
+                if(!TextUtils.isEmpty(comment)){
+                    progressBar.setVisibility(View.VISIBLE);
                     createComment(topic, comment);
                     ETComment.setText(null);
                 }
+            }
+        });
+
+        // need modifications
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pressedLikeButton();
+                likeButton.setEnabled(true);
             }
         });
 
@@ -104,6 +139,11 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MainActivity.class);
+                if(previousClass.equals(Forum_MyTopic_Activity.class.toString())){
+                    intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MyTopic_Activity.class);
+                }else if(previousClass.equals(Forum_MainActivity.class.toString())){
+                    intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MainActivity.class);
+                }
                 startActivity(intent);
             }
         });
@@ -116,7 +156,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 RVIndividualTopicDiscussionRefresh.setRefreshing(false);
             }
         });
-
+        RVIndividualTopicDiscussion.setNestedScrollingEnabled(false);
         setUpRVIndividualTopicDiscussion();
     }
 
@@ -128,10 +168,64 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 DocumentSnapshot dc = task.getResult();
                 TextView TVNumberOfDiscussion = findViewById(R.id.TVNumberOfDiscussion);
                 ForumTopic topic = convertDocumentToForumTopic(dc);
-                Log.d("TAG", topic.getCommentID().toString());
                 TVNumberOfDiscussion.setText("(" + topic.getCommentID().size() + ")");
             }
         });
+    }
+
+    public void setTVNumberOfLikes(){
+        DocumentReference ref = db.collection("FORUM_TOPIC").document(topic.getTopicID());
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot dc = task.getResult();
+                TextView TVNumberOfLikes = findViewById(R.id.TVNumberOfLikes);
+                ForumTopic topic = convertDocumentToForumTopic(dc);
+                TVNumberOfLikes.setText(topic.getLikes().size() + " people liked");
+            }
+        });
+    }
+
+    public void pressedLikeButton(){
+        DocumentReference ref = db.collection("FORUM_TOPIC").document(topic.getTopicID());
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot dc = task.getResult();
+                TextView TVNumberOfLikes = findViewById(R.id.TVNumberOfLikes);
+                ForumTopic topic = convertDocumentToForumTopic(dc);
+                List<String> likes = topic.getLikes();
+                deleteOrAddLikeInTopic(likes);
+                changeLikeButtonColor(topic);
+                setTVNumberOfLikes();
+            }
+        });
+    }
+
+    public void deleteOrAddLikeInTopic(List<String> likes){
+        if(likes.contains(userID)){
+            deleteLikeInTopic();
+        }else{
+            addLikeInTopic();
+        }
+    }
+
+    public void changeLikeButtonColor(ForumTopic topic){
+        List<String> likes = topic.getLikes();
+        if(likes.contains(userID)){
+            likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FFFFFF")));
+        }else{
+            likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDDD5C")));
+        }
+    }
+
+    public void setLikeButtonColor(){
+        List<String> likes = topic.getLikes();
+        if(!likes.contains(userID)){
+            likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FFFFFF")));
+        }else{
+            likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDDD5C")));
+        }
     }
 
     public void setUpRVIndividualTopicDiscussion(){
@@ -142,7 +236,8 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 ArrayList<ForumComment> forumDiscussion = new ArrayList<>();
                 for(QueryDocumentSnapshot dc : task.getResult()){
                     ForumComment comment = convertDocumentToForumComment(dc);
-                    forumDiscussion.add(comment);
+                    if(comment.getTopicID().equals(topic.getTopicID()))
+                        forumDiscussion.add(comment);
                 }
                 //discussionAdapter = new Discussion_Adapter(Forum_IndividualTopic_Activity.this, forumDiscussion);
                 prepareRecyclerView(RVIndividualTopicDiscussion, forumDiscussion);
@@ -151,8 +246,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     }
 
     public void prepareRecyclerView(RecyclerView RV, ArrayList<ForumComment> object){
-        Log.d("TAG", "prepareRecyclerView");
-        Log.d("TAG", String.valueOf(object.size()));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         RV.setLayoutManager(linearLayoutManager);
         preAdapter(RV, object);
@@ -174,7 +267,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                     forumCommentList.add(comment);
                 }
                 String commentID = generateCommentID(topic, forumCommentList);
-                ForumComment forumComment = new ForumComment(commentID, topic.getTopicID(), content);
+                ForumComment forumComment = new ForumComment(commentID, topic.getTopicID(), content, userID);
                 insertCommentIntoDatabase(forumComment);
             }
         });
@@ -189,13 +282,16 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         String formattedDateTime = comment.getDatePosted().format(formatter);
         map.put("datePosted", formattedDateTime);
         map.put("content", comment.getContent());
+        map.put("userID", comment.getUserID());
         db.collection("FORUM_COMMENT").document(comment.getCommentID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                progressBar.setVisibility(View.GONE);
                 if(task.isSuccessful()) {
-                    Toast.makeText(Forum_IndividualTopic_Activity.this, "Comment Successfully Posted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forum_IndividualTopic_Activity.this, "Comment successfully posted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forum_IndividualTopic_Activity.this, "Refresh discussion to view comment", Toast.LENGTH_LONG).show();
                 }else {
-                    Toast.makeText(Forum_IndividualTopic_Activity.this, "Comment Failed to Post", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forum_IndividualTopic_Activity.this, "Comment failed to post", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -212,15 +308,33 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         });
     }
 
+    public void addLikeInTopic(){
+        DocumentReference ref = db.collection("FORUM_TOPIC").document(topic.getTopicID());
+        ref.update("likes", FieldValue.arrayUnion(userID)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        });
+    }
+
+    public void deleteLikeInTopic(){
+        DocumentReference ref = db.collection("FORUM_TOPIC").document(topic.getTopicID());
+        ref.update("likes", FieldValue.arrayRemove(userID)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+            }
+        });
+    }
+
     private String generateCommentID(ForumTopic topic, ArrayList<ForumComment> comments){
-        String newID = null;
+        String newID;
         while(true) {
             int randomNum = rand.nextInt(1000000);
             newID = topic.getTopicID() + "_" + String.format("%07d", randomNum); //T0001000
             if(checkDuplicatedTopicID(newID, comments))
                 break;
         }
-        Log.d("TAG", "This is new commentID " + newID);
         return newID;
     }
 
@@ -229,7 +343,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
             if(newID.equals(comment.getCommentID()))
                 return false;
         }
-        Log.d("TAG", "This is checked topic ID " + newID);
         return true;
     }
 
@@ -239,7 +352,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         comment.setTopicID(dc.get("topicID").toString());
         comment.setDatePosted(dc.get("datePosted").toString());
         comment.setContent(dc.get("content").toString());
-
+        comment.setUserID(dc.get("userID").toString());
         return comment;
     }
 
@@ -252,11 +365,23 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         topic.setDescription(dc.get("description").toString());
 
         // cast the returned Object to Long, then convert it to an int
-        topic.setLikes((Long)dc.get("likes"));
+        topic.setLikes((List<String>)dc.get("likes"));
 
         // Firestore retrieves List objects as List<Object> and not as ArrayList<String>
         topic.setCommentID ((List<String>) dc.get("commentID"));
 
         return topic;
+    }
+
+    public User convertDocumentToUser(DocumentSnapshot dc){
+        User user = new User();
+        user.setUserID(dc.getId().toString());
+        user.setName(dc.get("name").toString());
+        user.setGender(dc.get("gender").toString());
+        user.setAge((Long)dc.get("age"));
+        user.setQualification(dc.get("qualification").toString());
+        user.setRole(dc.get("role").toString());
+
+        return user;
     }
 }

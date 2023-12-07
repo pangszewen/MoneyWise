@@ -5,25 +5,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.madassignment.Firebase;
 import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -33,13 +33,15 @@ import java.util.Map;
 import java.util.Random;
 
 public class Forum_CreateTopic_Activity extends AppCompatActivity {
-    Firebase firebase = new Firebase();
     FirebaseFirestore db;
     CollectionReference collectionReference;
     Random rand = new Random();
     EditText ETTopicSubject, ETTopicDescription;
     Button btn_createTopic;
     ImageButton backButton_createTopic;
+    ProgressBar progressBar;
+    FirebaseAuth auth;
+    FirebaseUser user;
     List<ForumTopic> forumData = new ArrayList<>();
 
 
@@ -49,17 +51,19 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_create_topic);
         db = FirebaseFirestore.getInstance();
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        auth=FirebaseAuth.getInstance();
+        user= auth.getCurrentUser();
 
         ETTopicSubject = findViewById(R.id.ETTopicSubject);
         ETTopicDescription = findViewById(R.id.ETTopicDescription);
         btn_createTopic = findViewById(R.id.btn_createTopic);
         backButton_createTopic = findViewById(R.id.backButton_createTopic);
+        progressBar = findViewById(R.id.progressBar);
 
         backButton_createTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MainActivity.class);
+                Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MyTopic_Activity.class);
                 startActivity(intent);
             }
         });
@@ -69,6 +73,15 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 String TopicSubject = ETTopicSubject.getText().toString();
                 String TopicDescription = ETTopicDescription.getText().toString();
+                if(TextUtils.isEmpty(TopicSubject)){
+                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic subject is required", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(TopicDescription)){
+                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic description is required", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                progressBar.setVisibility(View.VISIBLE);
                 createTopic(TopicSubject, TopicDescription);
                 Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MainActivity.class);
                 startActivity(intent);
@@ -77,19 +90,19 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     }
 
     private void createTopic(String TopicSubject, String TopicDescription){
-        Log.d("TAG", "createTopic");
         Forum_MainActivity forumMainActivity = new Forum_MainActivity();
         CollectionReference collectionReference = db.collection("FORUM_TOPIC");
         collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {;
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                progressBar.setVisibility(View.GONE);
                 List<ForumTopic> forumTopicList = new ArrayList<>();
                 for(QueryDocumentSnapshot dc : task.getResult()){
                     ForumTopic topic =  forumMainActivity.convertDocumentToForumTopic(dc);
                     forumTopicList.add(topic);
                 }
                 String topicID = generateTopicID(forumTopicList);
-                String userID = "L0000000";
+                String userID = user.getUid();
                 ForumTopic newTopic = new ForumTopic(topicID, userID, TopicSubject, TopicDescription);
                 insertTopicIntoDatabase(newTopic);
             }
@@ -110,11 +123,10 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic Successfully Posted", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG", "uploaded");
+                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic successfully posted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forum_CreateTopic_Activity.this, "Refresh forum to view topic", Toast.LENGTH_LONG).show();
                 }else {
-                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic Failed to Post", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG", "Failed");
+                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic failed to post", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -128,7 +140,6 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
             if(checkDuplicatedTopicID(newID, topics))
                 break;
         }
-        Log.d("TAG", "This is new topicID " + newID);
         return newID;
     }
 
@@ -137,7 +148,6 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
             if(newID.equals(topic.getTopicID()))
                 return false;
         }
-        Log.d("TAG", "This is checked topic ID " + newID);
         return true;
     }
 }

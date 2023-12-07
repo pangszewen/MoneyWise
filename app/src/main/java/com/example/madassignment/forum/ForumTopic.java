@@ -14,7 +14,7 @@ public class ForumTopic {
     private LocalDateTime datePosted;
     private String subject;
     private String description;
-    private int likes;
+    private List<String> likes;
     private List<String> commentID;
 
     public ForumTopic(){
@@ -27,11 +27,11 @@ public class ForumTopic {
         this.datePosted = LocalDateTime.now();
         this.subject = subject;
         this.description = description;
-        this.likes = 0;
+        this.likes = new ArrayList<>();
         this.commentID = new ArrayList<>();
     }
 
-    public ForumTopic(String topicID, String userID, LocalDateTime datePosted, String subject, String description, int likes, List<String> commentID) {
+    public ForumTopic(String topicID, String userID, LocalDateTime datePosted, String subject, String description, List<String> likes, List<String> commentID) {
         this.topicID = topicID;
         this.userID = userID;
         this.datePosted = datePosted;
@@ -86,16 +86,22 @@ public class ForumTopic {
         this.description = description;
     }
 
-    public int getLikes() {
+    public List<String> getLikes() {
         return likes;
     }
 
-    public void setLikes(int likes) {
+    public void setLikes(List<String> likes) {
         this.likes = likes;
     }
 
-    public void setLikes(Long likes){
-        this.likes = likes != null ? likes.intValue() : 0;
+    public void setLikes(String likeString){
+        if(likeString.length()>2) {
+            likeString = likeString.substring(1, likeString.length() - 1);
+            String[] likeArray = likeString.split(",");
+            this.likes = new ArrayList<>(Arrays.asList(likeArray));
+        }else{
+            this.likes = new ArrayList<>();
+        }
     }
 
     public List<String> getCommentID() {
@@ -110,7 +116,7 @@ public class ForumTopic {
     public void setCommentID(String commentString){
         if(commentString.length()>2) {
             commentString = commentString.substring(1, commentString.length() - 1);
-            String[] commentArray = commentString.split(",");
+            String[] commentArray = commentString.split(", ");
             this.commentID = new ArrayList<>(Arrays.asList(commentArray));
         }else{
             this.commentID = new ArrayList<>();

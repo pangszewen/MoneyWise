@@ -64,10 +64,40 @@
         android:layout_height="58dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/blue_grey"
+        android:backgroundTint="@color/transparent"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="@+id/IVUpperAppBarForumMyTopics"
         app:layout_constraintTop_toTopOf="@+id/IVUpperAppBarForumMyTopics"
         app:srcCompat="@drawable/round_arrow_back_black" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/CLForumMyTopics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_topic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/baseline_add_black"
+            android:backgroundTint="@color/sky_blue">
+
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

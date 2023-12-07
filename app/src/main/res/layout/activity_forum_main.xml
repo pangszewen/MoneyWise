@@ -7,154 +7,208 @@
     tools:context=".forum.Forum_MainActivity">
 
     <LinearLayout
-        android:id="@+id/ForumMainRecyclerViewContainer"
+        android:id="@+id/Forum_MainContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/ForumMainSearchContainer"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/RVForumRefresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/ForumMainAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/RVForum"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </androidx.recyclerview.widget.RecyclerView>
+                <ImageView
+                    android:id="@+id/IVUpperAppBarForumMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.314"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/upper_app_bar_rectangle" />
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <TextView
+                    android:id="@+id/TVUpperAppBarForumMain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/donegal_one"
+                    android:paddingLeft="50dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="50dp"
+                    android:paddingBottom="10dp"
+                    android:text="Forum"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/IVUpperAppBarForumMain" />
 
-    </LinearLayout>
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/CLForumNavBar"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
-
-            <com.google.android.material.bottomappbar.BottomAppBar
-                android:id="@+id/bottomForumAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/transparent"
-                android:backgroundTint="@color/yellow"
-                app:fabAlignmentMode="end"
-                app:fabAlignmentModeEndMargin="30dp"
-                app:fabCradleMargin="15dp"
-                app:fabCradleRoundedCornerRadius="20dp">
-
-                <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/bottomForumNavigationView"
+                <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
-                    android:background="@color/transparent"
-                    app:itemIconSize="35dp"
-                    app:itemIconTint="@color/white"
-                    app:menu="@menu/nav_menu" />
+                    app:layout_constraintTop_toBottomOf="@id/TVUpperAppBarForumMain"
+                    app:layout_constraintStart_toStartOf="parent">
 
-            </com.google.android.material.bottomappbar.BottomAppBar>
+                    <LinearLayout
+                        android:id="@+id/filterContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_forum"
+                        <Button
+                            android:id="@+id/FeaturedTopics"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:backgroundTint="@color/sky_blue"
+                            android:text="Featured topics"
+                            android:textAllCaps="false"
+                            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+                        <Button
+                            android:id="@+id/MostRecent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                            android:text="Most Recent"
+                            android:textAllCaps="false"
+                            android:layout_marginRight="10dp"
+                            android:backgroundTint="@color/sky_blue"/>
+
+                        <Button
+                            android:id="@+id/MostLikes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                            android:text="Most Likes"
+                            android:textAllCaps="false"
+                            android:backgroundTint="@color/sky_blue"/>
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ForumMainSearchContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ForumMainAppBar">
+
+            <Button
+                android:id="@+id/btn_myTopic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#AFC9CF"
-                android:clickable="true"
-                android:tint="@color/white"
-                app:layout_anchor="@id/bottomForumAppBar"
-                app:layout_anchorGravity="top|center"
-                app:maxImageSize="40dp"
-                app:srcCompat="@drawable/outline_forum_white"
-                android:contentDescription="Forum"/>
+                android:backgroundTint="@color/dark_yellow"
+                android:gravity="right"
+                android:paddingTop="8dp"
+                android:text="My Topics"
+                android:textAllCaps="false"/>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_add_topic"
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ForumMainRecyclerViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/RVForumRefresh"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:srcCompat="@drawable/baseline_add_black"
-                android:backgroundTint="@color/blue_grey"
-                android:layout_gravity="end"
-                app:layout_anchor="@id/fab_forum"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="100dp"
-                tools:layout_editor_absoluteX="328dp"
-                tools:layout_editor_absoluteY="557dp" />
+                android:layout_height="wrap_content">
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RVForum"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+                </androidx.recyclerview.widget.RecyclerView>
 
-    <LinearLayout
-        android:id="@+id/ForumMainAppBar"
-        android:layout_width="match_parent"
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/CLForumNavBar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomForumAppBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/IVUpperAppBarForumMain"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/transparent"
+            android:backgroundTint="@color/yellow"
+            app:fabAlignmentMode="end"
+            app:fabAlignmentModeEndMargin="30dp"
+            app:fabCradleMargin="15dp"
+            app:fabCradleRoundedCornerRadius="20dp">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomForumNavigationView"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.314"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/upper_app_bar_rectangle" />
-
-            <TextView
-                android:id="@+id/TVUpperAppBarForumMain"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/rectangle_rounded_corners_light_cream_yellow_with_border"
-                android:backgroundTint="@color/sky_blue"
-                android:fontFamily="@font/donegal_one"
-                android:paddingLeft="50dp"
-                android:paddingTop="10dp"
-                android:paddingRight="50dp"
-                android:paddingBottom="10dp"
-                android:text="Forum"
-                android:textColor="@color/dark_blue"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/IVUpperAppBarForumMain" />
+                android:layout_marginEnd="30dp"
+                android:background="@color/transparent"
+                app:itemIconSize="35dp"
+                app:itemIconTint="@color/white"
+                app:menu="@menu/nav_menu" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.bottomappbar.BottomAppBar>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ForumMainSearchContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/ForumMainAppBar"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <Button
-            android:id="@+id/btn_myTopic"
-            android:theme="@style/ButtonTheme"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_forum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/dark_yellow"
-            android:text="My Topics"
-            android:paddingTop="8dp"
-            android:gravity="right"/>
+            android:backgroundTint="#AFC9CF"
+            android:clickable="true"
+            android:contentDescription="Forum"
+            android:tint="@color/white"
+            app:layout_anchor="@id/bottomForumAppBar"
+            app:layout_anchorGravity="top|center"
+            app:maxImageSize="40dp"
+            app:srcCompat="@drawable/outline_forum_white" />
 
-    </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <include
+        layout="@layout/toolbar"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
