@@ -2,16 +2,22 @@ package com.example.madassignment.forum;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.example.madassignment.R;
 import com.example.madassignment.home.HomeActivity;
@@ -36,6 +42,8 @@ public class Forum_MainActivity extends AppCompatActivity {
     List<ForumTopic> forumTopics;
     Button btn_myTopic;
     SwipeRefreshLayout RVForumRefresh;
+    ProgressBar progressBar;
+    Toolbar toolbar;
 
     public Forum_MainActivity(){}
 
@@ -43,11 +51,20 @@ public class Forum_MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_main);
-
+        db = FirebaseFirestore.getInstance();
+        btn_myTopic = findViewById(R.id.btn_myTopic);
+        RVForum = findViewById(R.id.RVForum);
+        RVForumRefresh = findViewById(R.id.RVForumRefresh);
+        progressBar = findViewById(R.id.progressBar);
         bottomNavigationView = findViewById(R.id.bottomForumNavigationView);
+        toolbar = findViewById(R.id.myToolBar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         bottomNavigationView.setBackground(null);   //To eliminate shadow of navigation bar view
         MenuItem menuItemDisable = bottomNavigationView.getMenu().findItem(R.id.iconForum);
         menuItemDisable.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
+        setUpRVForum();
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -64,7 +81,6 @@ public class Forum_MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_myTopic = findViewById(R.id.btn_myTopic);
         btn_myTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,11 +89,6 @@ public class Forum_MainActivity extends AppCompatActivity {
             }
         });
 
-        db = FirebaseFirestore.getInstance();
-        RVForum = findViewById(R.id.RVForum);
-        setUpRVForum();
-
-        RVForumRefresh = findViewById(R.id.RVForumRefresh);
         RVForumRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -85,13 +96,36 @@ public class Forum_MainActivity extends AppCompatActivity {
                 RVForumRefresh.setRefreshing(false);
             }
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.overflow_menu, menu);
+        @SuppressLint("ResourceType") Menu menu1 = findViewById(R.menu.overflow_menu);
+        MenuItem menuItem = menu.findItem(R.id.overflowForum);
+        menuItem.setVisible(false);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemID = item.getItemId();
+        if(itemID==R.id.overflowHome) {
+            startActivity(new Intent(Forum_MainActivity.this, HomeActivity.class));
+            return true;
+        }else if(itemID==R.id.overflowExpenses) {
+            return true;
+        }else if(itemID==R.id.overflowCnq) {
+            return true;
+        }else if(itemID==R.id.overflowSnn){
+            return true;
+        }else
+            return false;
     }
 
     public void setUpRVForum(){
         forumTopics = new ArrayList<>();
-
         CollectionReference collectionReference = db.collection("FORUM_TOPIC");
         collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -102,20 +136,21 @@ public class Forum_MainActivity extends AppCompatActivity {
                     forumTopicList.add(topic);
                 }
                 forumAdapter = new Forum_Adapter(Forum_MainActivity.this, forumTopicList);
-                prepareRecyclerView(RVForum, forumTopicList);
+                prepareRecyclerView(Forum_MainActivity.this, RVForum, forumTopicList);
+                progressBar.setVisibility(View.GONE);
             }
         });
 
     }
 
-    public void prepareRecyclerView(RecyclerView RV, List<ForumTopic> object){
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+    public void prepareRecyclerView(Context context, RecyclerView RV, List<ForumTopic> object){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         RV.setLayoutManager(linearLayoutManager);
-        preAdapter(RV, object);
+        preAdapter(context, RV, object);
     }
 
-    public void preAdapter(RecyclerView RV, List<ForumTopic> object){
-        forumAdapter = new Forum_Adapter(this, object);
+    public void preAdapter(Context context, RecyclerView RV, List<ForumTopic> object){
+        forumAdapter = new Forum_Adapter(context, object);
         RV.setAdapter(forumAdapter);
     }
 

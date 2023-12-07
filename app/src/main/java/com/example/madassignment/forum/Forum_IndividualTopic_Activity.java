@@ -10,11 +10,13 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,11 +56,12 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     EditText ETComment;
     Button btn_comment;
     ImageButton backButton_individualTopic, likeButton;
+    ProgressBar progressBar;
     RecyclerView RVIndividualTopicDiscussion;
     SwipeRefreshLayout RVIndividualTopicDiscussionRefresh;
     FirebaseAuth auth;
     FirebaseUser user;
-    String userID;
+    String userID, previousClass;
     ForumTopic topic = new ForumTopic();
 
 
@@ -82,6 +85,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         RVIndividualTopicDiscussion = findViewById(R.id.RVIndividualTopicDiscussion);
         RVIndividualTopicDiscussionRefresh = findViewById(R.id.RVIndividualTopicDiscussionRefresh);
         likeButton = findViewById(R.id.likeButton);
+        progressBar = findViewById(R.id.progressBar);
 
         topic.setTopicID(getIntent().getStringExtra("topicID"));
         topic.setUserID(getIntent().getStringExtra("userID"));
@@ -90,6 +94,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         topic.setDescription(getIntent().getStringExtra("description"));
         topic.setLikes(getIntent().getStringExtra("likes"));
         topic.setCommentID(getIntent().getStringExtra("commentID"));
+        previousClass = getIntent().getStringExtra("class");
 
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("USER_DETAILS").document(topic.getUserID());
@@ -112,8 +117,9 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ETComment.getText()!=null){
-                    String comment = ETComment.getText().toString();
+                String comment = ETComment.getText().toString();
+                if(!TextUtils.isEmpty(comment)){
+                    progressBar.setVisibility(View.VISIBLE);
                     createComment(topic, comment);
                     ETComment.setText(null);
                 }
@@ -133,6 +139,11 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MainActivity.class);
+                if(previousClass.equals(Forum_MyTopic_Activity.class.toString())){
+                    intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MyTopic_Activity.class);
+                }else if(previousClass.equals(Forum_MainActivity.class.toString())){
+                    intent = new Intent(Forum_IndividualTopic_Activity.this, Forum_MainActivity.class);
+                }
                 startActivity(intent);
             }
         });
@@ -145,7 +156,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 RVIndividualTopicDiscussionRefresh.setRefreshing(false);
             }
         });
-
+        RVIndividualTopicDiscussion.setNestedScrollingEnabled(false);
         setUpRVIndividualTopicDiscussion();
     }
 
@@ -210,14 +221,9 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
 
     public void setLikeButtonColor(){
         List<String> likes = topic.getLikes();
-        Log.d("TAG", likes.toString());
-        Log.d("TAG", userID);
-        Log.d("TAG", String.valueOf(!likes.contains(userID)));
         if(!likes.contains(userID)){
-            Log.d("TAG", "transparent");
             likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00FFFFFF")));
         }else{
-            Log.d("TAG", "yellow");
             likeButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDDD5C")));
         }
     }
@@ -280,10 +286,12 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         db.collection("FORUM_COMMENT").document(comment.getCommentID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+                progressBar.setVisibility(View.GONE);
                 if(task.isSuccessful()) {
-                    Toast.makeText(Forum_IndividualTopic_Activity.this, "Comment Successfully Posted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forum_IndividualTopic_Activity.this, "Comment successfully posted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forum_IndividualTopic_Activity.this, "Refresh discussion to view comment", Toast.LENGTH_LONG).show();
                 }else {
-                    Toast.makeText(Forum_IndividualTopic_Activity.this, "Comment Failed to Post", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forum_IndividualTopic_Activity.this, "Comment failed to post", Toast.LENGTH_SHORT).show();
                 }
             }
         });

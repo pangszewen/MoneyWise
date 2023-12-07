@@ -2,17 +2,22 @@ package com.example.madassignment.forum;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madassignment.R;
 
+import java.lang.ref.WeakReference;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,17 +25,21 @@ import java.util.List;
 
 public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_AdapterVH> {
     List<ForumTopic> forumTopics = new ArrayList<>();
+    ProgressBar progressBar;
     Context context;
 
-    public Forum_Adapter(Context context, List<ForumTopic> forumTopics){
+    public Forum_Adapter(Context context, List<ForumTopic> forumTopics) {
         this.forumTopics = forumTopics;
         this.context = context;
     }
+
     @androidx.annotation.NonNull
     @Override
     public Forum_AdapterVH onCreateViewHolder(@androidx.annotation.NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.forum_topic_row, parent, false);
+        //progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        //progressBar.setVisibility(View.VISIBLE);
         return new Forum_AdapterVH(view);
     }
 
@@ -62,6 +71,7 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
                 intent.putExtra("description", forumTopic.getDescription());
                 intent.putExtra("likes", forumTopic.getLikes().toString());
                 intent.putExtra("commentID", forumTopic.getCommentID().toString());
+                intent.putExtra("class", context.getClass().toString());
                 context.startActivity(intent);
             }
         });
@@ -72,8 +82,9 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
         return forumTopics.size();
     }
 
-    public static class Forum_AdapterVH extends RecyclerView.ViewHolder{
+    public class Forum_AdapterVH extends RecyclerView.ViewHolder{
         TextView topicSubject, topicLikes, topicDate, topicComments;
+
         public Forum_AdapterVH(@NonNull View itemView) {
             super(itemView);
             topicSubject = itemView.findViewById(R.id.topic_row_subject);
@@ -82,5 +93,4 @@ public class Forum_Adapter extends RecyclerView.Adapter<Forum_Adapter.Forum_Adap
             topicComments = itemView.findViewById(R.id.topic_row_comments);
         }
     }
-
 }

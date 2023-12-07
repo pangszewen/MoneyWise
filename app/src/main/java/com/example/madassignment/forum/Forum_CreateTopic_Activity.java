@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.madassignment.R;
@@ -38,6 +39,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
     EditText ETTopicSubject, ETTopicDescription;
     Button btn_createTopic;
     ImageButton backButton_createTopic;
+    ProgressBar progressBar;
     FirebaseAuth auth;
     FirebaseUser user;
     List<ForumTopic> forumData = new ArrayList<>();
@@ -56,6 +58,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         ETTopicDescription = findViewById(R.id.ETTopicDescription);
         btn_createTopic = findViewById(R.id.btn_createTopic);
         backButton_createTopic = findViewById(R.id.backButton_createTopic);
+        progressBar = findViewById(R.id.progressBar);
 
         backButton_createTopic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +81,7 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
                     Toast.makeText(Forum_CreateTopic_Activity.this, "Topic description is required", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                progressBar.setVisibility(View.VISIBLE);
                 createTopic(TopicSubject, TopicDescription);
                 Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MainActivity.class);
                 startActivity(intent);
@@ -90,7 +94,8 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         CollectionReference collectionReference = db.collection("FORUM_TOPIC");
         collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {;
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                progressBar.setVisibility(View.GONE);
                 List<ForumTopic> forumTopicList = new ArrayList<>();
                 for(QueryDocumentSnapshot dc : task.getResult()){
                     ForumTopic topic =  forumMainActivity.convertDocumentToForumTopic(dc);
@@ -118,9 +123,10 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic Successfully Posted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic successfully posted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forum_CreateTopic_Activity.this, "Refresh forum to view topic", Toast.LENGTH_LONG).show();
                 }else {
-                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic Failed to Post", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic failed to post", Toast.LENGTH_SHORT).show();
                 }
             }
         });
