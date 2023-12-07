@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -69,6 +70,14 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 String TopicSubject = ETTopicSubject.getText().toString();
                 String TopicDescription = ETTopicDescription.getText().toString();
+                if(TextUtils.isEmpty(TopicSubject)){
+                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic subject is required", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(TopicDescription)){
+                    Toast.makeText(Forum_CreateTopic_Activity.this, "Topic description is required", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 createTopic(TopicSubject, TopicDescription);
                 Intent intent = new Intent(Forum_CreateTopic_Activity.this, Forum_MainActivity.class);
                 startActivity(intent);
