@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/budgetCL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Base.Theme.Expenses"
+    tools:context=".Expenses.BudgetFragment">
+
+    <com.example.madassignment.Expenses.CircularProgressBar
+        android:id="@+id/PBBudget"
+        android:layout_width="296dp"
+        android:layout_height="296dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:paddingLeft="30dp"
+        android:paddingTop="30dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TVBudgetPercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="xx%"
+        android:textSize="35dp"
+        android:fontFamily="@font/donegal_one"
+        app:layout_constraintBottom_toBottomOf="@+id/PBBudget"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/PBBudget"
+        app:layout_constraintVertical_bias="0.437" />
+
+    <TextView
+        android:id="@+id/budgetTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="268dp"
+        android:text="RMxx"
+        android:textSize="25dp"
+        android:fontFamily="@font/donegal_one"
+        app:layout_constraintStart_toEndOf="@+id/TVSlash"
+        app:layout_constraintTop_toTopOf="@+id/PBBudget" />
+
+    <TextView
+        android:id="@+id/ExpenseTV3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="268dp"
+        android:layout_marginEnd="9dp"
+        android:text="RMxx"
+        android:textSize="25dp"
+        android:fontFamily="@font/donegal_one"
+        app:layout_constraintEnd_toStartOf="@+id/TVSlash"
+        app:layout_constraintTop_toTopOf="@+id/PBBudget" />
+
+    <TextView
+        android:id="@+id/TVSlash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:text="/"
+        android:textSize="25dp"
+        android:fontFamily="@font/donegal_one"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="413dp"
+        android:layout_height="524dp"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/circular_defbook"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/budgetTv">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/buttonSetBudget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="7dp"
+        android:fontFamily="@font/donegal_one"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="Set Budget"
+        android:backgroundTint="#6b6b6b"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
