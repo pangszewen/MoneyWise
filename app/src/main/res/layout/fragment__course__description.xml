@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_course"
@@ -9,7 +9,9 @@
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
     <LinearLayout
         android:id="@+id/linear_layout_inside_scroll"
         android:layout_width="wrap_content"
@@ -66,7 +68,7 @@
                 android:layout_gravity="left"
                 android:layout_marginLeft="130dp"
                 android:layout_marginTop="30dp"
-                android:text="Ms/Mr..."
+                android:text="Ms Poh Sharon"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -81,42 +83,26 @@
                 android:layout_marginTop="70dp"
                 android:layout_marginLeft="130dp"/>
 
-            <ImageButton
-                android:id="@+id/tutor_image"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:src="@drawable/baseline_add_photo_alternate_24" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/baseline_account_circle_grey"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"/>
 
         </FrameLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
         <TextView
             android:id="@+id/info_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="Info"
+            android:layout_marginTop="20dp"
             android:textSize="24dp"
             android:textStyle="bold"></TextView>
 
-        <ImageButton
-            android:id="@+id/edit_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingLeft="250dp"
-            android:layout_gravity="end"
-            android:src="@drawable/baseline_edit_24"
-            android:background="@color/transparent">
-        </ImageButton>
-        </LinearLayout>
         <LinearLayout
             android:layout_width="350dp"
             android:layout_height="185dp"
@@ -130,6 +116,46 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Level"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Language"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp">
 
                 <TextView
                     android:layout_width="120dp"
@@ -158,64 +184,18 @@
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="Level"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/levelValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:paddingTop="10dp"
-                    android:text="(level)"
-                    android:textSize="16dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp">
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
                     android:text="Mode"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/modeValue"
+                    android:id="@+id/mode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:paddingTop="10dp"
-                    android:text="(mode)"
+                    android:text="Online"
                     android:textSize="16dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp">
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:text="Language"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/languageValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:paddingTop="10dp"
-                    android:text="(language)"
-                    android:textSize="16dp"></TextView>
             </LinearLayout>
 
             <LinearLayout
@@ -241,6 +221,7 @@
                     android:textSize="16dp" />
             </LinearLayout>
         </LinearLayout>
+
         <Button
             android:id="@+id/saveDescButton"
             android:layout_width="wrap_content"
@@ -253,4 +234,4 @@
         </Button>
     </LinearLayout>
     </ScrollView>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

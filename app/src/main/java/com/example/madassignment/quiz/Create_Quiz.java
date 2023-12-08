@@ -2,6 +2,7 @@ package com.example.madassignment.quiz;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +17,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madassignment.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -36,6 +42,7 @@ public class Create_Quiz extends AppCompatActivity {
     Random rand = new Random();
     FirebaseFirestore db;
     String correctAns, quizID;
+    Boolean saveState = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,7 @@ public class Create_Quiz extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View questionLayout = inflater.inflate(R.layout.layout_question, null);
 
+        EditText titleInput = findViewById(R.id.title_input);
         EditText questionInput = questionLayout.findViewById(R.id.question_input);
 
         EditText option1 = questionLayout.findViewById(R.id.option1_text);
@@ -135,29 +143,79 @@ public class Create_Quiz extends AppCompatActivity {
         saveQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText title = findViewById(R.id.title_input);
-                addQuizTitle(title);
+                String quizTitle = titleInput.getText().toString();
+                if (!saveState)
+                    addQuiz(quizTitle);
             }
 
-            public void addQuizTitle(EditText title_input) {
-                db.collection("QUIZ");
-                String title = title_input.getText().toString();
-                Map<String, Object> quizData = new HashMap<>();
-                quizData.put("Title", title);
-                System.out.println("hi");
-                db.collection("QUIZ").document("quizID").set(quizData)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(Create_Quiz.this, "Succesful", Toast.LENGTH_SHORT);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(Create_Quiz.this, "Failed", Toast.LENGTH_SHORT);
-                            }
-                        });
+            public void addQuiz(String quizTitle) {
+                Log.d("TAG", "createQuiz");
+                CollectionReference collectionReference = db.collection("QUIZ");
+                collectionReference.orderBy("dateCreated", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        ArrayList<Quiz> quizList = new ArrayList<>();
+                        for (QueryDocumentSnapshot dc : task.getResult()) {
+                            Quiz quiz = convertDocumentToQuiz(dc);
+                            quizList.add(quiz);
+                        }
+                        quizID = generateQuizID(quizList);
+                        String advisorID = "A0000001"; // Need to change
+                        Quiz newQuiz = new Quiz(quizID, advisorID, quizTitle);
+                        insertQuizIntoDatabase(newQuiz);
+                    }
+                });
             }
-        });
-    }
+            public Quiz convertDocumentToQuiz(QueryDocumentSnapshot dc){
+                Quiz quiz = new Quiz();
+                quiz.setQuizID(dc.getId());
+                quiz.setAdvisorID(dc.get("advisorID").toString());
+                quiz.setQuizTitle(dc.get("title").toString());
+                return quiz;
+            }
+
+            private void insertQuizIntoDatabase(Quiz quiz) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("advisorID", quiz.getAdvisorID());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        String formattedDateTime = quiz.getDateCreated().format(formatter);
+//        map.put("dateCreated", formattedDateTime);
+                map.put("title", quiz.getQuizTitle());
+                db.collection("QUIZ").document(quiz.getQuizID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            saveState = true;
+                            Toast.makeText(Create_Quiz.this, "Successfully Saved Quiz", Toast.LENGTH_SHORT).show();
+                            Log.d("TAG", "uploaded");
+                        }else {
+                            Toast.makeText(Create_Quiz.this, "Fail to Create Quiz", Toast.LENGTH_SHORT).show();
+                            Log.d("TAG", "Failed");
+                        }
+                    }
+                });
+            }
+
+            private String generateQuizID(List<Quiz> quizes){
+                String newID = null;
+                while(true) {
+                    int randomNum = rand.nextInt(1000000);
+                    newID = "Q" + String.format("%07d", randomNum); //Q0001000
+                    if(checkDuplicatedTopicID(newID, quizes))
+                        break;
+                }
+                Log.d("TAG", "This is new quizID " + newID);
+                return newID;
+            }
+
+            private boolean checkDuplicatedTopicID(String newID, List<Quiz> quizes){
+                for(Quiz topic: quizes){
+                    if(newID.equals(topic.getQuizID()))
+                        return false;
+                }
+                Log.d("TAG", "This is checked topic ID " + newID);
+                return true;
+            }
+    });
+}
 }
