@@ -27,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Discussion_Adapter extends RecyclerView.Adapter<Discussion_Adapter.Discussion_AdapterVH> {
-    FirebaseAuth auth;
-    FirebaseUser user;
     FirebaseFirestore db;
     ArrayList<ForumComment> forumComments = new ArrayList<>();
     Context context;

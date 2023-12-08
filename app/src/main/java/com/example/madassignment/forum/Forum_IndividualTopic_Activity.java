@@ -6,13 +6,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -24,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.example.madassignment.R;
 import com.example.madassignment.login_register.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +41,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.RandomAccessFile;
 import java.time.LocalDateTime;
@@ -47,18 +55,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     FirebaseFirestore db;
+    FirebaseStorage storage;
+
     Discussion_Adapter discussionAdapter;
+    TopicImage_Adapter topicImageAdapter;
     Random rand = new Random();
     TextView TVSubject, TVAuthor, TVDatePosted, TVDescription, TVNumberOfDiscussion;
     EditText ETComment;
     Button btn_comment;
     ImageButton backButton_individualTopic, likeButton;
     ProgressBar progressBar;
-    RecyclerView RVIndividualTopicDiscussion;
-    SwipeRefreshLayout RVIndividualTopicDiscussionRefresh;
+    RecyclerView RVIndividualTopicDiscussion, RVTopicImage;
+    SwipeRefreshLayout RVIndividualTopicRefresh;
     FirebaseAuth auth;
     FirebaseUser user;
     String userID, previousClass;
@@ -67,10 +79,10 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Forum_MainActivity forumMainActivity = new Forum_MainActivity();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum_individual_topic);
         db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         userID = user.getUid();
@@ -83,7 +95,8 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
         btn_comment = findViewById(R.id.btn_postComment);
         backButton_individualTopic = findViewById(R.id.backButton_individualTopic);
         RVIndividualTopicDiscussion = findViewById(R.id.RVIndividualTopicDiscussion);
-        RVIndividualTopicDiscussionRefresh = findViewById(R.id.RVIndividualTopicDiscussionRefresh);
+        RVTopicImage = findViewById(R.id.RVTopicImage);
+        RVIndividualTopicRefresh = findViewById(R.id.RVIndividualTopicRefresh);
         likeButton = findViewById(R.id.likeButton);
         progressBar = findViewById(R.id.progressBar);
 
@@ -126,7 +139,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
             }
         });
 
-        // need modifications
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,16 +160,17 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
             }
         });
 
-        RVIndividualTopicDiscussionRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        RVIndividualTopicRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 setUpRVIndividualTopicDiscussion();
                 setTVNumberOfDiscussion();
-                RVIndividualTopicDiscussionRefresh.setRefreshing(false);
+                RVIndividualTopicRefresh.setRefreshing(false);
             }
         });
         RVIndividualTopicDiscussion.setNestedScrollingEnabled(false);
         setUpRVIndividualTopicDiscussion();
+        setUpRVTopicImage();
     }
 
     public void setTVNumberOfDiscussion(){
@@ -239,21 +252,95 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                     if(comment.getTopicID().equals(topic.getTopicID()))
                         forumDiscussion.add(comment);
                 }
-                //discussionAdapter = new Discussion_Adapter(Forum_IndividualTopic_Activity.this, forumDiscussion);
-                prepareRecyclerView(RVIndividualTopicDiscussion, forumDiscussion);
+                prepareRVDiscussion(Forum_IndividualTopic_Activity.this, RVIndividualTopicDiscussion, forumDiscussion);
             }
         });
     }
 
-    public void prepareRecyclerView(RecyclerView RV, ArrayList<ForumComment> object){
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        RV.setLayoutManager(linearLayoutManager);
-        preAdapter(RV, object);
+    public void setUpRVTopicImage(){
+        StorageReference storageReference = storage.getReference("FORUM_IMAGES/" + topic.getTopicID());
+        storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
+            @Override
+            public void onComplete(@NonNull Task<ListResult> task) {
+                if (task.isSuccessful()) {
+                    List<StorageReference> items = task.getResult().getItems();
+                    final ArrayList<String> images = new ArrayList<>();
+                    final AtomicInteger count = new AtomicInteger(0);
+
+                    for (int i = 0; i < items.size(); i++) {
+                        final int index = i;
+                        items.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String imageUri = uri.toString();
+                                images.add(imageUri);
+                                int completedCount = count.incrementAndGet();
+
+                                if (completedCount == items.size()) {
+                                    // All download URLs have been fetched
+                                    Log.d("TAG", images.toString());
+                                    prepareRVImage(Forum_IndividualTopic_Activity.this, RVTopicImage, images);
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Handle failure if needed
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        /*
+        StorageReference storageReference = storage.getReference("FORUM_IMAGES/" + topic.getTopicID());
+        storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
+            @Override
+            public void onComplete(@NonNull Task<ListResult> task) {
+                if(task.isSuccessful()){
+                    Log.d("TAG", task.getResult().toString());
+                    ArrayList<String> images = new ArrayList<>();
+                    int i=-1;
+                    for(StorageReference ref : task.getResult().getItems()){
+                        i++;
+                        ref.child("Image " + i + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String imageUri = uri.toString();
+                                Log.d("TAG", imageUri);
+                                images.add(imageUri);
+                            }
+                        });
+                    }
+                    Log.d("TAG", images.toString());
+                    prepareRVImage(Forum_IndividualTopic_Activity.this, RVTopicImage, images);
+                }
+            }
+        });
+
+         */
     }
 
-    public void preAdapter(RecyclerView RV, ArrayList<ForumComment> object){
-        discussionAdapter = new Discussion_Adapter(this, object);
+    public void prepareRVDiscussion(Context context, RecyclerView RV, ArrayList<ForumComment> object){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+        RV.setLayoutManager(linearLayoutManager);
+        preAdapterRVDiscussion(context, RV, object);
+    }
+
+    public void preAdapterRVDiscussion(Context context, RecyclerView RV, ArrayList<ForumComment> object){
+        discussionAdapter = new Discussion_Adapter(context, object);
         RV.setAdapter(discussionAdapter);
+    }
+
+    public void prepareRVImage(Context context, RecyclerView RV, ArrayList<String> object){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
+        RV.setLayoutManager(linearLayoutManager);
+        preAdapterRVImage(context, RV, object);
+    }
+
+    public void preAdapterRVImage(Context context, RecyclerView RV, ArrayList<String> object){
+        topicImageAdapter = new TopicImage_Adapter(context, object);
+        RV.setAdapter(topicImageAdapter);
     }
 
     private void createComment(ForumTopic topic, String content){

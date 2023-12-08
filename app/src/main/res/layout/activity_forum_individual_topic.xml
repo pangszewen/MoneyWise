@@ -40,7 +40,7 @@
     </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/RVIndividualTopicDiscussionRefresh"
+        android:id="@+id/RVIndividualTopicRefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -64,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
                     android:padding="5dp"
                     android:text="Created by: " />
 
@@ -76,18 +77,22 @@
                     android:padding="5dp"
                     android:text="Posted on: " />
 
-                <ImageView
-                    android:id="@+id/IVTopic"
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RVTopicImage"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/logo" />
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
                     android:id="@+id/TVDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
                     android:padding="5dp"
                     android:text="description"
                     android:textColor="@color/black"
