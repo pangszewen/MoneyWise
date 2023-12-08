@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.example.madassignment.Expenses.MainActivity;
 import com.example.madassignment.R;
 import com.example.madassignment.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -75,6 +76,9 @@ public class Forum_MainActivity extends AppCompatActivity {
                     return true;
                 }else if(itemID==R.id.iconForum) {
                     startActivity(new Intent(Forum_MainActivity.this, Forum_MainActivity.class));
+                    return true;
+                }else if(itemID==R.id.iconExpenses) {
+                    startActivity(new Intent(Forum_MainActivity.this, MainActivity.class));
                     return true;
                 }else
                     return false;

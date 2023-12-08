@@ -49,6 +49,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".Expenses.MainActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
+
+        </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
