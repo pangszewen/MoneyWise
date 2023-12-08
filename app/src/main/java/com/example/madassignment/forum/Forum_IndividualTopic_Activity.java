@@ -60,7 +60,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseStorage storage;
-
     Discussion_Adapter discussionAdapter;
     TopicImage_Adapter topicImageAdapter;
     Random rand = new Random();

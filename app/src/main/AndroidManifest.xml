@@ -41,6 +41,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Expenses.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
             android:name=".forum.Forum_IndividualTopic_Activity"
             android:exported="false" />
         <activity

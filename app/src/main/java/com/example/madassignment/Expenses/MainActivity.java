@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         int unselectedIconColor = ContextCompat.getColor(this, R.color.white);
         int selectedTextColor = ContextCompat.getColor(this, R.color.dark_blue);
         int unselectedTextColor = ContextCompat.getColor(this, R.color.white);
+        int grey = ContextCompat.getColor(this, R.color.grey);
 
         int[] colors = new int[]{
                 selectedIconColor,
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setBackground(null);
         MenuItem menuItemDisable = bottomNavigationView.getMenu().findItem(R.id.iconExpenses);
         menuItemDisable.setEnabled(false);
+        menuItemDisable.setIcon(R.drawable.circle);
 
         Drawable icon = VectorDrawableCompat.create(getResources(), R.drawable.outline_expenses_white, getTheme());
         icon.setTintList(AppCompatResources.getColorStateList(this, R.color.grey));

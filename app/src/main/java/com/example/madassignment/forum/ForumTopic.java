@@ -103,7 +103,7 @@ public class ForumTopic {
     public void setLikes(String likeString){
         if(likeString.length()>2) {
             likeString = likeString.substring(1, likeString.length() - 1);
-            String[] likeArray = likeString.split(",");
+            String[] likeArray = likeString.split(", ");
             this.likes = new ArrayList<>(Arrays.asList(likeArray));
         }else{
             this.likes = new ArrayList<>();
