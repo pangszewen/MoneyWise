@@ -27,6 +27,10 @@ android {
         }
     }
 
+    buildFeatures{
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -34,7 +38,7 @@ android {
 }
 
 dependencies {
-
+    implementation ("com.squareup.picasso:picasso:2.8")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -42,6 +46,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:22.2.0")
     implementation("androidx.navigation:navigation-fragment:2.7.5")
     implementation("androidx.navigation:navigation-ui:2.7.5")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
     testImplementation("junit:junit:4.13.2")
     implementation("com.android.volley:volley:1.2.1")
     implementation ("com.google.android.material:material:1.2.0-alpha02")

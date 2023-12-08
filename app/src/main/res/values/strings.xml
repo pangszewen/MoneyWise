@@ -2,6 +2,32 @@
     <string name="app_name">MAD Assignment</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_up_u"><u>Sign up</u></string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="forget_password">Forget password?</string>
+    <string name="name">Name</string>
+    <string name="gender">Gender</string>
+    <string-array name="genders">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string name="role">Role</string>
+    <string-array name="roles">
+        <item>Learner</item>
+        <item>Advisor</item>
+    </string-array>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="first_name">First Name</string>
+    <string name="learner">LEARNER</string>
+    <string name="advisor">ADVISOR</string>
+    <string name="age">Age</string>
+    <string name="qualification">Qualification</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_course_display">activity_course_display</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

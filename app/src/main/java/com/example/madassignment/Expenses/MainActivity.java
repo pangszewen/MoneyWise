@@ -24,6 +24,7 @@ import com.example.madassignment.databinding.ActivityMainExpensesBinding;
 import com.example.madassignment.databinding.ActivityMainExpensesBinding;
 import com.example.madassignment.forum.Forum_MainActivity;
 import com.example.madassignment.home.HomeActivity;
+import com.example.madassignment.quiz.activity_course_display;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -110,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }else if(itemID==R.id.iconExpenses) {
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    return true;
+                }else if(itemID==R.id.iconCnq){
+                    startActivity(new Intent(MainActivity.this, activity_course_display.class));
                     return true;
                 }else
                     return false;

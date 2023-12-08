@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import com.example.madassignment.Expenses.MainActivity;
 import com.example.madassignment.R;
 import com.example.madassignment.home.HomeActivity;
+import com.example.madassignment.quiz.activity_course_display;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -79,6 +80,9 @@ public class Forum_MainActivity extends AppCompatActivity {
                     return true;
                 }else if(itemID==R.id.iconExpenses) {
                     startActivity(new Intent(Forum_MainActivity.this, MainActivity.class));
+                    return true;
+                }else if(itemID==R.id.iconCnq){
+                    startActivity(new Intent(Forum_MainActivity.this, activity_course_display.class));
                     return true;
                 }else
                     return false;

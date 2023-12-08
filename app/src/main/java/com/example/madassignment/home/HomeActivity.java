@@ -18,6 +18,7 @@ import com.example.madassignment.Expenses.MainActivity;
 import com.example.madassignment.R;
 import com.example.madassignment.forum.Forum_MainActivity;
 import com.example.madassignment.login_register.ProfileActivity;
+import com.example.madassignment.quiz.activity_course_display;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,6 +57,9 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 }else if(itemID==R.id.iconExpenses) {
                     startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                    return true;
+                }else if(itemID==R.id.iconCnq){
+                    startActivity(new Intent(HomeActivity.this, activity_course_display.class));
                     return true;
                 }else
                     return false;
