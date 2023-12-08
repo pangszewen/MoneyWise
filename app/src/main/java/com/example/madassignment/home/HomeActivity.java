@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.madassignment.Expenses.MainActivity;
 import com.example.madassignment.R;
 import com.example.madassignment.forum.Forum_MainActivity;
 import com.example.madassignment.login_register.ProfileActivity;
@@ -52,6 +53,9 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 }else if(itemID==R.id.iconForum) {
                     startActivity(new Intent(HomeActivity.this, Forum_MainActivity.class));
+                    return true;
+                }else if(itemID==R.id.iconExpenses) {
+                    startActivity(new Intent(HomeActivity.this, MainActivity.class));
                     return true;
                 }else
                     return false;

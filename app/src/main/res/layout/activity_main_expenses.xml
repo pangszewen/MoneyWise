@@ -74,7 +74,7 @@
             android:background="@color/transparent"
             android:backgroundTint="@color/yellow"
             app:fabAlignmentMode="end"
-            app:fabAlignmentModeEndMargin="30dp"
+            app:fabAlignmentModeEndMargin="265dp"
             app:fabCradleMargin="15dp"
             app:fabCradleRoundedCornerRadius="20dp">
 
@@ -94,7 +94,7 @@
             android:id="@+id/fab_expenses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#AFC9CF"
+            android:backgroundTint="@color/blue_grey"
             android:clickable="true"
             android:contentDescription="Expenses"
             android:tint="@color/white"

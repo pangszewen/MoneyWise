@@ -57,6 +57,8 @@ public class SetBudgetFragment extends Fragment {
     // Expense ID counter (incremental expense id)
     private int budgetIdCounter = 1;
 
+    private boolean toastShown = false;
+
     public SetBudgetFragment() {
         // Required empty public constructor
     }
@@ -226,12 +228,18 @@ public class SetBudgetFragment extends Fragment {
                         // Document already exists, update it
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         String documentId = documentSnapshot.getId();
-                        budgetCollection.document(documentId).update(budget).addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(requireContext(), "Budget updated successfully", Toast.LENGTH_SHORT).show();
+                        budgetCollection.document(documentId).update(budget) .addOnSuccessListener(aVoid -> {
+                                    if (!toastShown) {
+                                        Toast.makeText(requireContext(), "Budget updated successfully", Toast.LENGTH_SHORT).show();
+                                        toastShown = true;
+                                    }
                                     // Clear the UI or perform any other necessary actions
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(requireContext(), "Failed to update budget", Toast.LENGTH_SHORT).show();
+                                    if (!toastShown) {
+                                        Toast.makeText(requireContext(), "Failed to update budget", Toast.LENGTH_SHORT).show();
+                                        toastShown = true;
+                                    }
                                     // Handle the error
                                 });
                     } else {
