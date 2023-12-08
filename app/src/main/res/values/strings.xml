@@ -8,6 +8,19 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string-array name="level_array">
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+        <item>Expert</item>
+        <item>All Levels</item>
+    </string-array>
+    <string-array name="language_array">
+        <item>English</item>
+        <item>Mandarin</item>
+        <item>Malay</item>
+        <item>Tamil</item>
+    </string-array>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

@@ -12,17 +12,20 @@ public class Course {
     private String courseLevel;
     private String courseLanguage;
     private String courseMode;
-
     private Integer courseNumOfStudents;
 
     public Course(){
     }
 
-    public Course(String courseID, String advisorID, String courseTitle, Integer courseNumOfStudents){
+    public Course(String courseID, String advisorID, String courseTitle, String courseDesc, String courseLevel, String courseLanguage, String courseMode,Integer courseNumOfStudents){
         this.courseID = courseID;
         this.advisorID = advisorID;
         this.courseTitle = courseTitle;
         this.courseNumOfStudents = courseNumOfStudents;
+        this.courseDesc = courseDesc;
+        this.courseLevel = courseLevel;
+        this.courseLanguage = courseLanguage;
+        this.courseMode = "Online";
     }
 
     public String getCourseID() {

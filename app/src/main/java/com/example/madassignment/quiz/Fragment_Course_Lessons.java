@@ -25,7 +25,6 @@ public class Fragment_Course_Lessons extends Fragment {
                     lessonContainer.addView(lessonLayout);
                 }
             });
-
             return view;
         }
 }
