@@ -45,11 +45,41 @@
             android:exported="true"
             android:windowSoftInputMode="adjustPan"/>
         <activity
+            android:name=".quiz.Edit_Quiz_Info"
+            android:exported="false" />
+        <activity
             android:name=".forum.Forum_IndividualTopic_Activity"
             android:exported="false" />
         <activity
             android:name=".forum.Forum_MyTopic_Activity"
             android:exported="false" />
+        <activity
+            android:name=".forum.Forum_CreateTopic_Activity"
+            android:exported="false"
+            android:parentActivityName=".forum.Forum_MainActivity" />
+        <activity
+            android:name=".quiz.activity_course_display"
+            android:exported="false"
+            android:label="@string/title_activity_course_display"
+            android:theme="@style/Theme.MADAssignment" />
+        <activity
+            android:name=".quiz.activity_display_course"
+            android:exported="false" />
+        <activity
+            android:name=".quiz.Quiz_Page"
+            android:exported="false" />
+        <activity
+            android:name=".quiz.Create_Course"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".quiz.Create_Quiz"
+            android:exported="true" />
         <activity
             android:name=".forum.Forum_CreateTopic_Activity"
             android:exported="false"

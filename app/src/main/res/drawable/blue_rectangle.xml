@@ -1,0 +1,12 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <corners android:radius="30dp" />
+
+    <solid android:color="#E7EFF1" />
+
+    <path
+        android:fillColor="#E7EFF1"
+        android:pathData="M2,4h20v16h-20z" />
+</shape>
+

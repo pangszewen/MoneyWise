@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".quiz.Quiz_Page">
+
+    <LinearLayout
+        android:id="@+id/quiztop"
+        android:layout_width="match_parent"
+        android:layout_height="109dp"
+        android:background="@color/blue_grey"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/round_arrow_back_black" />
+
+        <TextView
+            android:id="@+id/addQuiz_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center_vertical"
+            android:paddingLeft="25dp"
+            android:text="INTRODUCTION TO FINANCE"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progress_header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/grey"
+        app:layout_constraintTop_toBottomOf="@+id/quiztop">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="Question "
+            android:textSize="15dp"></TextView>
+
+        <ProgressBar
+            android:id="@+id/progressBar_ques"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="293dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="28dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <Button
+            android:id="@+id/previousButton"
+            android:layout_width="175dp"
+            android:layout_height="55dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/orange_choice_box"
+            android:paddingStart="16dp"
+            android:text="Previous Question"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:paddingEnd="12dp"
+            android:textSize="12sp" />
+
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="175dp"
+            android:layout_height="55dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/orange_choice_box"
+            android:paddingStart="16dp"
+            android:paddingEnd="12dp"
+            android:text="Next Question"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
