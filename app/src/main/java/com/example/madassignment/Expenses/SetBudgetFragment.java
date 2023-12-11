@@ -18,15 +18,20 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.madassignment.R;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -49,13 +54,17 @@ public class SetBudgetFragment extends Fragment {
 
     // Firestore
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference budgetCollection = db.collection("EXPENSE_BUDGET");
-
-    // User ID (replace "L001" with the actual user ID)
-    private String userId = "L001";
-
-    // Expense ID counter (incremental expense id)
-    private int budgetIdCounter = 1;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+    String userID = user.getUid();
+    DocumentReference userDocRef = db.collection("USER_DETAILS").document(userID);
+    CollectionReference expensesCollection = userDocRef.collection("EXPENSE");
+    DocumentReference budgetMonthDocRef = expensesCollection.document("EXPENSE_BUDGET_MONTH");
+    Timestamp timestamp = Timestamp.now();
+    Date currentDate = new Date(timestamp.getSeconds() * 1000); // Convert seconds to milliseconds
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMyyyy", Locale.US);
+    String formattedDate = dateFormat.format(currentDate);
+    CollectionReference monthBudgetCollection = budgetMonthDocRef.collection(formattedDate);
 
     private boolean toastShown = false;
 
@@ -113,7 +122,7 @@ public class SetBudgetFragment extends Fragment {
         assignId(etMedical, R.id.ETBudgetMedical, 6);
         assignId(etOthers, R.id.ETBudgetOthers, 7);
 
-        budgetCollection.whereEqualTo("user_id", userId).get().addOnCompleteListener(task -> {
+        monthBudgetCollection.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     // Retrieve budget values for each category
@@ -202,33 +211,20 @@ public class SetBudgetFragment extends Fragment {
             value = "not set"; // You can replace this with your default value
         }
 
-        // Get the current timestamp
-        Timestamp timestamp = Timestamp.now();
-        // Convert the timestamp to a Date object
-        Date date = timestamp.toDate();
-        // Create a Calendar instance and set the time to the extracted date
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        // Get the month value (Note: Calendar.MONTH is zero-based, so January is 0)
-        int month = calendar.get(Calendar.MONTH) + 1; // Adding 1 to get a 1-based month
-
 
         // Create a new expense map
         Map<String, Object> budget = new HashMap<>();
-        budget.put("user_id", userId);
-        budget.put("budget_id", budgetIdCounter++);
         budget.put("category_id", categoryId);
-        budget.put("month", month);
         budget.put("budget_amount", value);
 
         // Check if the document already exists based on some condition
-        Query query = budgetCollection.whereEqualTo("user_id", userId).whereEqualTo("category_id", categoryId);
+        Query query = monthBudgetCollection.whereEqualTo("category_id", categoryId);
         query.get().addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         // Document already exists, update it
                         DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         String documentId = documentSnapshot.getId();
-                        budgetCollection.document(documentId).update(budget) .addOnSuccessListener(aVoid -> {
+                        monthBudgetCollection.document(documentId).update(budget) .addOnSuccessListener(aVoid -> {
                                     if (!toastShown) {
                                         Toast.makeText(requireContext(), "Budget updated successfully", Toast.LENGTH_SHORT).show();
                                         toastShown = true;
@@ -244,7 +240,7 @@ public class SetBudgetFragment extends Fragment {
                                 });
                     } else {
                         // Document does not exist, add a new one
-                        budgetCollection.add(budget).addOnSuccessListener(documentReference -> {
+                        monthBudgetCollection.add(budget).addOnSuccessListener(documentReference -> {
                                     Toast.makeText(requireContext(), "Budget saved successfully", Toast.LENGTH_SHORT).show();
                                     // Clear the UI or perform any other necessary actions
                                 })

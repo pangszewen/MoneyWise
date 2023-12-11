@@ -20,10 +20,18 @@ import com.example.madassignment.R;
 import com.example.madassignment.databinding.FragmentCalculatorBinding;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -56,13 +64,9 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
     // Firestore
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference expensesCollection = db.collection("EXPENSE");
-
-    // User ID (replace "L001" with the actual user ID)
-    private String userId = "L001";
-
-    // Expense ID counter (incremental expense id)
-    private int expenseIdCounter = 1;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+    String userID = user.getUid();
 
     public CalculatorFragment() {
         // Required empty public constructor
@@ -238,18 +242,33 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
 
         // Get the current timestamp
         Timestamp timestamp = Timestamp.now();
+        Date currentDate = new Date(timestamp.getSeconds() * 1000); // Convert seconds to milliseconds
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMyyyy", Locale.US);
+        String formattedDate = dateFormat.format(currentDate);
+        SimpleDateFormat dbDate = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+        String formattedDbDate = dbDate.format(currentDate);
 
         // Create a new expense map
         Map<String, Object> expense = new HashMap<>();
-        expense.put("user_id", userId);
-        expense.put("expense_id", expenseIdCounter++);
         expense.put("category_id", categoryId);
         expense.put("expense_amount", value);
         expense.put("description", description);
-        expense.put("date", timestamp);
+        expense.put("date", formattedDbDate);
+
+        // Access or create the user's document in "USER_DETAILS" collection
+        DocumentReference userDocRef = db.collection("USER_DETAILS").document(userID);
+
+        // Access or create the "expenses" subcollection for the current user
+        CollectionReference expensesCollection = userDocRef.collection("EXPENSE");
+
+        // Access or create the document for the current month and year
+        DocumentReference monthDocRef = expensesCollection.document("EXPENSE_MONTH");
+
+        // Access or create the "expense" subcollection for the current month
+        CollectionReference monthExpensesCollection = monthDocRef.collection(formattedDate);
 
         // Add the expense to Firestore
-        expensesCollection.add(expense)
+        monthExpensesCollection.add(expense)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(requireContext(), "Expense saved successfully", Toast.LENGTH_SHORT).show();
                     // Clear the UI or perform any other necessary actions

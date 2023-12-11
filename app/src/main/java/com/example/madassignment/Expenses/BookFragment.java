@@ -1,6 +1,7 @@
 package com.example.madassignment.Expenses;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,28 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.madassignment.R;
 import com.example.madassignment.databinding.FragmentBookBinding;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.example.madassignment.Expenses.Expense;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +52,32 @@ public class BookFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout RVRefreshExpense;
+    private ExpenseAdapter adapter;
+    private List<Expense> expenseList = new ArrayList<>(); // Replace with your data type
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+    String userID = user.getUid();
+    Timestamp timestamp = Timestamp.now();
+    Date currentDate = new Date(timestamp.getSeconds() * 1000); // Convert seconds to milliseconds
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMyyyy", Locale.US);
+    String formattedDate = dateFormat.format(currentDate);
+    // Access or create the user's document in "USER_DETAILS" collection
+    DocumentReference userDocRef = db.collection("USER_DETAILS").document(userID);
+
+    // Access or create the "expenses" subcollection for the current user
+    CollectionReference expensesCollection = userDocRef.collection("EXPENSE");
+
+    // Access or create the document for the current month and year
+    DocumentReference monthDocRef = expensesCollection.document("EXPENSE_MONTH");
+
+    // Access or create the "expense" subcollection for the current month
+    CollectionReference monthExpensesCollection = monthDocRef.collection(formattedDate);
+    private static final int CALCULATOR_REQUEST_CODE = 1;
 
     public BookFragment() {
         // Required empty public constructor
@@ -63,13 +109,28 @@ public class BookFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment using View Binding
-        binding = FragmentBookBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        View rootView = inflater.inflate(R.layout.fragment_book, container, false);
+
+        recyclerView = rootView.findViewById(R.id.scrollView2);
+        RVRefreshExpense = rootView.findViewById(R.id.RVRefreshExpense);
+        setUpRVExpense();
+
+        RVRefreshExpense.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setUpRVExpense();
+                RVRefreshExpense.setRefreshing(false);
+            }
+        });
+
+        return rootView;
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -96,6 +157,40 @@ public class BookFragment extends Fragment {
         });
     }
 
+    private void retrieveExpenses() {
+        // Clear existing list to avoid duplicates
+        expenseList.clear();
 
+        // Query Firestore for expenses
+        monthExpensesCollection.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    // Convert Firestore document to Expense object
+                    Expense expense = document.toObject(Expense.class);
+                    expenseList.add(expense);
+                }
+
+                // Update RecyclerView adapter
+                Collections.sort(expenseList, new Comparator<Expense>() {
+                    public int compare(Expense expense1, Expense expense2) {
+                        // Compare the dates in reverse order (latest first)
+                        return expense2.getDate().compareTo(expense1.getDate());
+                    }
+                });
+                adapter.notifyDataSetChanged();
+            } else {
+                // Handle errors
+                Log.e("BookFragment", "Error getting expenses", task.getException());
+            }
+        });
+    }
+
+    public void setUpRVExpense(){
+        retrieveExpenses();
+        adapter = new ExpenseAdapter(expenseList);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+    }
 
 }
