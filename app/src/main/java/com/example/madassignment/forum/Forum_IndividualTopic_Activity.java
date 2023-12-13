@@ -248,8 +248,11 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 ArrayList<ForumComment> forumDiscussion = new ArrayList<>();
                 for(QueryDocumentSnapshot dc : task.getResult()){
                     ForumComment comment = convertDocumentToForumComment(dc);
-                    if(comment.getTopicID().equals(topic.getTopicID()))
-                        forumDiscussion.add(comment);
+                    for(String commentID : topic.getCommentID()){
+                        if(comment.getCommentID().equals(commentID)){
+                            forumDiscussion.add(comment);
+                        }
+                    }
                 }
                 prepareRVDiscussion(Forum_IndividualTopic_Activity.this, RVIndividualTopicDiscussion, forumDiscussion);
             }
@@ -291,33 +294,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                 }
             }
         });
-        /*
-        StorageReference storageReference = storage.getReference("FORUM_IMAGES/" + topic.getTopicID());
-        storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
-            @Override
-            public void onComplete(@NonNull Task<ListResult> task) {
-                if(task.isSuccessful()){
-                    Log.d("TAG", task.getResult().toString());
-                    ArrayList<String> images = new ArrayList<>();
-                    int i=-1;
-                    for(StorageReference ref : task.getResult().getItems()){
-                        i++;
-                        ref.child("Image " + i + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String imageUri = uri.toString();
-                                Log.d("TAG", imageUri);
-                                images.add(imageUri);
-                            }
-                        });
-                    }
-                    Log.d("TAG", images.toString());
-                    prepareRVImage(Forum_IndividualTopic_Activity.this, RVTopicImage, images);
-                }
-            }
-        });
-
-         */
     }
 
     public void prepareRVDiscussion(Context context, RecyclerView RV, ArrayList<ForumComment> object){
@@ -353,7 +329,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
                     forumCommentList.add(comment);
                 }
                 String commentID = generateCommentID(topic, forumCommentList);
-                ForumComment forumComment = new ForumComment(commentID, topic.getTopicID(), content, userID);
+                ForumComment forumComment = new ForumComment(commentID, content, userID);
                 insertCommentIntoDatabase(forumComment);
             }
         });
@@ -362,8 +338,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     private void insertCommentIntoDatabase(ForumComment comment){
         db = FirebaseFirestore.getInstance();
         Map<String, Object> map = new HashMap<>();
-        map.put("commentID", comment.getCommentID());
-        map.put("topicID", comment.getTopicID());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         String formattedDateTime = comment.getDatePosted().format(formatter);
         map.put("datePosted", formattedDateTime);
@@ -385,7 +359,7 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     }
 
     public void updateCommentInTopic(ForumComment comment){
-        DocumentReference ref = db.collection("FORUM_TOPIC").document(comment.getTopicID());
+        DocumentReference ref = db.collection("FORUM_TOPIC").document(topic.getTopicID());
         ref.update("commentID", FieldValue.arrayUnion(comment.getCommentID())).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -435,7 +409,6 @@ public class Forum_IndividualTopic_Activity extends AppCompatActivity {
     public ForumComment convertDocumentToForumComment(QueryDocumentSnapshot dc){
         ForumComment comment = new ForumComment();
         comment.setCommentID(dc.getId());
-        comment.setTopicID(dc.get("topicID").toString());
         comment.setDatePosted(dc.get("datePosted").toString());
         comment.setContent(dc.get("content").toString());
         comment.setUserID(dc.get("userID").toString());

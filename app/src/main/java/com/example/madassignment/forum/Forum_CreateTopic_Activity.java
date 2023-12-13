@@ -91,6 +91,14 @@ public class Forum_CreateTopic_Activity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         createTopicRefresh = findViewById(R.id.createTopicRefresh);
 
+        ETTopicDescription.setVerticalScrollBarEnabled(true);
+        ETTopicDescription.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                ETTopicDescription.setNestedScrollingEnabled(false);
+            }
+        });
+
         createTopicRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

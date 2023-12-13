@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Expenses.MainActivity"
+            android:name=".expenses.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan"/>
         <activity

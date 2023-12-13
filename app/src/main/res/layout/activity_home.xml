@@ -1,120 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
- <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
      xmlns:app="http://schemas.android.com/apk/res-auto"
      xmlns:tools="http://schemas.android.com/tools"
-     android:id="@+id/homePage"
+     android:id="@+id/DLHome"
      android:layout_width="match_parent"
      android:layout_height="match_parent"
      tools:context=".home.HomeActivity">
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomHomeAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:backgroundTint="@color/yellow"
-        android:background="@color/transparent"
-        app:fabAlignmentMode="end"
-        app:fabAlignmentModeEndMargin="330dp"
-        app:fabCradleMargin="15dp"
-        app:fabCradleRoundedCornerRadius="20dp">
-
-       <com.google.android.material.bottomnavigation.BottomNavigationView
-           android:id="@+id/bottomHomeNavigationView"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           app:menu="@menu/nav_menu"
-           android:background="@color/transparent"
-           app:itemIconSize="35dp"
-           app:itemIconTint="@color/white"/>
-
-    </com.google.android.material.bottomappbar.BottomAppBar>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_home"
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_overflow"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:layout_anchor="@+id/bottomHomeAppBar"
-        app:layout_anchorGravity="top|center"
-        app:maxImageSize="50dp"
-        app:srcCompat="@drawable/outline_home_white"
-        android:tint="@color/white"
-        android:backgroundTint="#AFC9CF"
-        android:contentDescription="fabHome">
+        android:layout_height="match_parent"
+        app:headerLayout="@drawable/overflow_header"
+        app:menu="@menu/overflow_menu"
+        android:layout_gravity="start"/>
 
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/FCVHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchor="@+id/constraintLayout"
-        app:layout_anchorGravity="center">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
-        <ImageView
-            android:id="@+id/IVWelcomeBanner"
-            android:layout_width="wrap_content"
-            android:layout_height="202dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/home_welcome_banner" />
-
-        <TextView
-            android:id="@+id/TVWelcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="30dp"
-            android:fontFamily="@font/donegal_one"
-            android:text="Welcome, "
-            android:textColor="@color/blue"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/IVWelcomeBanner"
-            app:layout_constraintStart_toStartOf="@+id/IVWelcomeBanner" />
-
-        <ImageButton
-            android:id="@+id/IBProfile"
-            android:layout_width="70dp"
-            android:layout_height="76dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/transparent"
-            android:contentDescription="buttonToProfileFromHome"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/IVWelcomeBanner"
-            app:srcCompat="@drawable/baseline_account_blue_grey" />
-
-        <ImageButton
-            android:id="@+id/IBNoti"
-            android:layout_width="61dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:background="@color/transparent"
-            android:contentDescription="buttonToNotiFromHome"
-            android:scaleType="fitCenter"
-            app:layout_constraintStart_toStartOf="@+id/IVWelcomeBanner"
-            app:layout_constraintTop_toTopOf="@+id/IVWelcomeBanner"
-            app:srcCompat="@drawable/outline_notifications_maroon" />
-
-        <ImageButton
-            android:id="@+id/btn_expenses_home"
-            android:layout_width="match_parent"
-            android:layout_height="127dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/rectangle_rounded_corners_light_cream_yellow_with_border"
-            android:backgroundTint="@color/orange_grey"
-            android:contentDescription="buttonToExpensesFromHome"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/IVWelcomeBanner" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.fragment.app.FragmentContainerView>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>
+
+

@@ -75,7 +75,8 @@
             android:layout_gravity="bottom"
             android:background="@color/transparent"
             android:backgroundTint="@color/yellow"
-            app:fabAlignmentMode="center"
+            app:fabAlignmentMode="end"
+            app:fabAlignmentModeEndMargin="185dp"
             app:fabCradleMargin="15dp"
             app:fabCradleRoundedCornerRadius="20dp">
 

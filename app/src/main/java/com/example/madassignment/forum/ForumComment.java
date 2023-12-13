@@ -5,16 +5,14 @@ import java.time.format.DateTimeFormatter;
 
 public class ForumComment {
     private String commentID;
-    private String topicID;
     private LocalDateTime datePosted;
     private String content;
     private String userID;
 
     public ForumComment(){}
 
-    public ForumComment(String commentID, String topicID, String content, String userID){
+    public ForumComment(String commentID, String content, String userID){
         this.commentID = commentID;
-        this.topicID = topicID;
         this.datePosted = LocalDateTime.now();
         this.content = content;
         this.userID = userID;
@@ -28,13 +26,6 @@ public class ForumComment {
         this.commentID = commentID;
     }
 
-    public String getTopicID() {
-        return topicID;
-    }
-
-    public void setTopicID(String topicID) {
-        this.topicID = topicID;
-    }
 
     public LocalDateTime getDatePosted() {
         return datePosted;

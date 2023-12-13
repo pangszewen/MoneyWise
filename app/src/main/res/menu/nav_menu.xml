@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/iconHome"
-        android:title=""
+        android:title="Home"
         android:icon="@drawable/outline_home_white"/>
     <item
         android:id="@+id/iconExpenses"
-        android:title=""
+        android:title="Expenses"
         android:icon="@drawable/outline_expenses_white"/>
     <item
         android:id="@+id/iconCnq"

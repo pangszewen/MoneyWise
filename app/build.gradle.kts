@@ -60,6 +60,15 @@ dependencies {
 
 android{
     useLibrary("org.apache.http.legacy")
+    sourceSets {
+        getByName("main") {
+            res {
+                srcDirs("src\\main\\res", "src\\main\\res\\layout\\expenses",
+                    "src\\main\\res\\layout\\forum"
+                )
+            }
+        }
+    }
     buildFeatures {
         viewBinding = true
     }

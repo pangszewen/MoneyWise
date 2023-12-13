@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
+import com.example.madassignment.expenses.MainActivity;
 import com.example.madassignment.R;
 import com.example.madassignment.forum.Forum_MainActivity;
 import com.example.madassignment.home.HomeActivity;
@@ -47,6 +48,9 @@ public class activity_course_display extends AppCompatActivity {
                     return true;
                 }else if (itemID==R.id.iconCnq) {
                     startActivity(new Intent(activity_course_display.this, activity_course_display.class));
+                    return true;
+                }else if(itemID==R.id.iconExpenses){
+                    startActivity(new Intent(activity_course_display.this, MainActivity.class));
                     return true;
                 }
                 else
