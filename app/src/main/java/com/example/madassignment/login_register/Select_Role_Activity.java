@@ -33,14 +33,18 @@ public class Select_Role_Activity extends AppCompatActivity {
         learner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),LearnerRegisterActivity.class));
+                Intent intent=new Intent(getApplicationContext(), RegisterActivity.class);
+                intent.putExtra("role","Learner");
+                startActivity(intent);
                 finish();
             }
         });
         advisor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),AdvisorRegisterActivity.class));
+                Intent intent=new Intent(getApplicationContext(), RegisterActivity.class);
+                intent.putExtra("role","Advisor");
+                startActivity(intent);
                 finish();
             }
         });

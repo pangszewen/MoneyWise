@@ -10,40 +10,24 @@
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomHomeAppBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="78dp"
         android:layout_gravity="bottom"
-        android:backgroundTint="@color/yellow"
-        android:background="@color/transparent"
-        app:fabAlignmentMode="end"
-        app:fabAlignmentModeEndMargin="330dp"
-        app:fabCradleMargin="15dp"
-        app:fabCradleRoundedCornerRadius="20dp">
+        android:backgroundTint="#738EA2"
+        android:background="@color/transparent">
 
        <com.google.android.material.bottomnavigation.BottomNavigationView
            android:id="@+id/bottomHomeNavigationView"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content"
+           android:layout_height="match_parent"
            app:menu="@menu/nav_menu"
+           app:itemPaddingBottom="25dp"
            android:background="@color/transparent"
-           app:itemIconSize="35dp"
-           app:itemIconTint="@color/white"/>
+           app:itemBackground="@drawable/navbar_selector"
+           app:itemIconSize="35dp">
+
+       </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     </com.google.android.material.bottomappbar.BottomAppBar>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:layout_anchor="@+id/bottomHomeAppBar"
-        app:layout_anchorGravity="top|center"
-        app:maxImageSize="50dp"
-        app:srcCompat="@drawable/outline_home_white"
-        android:tint="@color/white"
-        android:backgroundTint="#AFC9CF"
-        android:contentDescription="fabHome">
-
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

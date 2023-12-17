@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.madassignment.R;
@@ -28,13 +29,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.checkerframework.checker.units.qual.A;
-
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdvisorRegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
+    TextView qualification;
     EditText editTextname,editTextage,editTextqualification,editTextemail,editTextpassword,editTextcpassword;
     AutoCompleteTextView spinner_gender;
     Button btn_reg;
@@ -43,6 +43,7 @@ public class AdvisorRegisterActivity extends AppCompatActivity {
     FirebaseFirestore fstore;
     ImageButton btn_back;
     String uid;
+    String role;
 
     @Override
     public void onStart() {
@@ -58,8 +59,9 @@ public class AdvisorRegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advisor_register);
+        setContentView(R.layout.activity_register);
         mAuth=FirebaseAuth.getInstance();
+        qualification=findViewById(R.id.qualification_text);
         editTextname=findViewById(R.id.editTextName);
         editTextage=findViewById(R.id.editTextAge);
         editTextqualification=findViewById(R.id.editTextQualification);
@@ -70,6 +72,12 @@ public class AdvisorRegisterActivity extends AppCompatActivity {
         btn_back=findViewById(R.id.btn_back);
         progressBar=findViewById(R.id.progressBar);
         fstore=FirebaseFirestore.getInstance();
+        role=getIntent().getStringExtra("role");
+
+        if (role.equals("Learner")){
+            qualification.setVisibility(View.GONE);
+            editTextqualification.setVisibility(View.GONE);
+        }
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +97,7 @@ public class AdvisorRegisterActivity extends AppCompatActivity {
         spinner_gender.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(AdvisorRegisterActivity.this,spinner_gender.getText().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this,spinner_gender.getText().toString(),Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -107,35 +115,35 @@ public class AdvisorRegisterActivity extends AppCompatActivity {
                 cpassword=editTextcpassword.getText().toString();
 
                 if (TextUtils.isEmpty(name)){
-                    Toast.makeText(AdvisorRegisterActivity.this,"Enter name",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"Enter name",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(gender)){
-                    Toast.makeText(AdvisorRegisterActivity.this,"Select gender",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"Select gender",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(age)){
-                    Toast.makeText(AdvisorRegisterActivity.this,"Enter age",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"Enter age",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(qualification)){
-                    Toast.makeText(AdvisorRegisterActivity.this,"Enter qualification",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"Enter qualification",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(email)){
-                    Toast.makeText(AdvisorRegisterActivity.this,"Enter email",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"Enter email",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(password)){
-                    Toast.makeText(AdvisorRegisterActivity.this,"Enter password",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"Enter password",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(cpassword)){
-                    Toast.makeText(AdvisorRegisterActivity.this,"Please confirm your password",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"Please confirm your password",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!password.equals(cpassword)){
-                    Toast.makeText(AdvisorRegisterActivity.this,"Password does not match",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this,"Password does not match",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -148,7 +156,7 @@ public class AdvisorRegisterActivity extends AppCompatActivity {
                                     Log.d("TAG", "createUserWithEmail:success");
                                     //FirebaseUser user = mAuth.getCurrentUser();
                                     progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(AdvisorRegisterActivity.this, "Account created.",
+                                    Toast.makeText(RegisterActivity.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
                                     uid=mAuth.getCurrentUser().getUid();
                                     DocumentReference documentReference=fstore.collection("USER_DETAILS").document(uid);
@@ -170,7 +178,7 @@ public class AdvisorRegisterActivity extends AppCompatActivity {
                                     // If sign in fails, display a message to the user.
                                     progressBar.setVisibility(View.GONE);
                                     Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(AdvisorRegisterActivity.this, "Authentication failed.",
+                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
