@@ -222,7 +222,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
             currentlySelectedButton.setBackgroundColor(Color.parseColor("#fffeec"));
         }
 
-        clickedButton.setBackgroundColor(Color.parseColor("#ffbc5d"));
+        clickedButton.setBackgroundColor(Color.parseColor("#fddd5c"));
         currentlySelectedButton = clickedButton;
     }
 

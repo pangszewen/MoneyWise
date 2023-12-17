@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/donegal_one"
+        android:fontFamily="@font/pt_sans"
         android:text="Monthly Budget"
         android:textSize="23dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,8 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="200dp"
-        android:fontFamily="@font/donegal_one"
+        android:layout_marginEnd="215dp"
+        android:fontFamily="@font/pt_sans"
         android:text="AccountBook Budget"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,8 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
-        android:layout_marginEnd="260dp"
-        android:fontFamily="@font/donegal_one"
+        android:layout_marginEnd="270dp"
+        android:fontFamily="@font/pt_sans"
         android:text="Category Budget"
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
         android:layout_width="371dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:background="@drawable/circular_defbook"
+        android:background="@drawable/circular_lightblue"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:fontFamily="@font/donegal_one"
+            android:fontFamily="@font/pt_sans"
             android:text="Default Book"
             android:textSize="18dp" />
 
@@ -80,27 +80,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="RM"
-            android:fontFamily="@font/donegal_one"
+            android:fontFamily="@font/pt_sans"
             android:textSize="18dp"
-            android:layout_marginLeft="78dp"/>
+            android:layout_marginLeft="110dp"/>
 
         <EditText
             android:id="@+id/ETBudgetDB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="no set"
             android:layout_gravity="center"
             android:backgroundTint="@color/transparent"
-            android:fontFamily="@font/donegal_one"
-            android:textSize="18dp"/>
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="57dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/baseline_arrow_right_24" />
+            android:fontFamily="@font/pt_sans"
+            android:hint="no set"
+            android:textSize="18dp" />
 
     </LinearLayout>
 
@@ -109,7 +101,7 @@
         android:layout_width="371dp"
         android:layout_height="395dp"
         android:layout_marginTop="7dp"
-        android:background="@drawable/circular_defbook"
+        android:background="@drawable/circular_lightblue"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -119,7 +111,7 @@
             android:id="@+id/linearLayoutMeal"
             android:layout_width="371dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/circular_defbook"
+            android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:text="Meal"
                 android:textSize="18dp" />
 
@@ -148,9 +140,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="RM"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"
-                android:layout_marginLeft="156dp"/>
+                android:layout_marginLeft="180dp"/>
 
             <EditText
                 android:id="@+id/ETBudgetMeal"
@@ -159,16 +151,9 @@
                 android:hint="no set"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/transparent"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"/>
 
-            <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/baseline_arrow_right_24" />
 
         </LinearLayout>
 
@@ -176,7 +161,7 @@
             android:id="@+id/linearLayoutDaily"
             android:layout_width="371dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/circular_defbook"
+            android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -195,7 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:text="Daily"
                 android:textSize="18dp" />
 
@@ -205,9 +190,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="RM"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"
-                android:layout_marginLeft="152dp"/>
+                android:layout_marginLeft="181dp"/>
 
             <EditText
                 android:id="@+id/ETBudgetDaily"
@@ -216,16 +201,9 @@
                 android:hint="no set"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/transparent"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"/>
 
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/baseline_arrow_right_24" />
 
         </LinearLayout>
 
@@ -233,7 +211,7 @@
             android:id="@+id/linearLayoutTransport"
             android:layout_width="371dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/circular_defbook"
+            android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -252,7 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:text="Transport"
                 android:textSize="18dp" />
 
@@ -262,9 +240,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="RM"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"
-                android:layout_marginLeft="110dp"/>
+                android:layout_marginLeft="142dp"/>
 
             <EditText
                 android:id="@+id/ETBudgetTransport"
@@ -273,16 +251,8 @@
                 android:hint="no set"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/transparent"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"/>
-
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/baseline_arrow_right_24" />
 
         </LinearLayout>
 
@@ -290,7 +260,7 @@
             android:id="@+id/linearLayoutCommunicate"
             android:layout_width="371dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/circular_defbook"
+            android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -309,7 +279,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:text="Communicate"
                 android:textSize="18dp" />
 
@@ -319,9 +289,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="RM"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"
-                android:layout_marginLeft="75dp"/>
+                android:layout_marginLeft="107dp"/>
 
             <EditText
                 android:id="@+id/ETBudgetCommunicate"
@@ -330,16 +300,9 @@
                 android:hint="no set"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/transparent"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"/>
 
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/baseline_arrow_right_24" />
 
         </LinearLayout>
 
@@ -347,7 +310,7 @@
             android:id="@+id/linearLayoutRecreation"
             android:layout_width="371dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/circular_defbook"
+            android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -366,7 +329,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:text="Recreation"
                 android:textSize="18dp" />
 
@@ -376,9 +339,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="RM"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"
-                android:layout_marginLeft="105dp"/>
+                android:layout_marginLeft="134dp"/>
 
             <EditText
                 android:id="@+id/ETBudgetRecreation"
@@ -387,16 +350,8 @@
                 android:hint="no set"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/transparent"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"/>
-
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/baseline_arrow_right_24" />
 
         </LinearLayout>
 
@@ -404,7 +359,7 @@
             android:id="@+id/linearLayoutMedical"
             android:layout_width="371dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/circular_defbook"
+            android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -423,7 +378,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:text="Medical"
                 android:textSize="18dp" />
 
@@ -433,9 +388,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="RM"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"
-                android:layout_marginLeft="133dp"/>
+                android:layout_marginLeft="157dp"/>
 
             <EditText
                 android:id="@+id/ETBudgetMedical"
@@ -444,16 +399,9 @@
                 android:hint="no set"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/transparent"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"/>
 
-            <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/baseline_arrow_right_24" />
 
         </LinearLayout>
 
@@ -461,7 +409,7 @@
             android:id="@+id/linearLayoutOther"
             android:layout_width="371dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/circular_defbook"
+            android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -480,7 +428,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:text="Others"
                 android:textSize="18dp" />
 
@@ -490,9 +438,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="RM"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"
-                android:layout_marginLeft="141dp"/>
+                android:layout_marginLeft="167dp"/>
 
             <EditText
                 android:id="@+id/ETBudgetOthers"
@@ -501,16 +449,8 @@
                 android:hint="no set"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/transparent"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:textSize="18dp"/>
-
-            <ImageView
-                android:id="@+id/imageView13"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:src="@drawable/baseline_arrow_right_24" />
 
         </LinearLayout>
 
@@ -518,15 +458,15 @@
 
     <Button
         android:id="@+id/buttonDone"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="33dp"
-        android:backgroundTint="#6b6b6b"
-        android:fontFamily="@font/donegal_one"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/blue_navbar"
+        android:fontFamily="@font/pt_sans"
         android:text="Done"
-        android:textSize="15dp"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 

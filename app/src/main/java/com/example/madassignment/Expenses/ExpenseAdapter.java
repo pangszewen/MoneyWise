@@ -52,25 +52,25 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         holder.dateTextView.setText(formattedDate);
         switch (expense.getCategory_id().toString()) {
             case "1":
-                setDrawableTop(holder.categoryButton, R.drawable.small_hamburger_burger_svgrepo_com);
+                setDrawableTop(holder.categoryButton, R.drawable.hamburger_burger_svgrepo_com);
                 break;
             case "2":
-                setDrawableTop(holder.categoryButton, R.drawable.small_groceries_grocery_svgrepo_com);
+                setDrawableTop(holder.categoryButton, R.drawable.groceries_grocery_svgrepo_com);
                 break;
             case "3":
-                setDrawableTop(holder.categoryButton, R.drawable.small_bus_svgrepo_com);
+                setDrawableTop(holder.categoryButton, R.drawable.bus_svgrepo_com);
                 break;
             case "4":
-                setDrawableTop(holder.categoryButton, R.drawable.small_smartphone_touch_screen_svgrepo_com);
+                setDrawableTop(holder.categoryButton, R.drawable.smartphone_touch_screen_svgrepo_com);
                 break;
             case "5":
-                setDrawableTop(holder.categoryButton, R.drawable.small_cinema_screen_cinema_svgrepo_com);
+                setDrawableTop(holder.categoryButton, R.drawable.cinema_screen_cinema_svgrepo_com);
                 break;
             case "6":
-                setDrawableTop(holder.categoryButton, R.drawable.small_medical_kit_svgrepo_com);
+                setDrawableTop(holder.categoryButton, R.drawable.medical_kit_svgrepo_com);
                 break;
             default:
-                setDrawableTop(holder.categoryButton, R.drawable.small_more_circle_horizontal_svgrepo_com);
+                setDrawableTop(holder.categoryButton, R.drawable.more_circle_horizontal_svgrepo_com);
                 break;
         }
     }

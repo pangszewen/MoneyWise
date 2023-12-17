@@ -1,9 +1,104 @@
 package com.example.madassignment.Expenses;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Firebase_Expenses {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+    String userID = user.getUid();
+
+    DocumentReference userDocRef = db.collection("USER_DETAILS").document(userID);
+    CollectionReference expensesCollection = userDocRef.collection("EXPENSE");
+    DocumentReference budgetMonthDocRef = expensesCollection.document("EXPENSE_BUDGET_MONTH");
+    Timestamp timestamp = Timestamp.now();
+    Date currentDate = new Date(timestamp.getSeconds() * 1000); // Convert seconds to milliseconds
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMyyyy", Locale.US);
+    String formattedDate = dateFormat.format(currentDate);
+    CollectionReference monthBudgetCollection = budgetMonthDocRef.collection(formattedDate);
+    SimpleDateFormat dbDate = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+    String formattedDbDate = dbDate.format(currentDate);
+    DocumentReference monthDocRef = expensesCollection.document("EXPENSE_MONTH");
+    CollectionReference monthExpensesCollection = monthDocRef.collection(formattedDate);
+
+    public interface BudgetCallback {
+        void onBudgetRetrieved(double budget);
+    }
+
+    public void getBudget(int categoryID, BudgetCallback callback) {
+        AtomicReference<Double> budget = new AtomicReference<>((double) 0);
+        monthBudgetCollection.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    // Retrieve budget values for each category
+                    Long categoryId = document.getLong("category_id");
+                    String value = document.getString("budget_amount");
+
+                    if (categoryId != null && !value.equals("not set") && categoryId == categoryID) {
+                        // Set the values in the corresponding EditText views
+                        budget.set(Double.parseDouble(value));
+                        break;
+                    }
+                }
+                // Call the callback with the retrieved budget
+                callback.onBudgetRetrieved(budget.get());
+            } else {
+                // Handle failures
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                }
+                // Call the callback with a default value or an indication of failure
+                callback.onBudgetRetrieved((double) 0);
+            }
+        });
+    }
+
+    public interface TotalExpenseCallback {
+        void onTotalExpenseCalculated(double totalExpense);
+        void onError(Exception exception);
+    }
+
+    public void calculateTotalExpense(TotalExpenseCallback callback) {
+        double[] totalExpense = {0}; // Using an array to make it effectively final
+
+        monthExpensesCollection.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    String expenseAmountStr = document.getString("expense_amount");
+                    if (expenseAmountStr != null) {
+                        double expenseAmount = Double.parseDouble(expenseAmountStr);
+                        totalExpense[0] += expenseAmount;
+                    }
+                }
+                // Now 'totalExpense[0]' contains the sum of all "expense_amount" values
+                callback.onTotalExpenseCalculated(totalExpense[0]);
+            } else {
+                // Handle failures
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                    callback.onError(exception);
+                }
+            }
+        });
+    }
+
+
+
+
+
 
     /*
     ArrayList<ForumTopic> forumTopics = new ArrayList<>();

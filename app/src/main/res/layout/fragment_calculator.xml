@@ -12,7 +12,7 @@
         android:id="@+id/calcLinear"
         android:layout_width="412dp"
         android:layout_height="573dp"
-        android:background="@color/beige"
+        android:background="@color/light_blue"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -30,7 +30,7 @@
                 android:layout_width="15dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/beige"
+                android:backgroundTint="@color/light_blue"
                 android:src="@drawable/cross_svgrepo_com" />
 
 
@@ -41,10 +41,10 @@
                 android:layout_gravity="center"
                 android:layout_margin="1dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/donegal_one"
+                android:fontFamily="@font/pt_sans"
                 android:gravity="center_horizontal"
                 android:text="Add Expense"
-                android:textColor="@color/maroon"
+                android:textColor="@color/dark_grey"
                 android:textSize="25dp" />
 
             <ImageButton
@@ -52,7 +52,7 @@
                 android:layout_width="15dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/beige"
+                android:backgroundTint="@color/light_blue"
                 android:src="@drawable/tick_svgrepo_com" />
 
 
@@ -142,7 +142,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="450dp"
-            android:background="@color/dark_yellow"
+            android:background="#fddd5c"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -158,7 +158,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/donegal_one"
+                    android:layout_marginBottom="3dp"
+                    android:fontFamily="@font/pt_sans"
                     android:text="0"
                     android:textSize="35dp"
                     android:textStyle="bold"
@@ -171,8 +172,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/donegal_one"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="@font/pt_sans"
                     android:text="(RM)"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/resultTV" />
@@ -183,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/donegal_one"
+                    android:fontFamily="@font/pt_sans"
                     android:hint="Description"
                     android:textSize="16dp"
                     android:backgroundTint="@android:color/transparent"

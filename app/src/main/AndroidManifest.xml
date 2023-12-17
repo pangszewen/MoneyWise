@@ -69,7 +69,9 @@
         <activity
             android:name=".Expenses.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan">
+
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

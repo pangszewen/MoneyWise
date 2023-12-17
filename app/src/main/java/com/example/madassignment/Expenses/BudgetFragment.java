@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,8 @@ public class BudgetFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TextView budgetTV, mealBudgetTV, dailyBudgetTV, transportBudgetTV, communicationBudgetTV, recreationBudgetTV, medicalBudgetTV, othersBudgetTV;
 
     public BudgetFragment() {
         // Required empty public constructor
