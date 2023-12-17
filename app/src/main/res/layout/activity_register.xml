@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/login_reg_background"
-    tools:context=".login_register.LearnerRegisterActivity">
+    tools:context=".login_register.RegisterActivity">
 
     <ImageButton
         android:id="@+id/btn_back"
