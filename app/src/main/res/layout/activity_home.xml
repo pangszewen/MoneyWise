@@ -23,7 +23,8 @@
            app:itemPaddingBottom="25dp"
            android:background="@color/transparent"
            app:itemBackground="@drawable/navbar_selector"
-           app:itemIconSize="35dp">
+           app:itemIconSize="35dp"
+           app:itemIconTint="@color/navbar_color_selector">
 
        </com.google.android.material.bottomnavigation.BottomNavigationView>
 
