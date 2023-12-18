@@ -7,231 +7,121 @@
     android:layout_height="match_parent"
     tools:context=".quiz.Fragment_Course_Description">
 
-    <ScrollView
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
-    <LinearLayout
-        android:id="@+id/linear_layout_inside_scroll"
-        android:layout_width="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Title"
+        app:expandedHintEnabled="false"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/titleInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/desc"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Description"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:expandedHintEnabled="false">
 
-        <EditText
-            android:id="@+id/description_input"
-            android:layout_width="376dp"
-            android:layout_height="113dp"
-            android:background="@drawable/rectangle_rounded_corners_light_cream_yellow_with_border"
-            android:backgroundTint="@color/grey"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal"
-            android:ems="10"
-            android:gravity="top"
-            android:hint="What is this course about?"
-            android:paddingTop="15dp"
-            android:paddingLeft="20dp"
-            android:inputType="textMultiLine"
-            android:maxLines="30"
-            android:overScrollMode="always"
-            android:scrollbarStyle="insideInset"
-            android:scrollbars="vertical"
-            android:scrollHorizontally="false"
-            android:textSize="18dp" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/descInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tutor_text"
-            android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/level"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Level"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/desc">
+
+        <AutoCompleteTextView
+            android:id="@+id/levelInput"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:text="Tutor"
-            android:textSize="24dp"
-            android:textStyle="bold"></TextView>
+            android:layout_weight="1"
+            android:inputType="none"
+            android:text="Please select"
+            android:textColor="#928E8E"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/language"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Language"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/level">
 
-        <FrameLayout
-            android:layout_width="350dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/blue_rectangle" />
-
-            <TextView
-                android:id="@+id/lecturer_name_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="130dp"
-                android:layout_marginTop="30dp"
-                android:text="Ms Poh Sharon"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/learning_advisor_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Learning Advisor"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_gravity="left"
-                android:layout_marginTop="70dp"
-                android:layout_marginLeft="130dp"/>
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/baseline_account_circle_grey"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"/>
-
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/info_text"
-            android:layout_width="wrap_content"
+        <AutoCompleteTextView
+            android:id="@+id/languageInput"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="Info"
-            android:layout_marginTop="20dp"
-            android:textSize="24dp"
-            android:textStyle="bold"></TextView>
+            android:layout_weight="1"
+            android:inputType="none"
+            android:text="Please select"
+            android:textColor="#928E8E" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="350dp"
-            android:layout_height="185dp"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/blue_rectangle"
-            android:orientation="vertical">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/mode"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Mode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/language">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp">
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:text="Level"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/level"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp">
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:text="Language"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/language"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp">
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:text="Students"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/numberOfStudents"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:paddingTop="10dp"
-                    android:text="(number of students)"
-                    android:textSize="16dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp">
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:text="Mode"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/mode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:paddingTop="10dp"
-                    android:text="Online"
-                    android:textSize="16dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp">
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:text="Qualifications"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/qualificationsValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:paddingTop="10dp"
-                    android:text="(qualifications)"
-                    android:textSize="16dp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/saveDescButton"
-            android:layout_width="wrap_content"
+        <AutoCompleteTextView
+            android:id="@+id/modeInput"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_rounded_corner_blue_grey"
-            android:text="Save"
-            android:textSize="18dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp">
-        </Button>
-    </LinearLayout>
-    </ScrollView>
+            android:layout_weight="1"
+            android:inputType="none"
+            android:text="Online"
+            android:textColor="#928E8E" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:backgroundTint="#27437B"
+        android:text="NEXT"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"></Button>
 </androidx.constraintlayout.widget.ConstraintLayout>

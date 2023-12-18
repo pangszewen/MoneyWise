@@ -2,6 +2,7 @@ package com.example.madassignment.quiz;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 public class Course {
     private String courseID;
@@ -17,11 +18,10 @@ public class Course {
     public Course(){
     }
 
-    public Course(String courseID, String advisorID, String courseTitle, String courseDesc, String courseLevel, String courseLanguage, String courseMode,Integer courseNumOfStudents){
+    public Course(String courseID, String advisorID, String courseTitle, String courseDesc, String courseLevel, String courseLanguage, String courseMode){
         this.courseID = courseID;
         this.advisorID = advisorID;
         this.courseTitle = courseTitle;
-        this.courseNumOfStudents = courseNumOfStudents;
         this.courseDesc = courseDesc;
         this.courseLevel = courseLevel;
         this.courseLanguage = courseLanguage;
@@ -57,7 +57,12 @@ public class Course {
     }
 
     public void setDateCreated(String dateCreated) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd'T'HH:mm")
+                .optionalStart()
+                .appendPattern(":ss")
+                .optionalEnd()
+                .toFormatter();
         this.dateCreated = LocalDateTime.parse(dateCreated, formatter);
     }
 
