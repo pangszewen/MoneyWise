@@ -1,57 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".quiz.Activity_Add_Choose"
-    android:background="@drawable/gradient_background">
+    android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/courseIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="128dp"
-        android:layout_marginTop="160dp"
-        android:background="@color/transparent"
-        android:src="@drawable/baseline_library_books_24"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quizIcon"></ImageButton>
-
-    <ImageButton
-        android:id="@+id/quizIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="128dp"
-        android:layout_marginTop="172dp"
-        android:background="@color/transparent"
-        android:src="@drawable/baseline_quiz_24"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageButton>
-
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="148dp"
-    android:layout_marginTop="4dp"
-    android:fontFamily="@font/donegal_one"
-    android:text="QUIZ"
-    android:textColor="@color/dark_blue"
-    android:textSize="50dp"
-    android:textStyle="bold"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/quizIcon"></TextView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="108dp"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/donegal_one"
-        android:text="COURSE"
-        android:textColor="@color/dark_blue"
-        android:textSize="50dp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/courseIcon"></TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,12 +1,12 @@
 package com.example.madassignment.login_register;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madassignment.R;
 
@@ -40,7 +40,7 @@ public class Select_Role_Activity extends AppCompatActivity {
         advisor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),AdvisorRegisterActivity.class));
+//                startActivity(new Intent(getApplicationContext(),AdvisorRegisterActivity.class));
                 finish();
             }
         });

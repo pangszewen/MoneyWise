@@ -1,5 +1,7 @@
 package com.example.madassignment.quiz;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,15 +47,13 @@ public class Create_Lesson extends AppCompatActivity {
     String courseID, courseTitle, courseDesc, courseLevel, courseMode, courseLanguage;
     ViewPager viewPagerImage;
     Uri imageUri;
-//    ViewPager viewPagerVideo;
+    Uri videoUri;
+    ViewPager viewPagerVideo;
     ArrayList<Uri> chooseImageList;
-//    ArrayList<Uri> chooseVideoList;
-    ArrayList<String> urlsList;
-//    ArrayList<String>urls2List;
+    ArrayList<Uri> chooseVideoList;
     FirebaseAuth auth;
     FirebaseUser user;
-    FirebaseStorage storage;
-//    private Uri imageUri, videoUri;
+    FirebaseStorage storage;;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +66,7 @@ public class Create_Lesson extends AppCompatActivity {
         user= auth.getCurrentUser();
         Intent intent = getIntent();
         chooseImageList = new ArrayList<>();
-//        chooseVideoList = new ArrayList<>();
-        urlsList = new ArrayList<>();
-//        urls2List = new ArrayList<>();
+        chooseVideoList = new ArrayList<>();
 
         if (intent != null){
             courseTitle = intent.getStringExtra("title");
@@ -82,13 +80,15 @@ public class Create_Lesson extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!save) {
+                if (!save && !chooseImageList.isEmpty() && !chooseVideoList.isEmpty()) {
                     createCourse(courseTitle, courseDesc, courseLevel, courseLanguage, courseMode);
                 }
-//                else if (save && imageUri != null || videoUri != null)
-//                    Toast.makeText(Create_Lesson.this, "Saved!", Toast.LENGTH_SHORT).show();
-//                else
-//                    Toast.makeText(Create_Lesson.this, "Please select an image or video", Toast.LENGTH_SHORT).show();
+                else if (save)
+                    Toast.makeText(Create_Lesson.this, "Saved!", Toast.LENGTH_SHORT).show();
+                else if (!save && chooseImageList.isEmpty())
+                    Toast.makeText(Create_Lesson.this, "Please select a cover image!", Toast.LENGTH_SHORT).show();
+                else if (!save && chooseVideoList.isEmpty())
+                    Toast.makeText(Create_Lesson.this, "Please select videos to upload!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -101,15 +101,7 @@ public class Create_Lesson extends AppCompatActivity {
             }
         });
 
-//        viewPagerVideo = findViewById(R.id.viewPagerVideo);
-//        viewPagerVideo.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                v.getParent().requestDisallowInterceptTouchEvent(true);
-//                return false;
-//            }
-//        });
-
+        viewPagerVideo = findViewById(R.id.viewPagerVideo);
         Button addCoverImage = findViewById(R.id.addCoverImage);
         addCoverImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,23 +111,23 @@ public class Create_Lesson extends AppCompatActivity {
             }
         });
 
-//        Button addLesson = findViewById(R.id.addVideo);
-//        addLesson.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                checkPermission();
-//                pickVideoFromGallery();
-//            }
-//        });
+        Button addLesson = findViewById(R.id.addVideo);
+        addLesson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkPermission();
+                pickVideosFromGallery();
+            }
+        });
     }
 
-//    private void pickVideoFromGallery() {
-//        Intent intent = new Intent();
-//        intent.setType("video/*");
-//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(intent, 1);
-//    }
+    private void pickVideosFromGallery() {
+        Intent intent = new Intent();
+        intent.setType("video/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Videos"), 1);
+    }
 
     private void pickImageFromGallery() {
         Intent intent = new Intent();
@@ -148,36 +140,29 @@ public class Create_Lesson extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
-//            if (requestCode == 1) { // For videos
-//                handleVideoSelection(data);
+            if (requestCode == 1) { // For videos
+                handleVideoSelection(data);
+            }
             if (requestCode == 2) { // For images
                 handleImageSelection(data);
             }
         }
     }
 
-//    private void handleVideoSelection(Intent data) {
-//        if (data.getClipData() != null) {
-//            int itemCount = data.getClipData().getItemCount();
-//            chooseVideoList.clear(); // Clear the previous list for videos
-//            for (int i = 0; i < itemCount; i++) {
-//                Uri mediaUri = data.getClipData().getItemAt(i).getUri();
-//                if (isVideo(mediaUri)) {
-//                    chooseVideoList.add(mediaUri);
-//                }
-//            }
-//            // Set the videoUri to the first video selected, if available
-//            if (!chooseVideoList.isEmpty()) {
-//                videoUri = chooseVideoList.get(0);
-//            }
-//            setVideoViewPagerAdapter();
-//        }
-//    }
-
+    private void handleVideoSelection(Intent data) {
+        if (data.getClipData() != null) {
+            int itemCount = data.getClipData().getItemCount();
+            for (int i = 0; i < itemCount; i++) {
+                videoUri = data.getClipData().getItemAt(i).getUri();
+                chooseVideoList.add(videoUri);
+                VideoViewPagerAdapter videoPagerAdapter = new VideoViewPagerAdapter(getSupportFragmentManager(), chooseVideoList);
+                viewPagerVideo.setAdapter(videoPagerAdapter);
+            }
+        }
+    }
     private void handleImageSelection(Intent data) {
         if (data.getClipData() != null) {
             int itemCount = data.getClipData().getItemCount();
-//            chooseImageList.clear(); // Clear the previous list for images
             for (int i = 0; i < itemCount; i++) {
                 imageUri = data.getClipData().getItemAt(i).getUri();
                 chooseImageList.add(imageUri);
@@ -186,20 +171,6 @@ public class Create_Lesson extends AppCompatActivity {
         }
     }
 
-
-    private boolean isImage(Uri uri) {
-        String type = getContentResolver().getType(uri);
-        return type != null && type.startsWith("image/");
-    }
-
-    private boolean isVideo(Uri uri) {
-        String type = getContentResolver().getType(uri);
-        return type != null && type.startsWith("video/");
-    }
-//    private void setVideoViewPagerAdapter() {
-//        VideoViewPagerAdapter adapter = new VideoViewPagerAdapter(this, chooseVideoList);
-//        viewPagerVideo.setAdapter(adapter);
-//    }
     private void setImageViewPagerAdapter() {
         ImageViewPagerAdapter adapter = new ImageViewPagerAdapter(this, chooseImageList);
         viewPagerImage.setAdapter(adapter);
@@ -221,31 +192,33 @@ public class Create_Lesson extends AppCompatActivity {
                 Course newCourse = new Course(courseID, advisorID, title, description, level, language, mode);
                 insertTopicIntoDatabase(newCourse);
                 uploadImages(newCourse.getCourseID());
-//                uploadLessons(newCourse.getCourseID());
+                uploadLessons(newCourse.getCourseID());
             }
         });
     }
 
-//    private void uploadLessons(String courseID) {
-//        for(int i =0; i<chooseVideoList.size(); i++){
-//            Uri lesson = chooseVideoList.get(i);
-//            if(lesson!=null){
-//                StorageReference reference = storage.getReference().child("COURSE_LESSONS").child(courseID);
-//                StorageReference lessonName = reference.child("Lesson " + i + ".mp4");
-//                lessonName.putFile(lesson).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
-//                });
-//            }
-//        }
-//    }
+    private void uploadLessons(String courseID) {
+        int i = 1;
+        for (Uri videoUri : chooseVideoList) {
+            String filename = "lesson " + i;
+            StorageReference storageRef = storage.getReference().child("COURSE_LESSONS").child(courseID).child(filename);
+            storageRef.putFile(videoUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Log.e(TAG, "Successfully Uploaded Lessons");
+                    })
+                    .addOnFailureListener(exception -> {
+                        Log.e(TAG, "Failed to upload video: " + exception.getMessage());
+                    });
+            i++;
+        }
+    }
 
     private void uploadImages(String courseID){
         for(int i =0; i<chooseImageList.size(); i++){
             Uri image = chooseImageList.get(i);
             if(image!=null){
                 StorageReference reference = storage.getReference().child("COURSE_COVER_IMAGE").child(courseID);
-                StorageReference imageName = reference.child("Image " + i + ".jpg");
+                StorageReference imageName = reference.child("Cover Image");
                 imageName.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
