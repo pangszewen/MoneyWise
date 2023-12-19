@@ -95,6 +95,37 @@ public class Firebase_Expenses {
         });
     }
 
+    public interface CategoryExpenseCallback {
+        void onCategoryExpenseCalculated(double categoryExpense);
+        void onError(Exception exception);
+    }
+
+    public void calculateCategoryExpense(int categoryID, CategoryExpenseCallback callback) {
+        double[] categoryExpense = {0}; // Using an array to make it effectively final
+
+        monthExpensesCollection.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    String expenseAmountStr = document.getString("expense_amount");
+                    Long categoryId = document.getLong("category_id");
+                    if (expenseAmountStr != null && categoryId!=null && categoryID==categoryId) {
+                        double expenseAmount = Double.parseDouble(expenseAmountStr);
+                        categoryExpense[0] += expenseAmount;
+                    }
+                }
+                // Now 'totalExpense[0]' contains the sum of all "expense_amount" values
+                callback.onCategoryExpenseCalculated(categoryExpense[0]);
+            } else {
+                // Handle failures
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                    callback.onError(exception);
+                }
+            }
+        });
+    }
+
 
 
 

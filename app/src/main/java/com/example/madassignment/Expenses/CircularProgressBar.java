@@ -9,12 +9,12 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class CircularProgressBar extends View {
+    private float progress;
+
     public CircularProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         // Initialization code goes here
     }
-
-    float progress;
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -33,22 +33,29 @@ public class CircularProgressBar extends View {
 
         int radius = Math.min(width, height) / 2;
 
-        Paint paint = new Paint();
-        paint.setColor(Color.parseColor("#d9d9d9")); // Set your desired color
-        paint.setStrokeWidth(50); // Set the stroke width
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeCap(Paint.Cap.ROUND);
+        Paint bgPaint = new Paint();
+        bgPaint.setColor(Color.parseColor("#d9d9d9")); // Set the background color
+        bgPaint.setStrokeWidth(50);
+        bgPaint.setStyle(Paint.Style.STROKE);
+        bgPaint.setStrokeCap(Paint.Cap.ROUND);
 
-        progress = 0.8f; // Set your progress value (0 to 1)
+        Paint progressPaint = new Paint();
+        progressPaint.setColor(Color.parseColor("#3498db")); // Set the progress color to blue
+        progressPaint.setStrokeWidth(50);
+        progressPaint.setStyle(Paint.Style.STROKE);
+        progressPaint.setStrokeCap(Paint.Cap.ROUND);
 
         RectF rectF = new RectF(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
 
-        canvas.drawArc(rectF, -90, progress * 360, false, paint);
+        // Draw the background circle
+        canvas.drawArc(rectF, 0, 360, false, bgPaint);
+
+        // Draw the progress arc
+        canvas.drawArc(rectF, -90, progress * 360, false, progressPaint);
     }
 
     public void setProgress(float progress) {
         this.progress = progress;
         invalidate();
     }
-
 }

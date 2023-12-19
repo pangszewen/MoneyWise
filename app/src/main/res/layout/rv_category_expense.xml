@@ -28,9 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/donegal_one"
+            android:fontFamily="@font/pt_sans"
             android:text="Category"
-            android:textSize="13dp"
+            android:textSize="16dp"
             app:layout_constraintStart_toEndOf="@+id/btnCategory"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,8 +40,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
-            android:fontFamily="@font/donegal_one"
+            android:fontFamily="@font/pt_sans"
             android:text="RMxx"
+            android:textSize="16dp"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -52,8 +53,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="80dp"
-            android:fontFamily="@font/donegal_one"
+            android:fontFamily="@font/pt_sans"
             android:text="xx%"
+            android:textSize="16dp"
             android:textColor="@color/blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

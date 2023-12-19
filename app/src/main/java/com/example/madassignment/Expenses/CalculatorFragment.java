@@ -202,7 +202,7 @@ public class CalculatorFragment extends Fragment implements View.OnClickListener
         if (data.equals("0")&&buttonText.equals("")){
             data = "0";
         }
-        else if (data.equals("0")){
+        else if (data.equals("0")&&!buttonText.equals(".")){
             data = buttonText;
         }
         else
