@@ -8,23 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madassignment.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class Create_Course extends AppCompatActivity {
-    private static final int PICK_IMAGE_REQUEST_CODE = 123;
-    private ActivityResultLauncher<String> getContentLauncher;
-
     String courseDesc, courseLevel, courseLanguage, courseTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_course);
-//        TextInputEditText title = findViewById(R.id.titleInput);
-//        TextInputEditText desc = findViewById(R.id.descInput);
         AutoCompleteTextView levelSpinner = findViewById(R.id.levelInput);
         AutoCompleteTextView languageSpinner = findViewById(R.id.languageInput);
         Button nextButton = findViewById(R.id.nextButton);
