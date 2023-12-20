@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -78,6 +79,14 @@ public class Create_Lesson extends AppCompatActivity {
             courseMode = intent.getStringExtra("mode");
             courseLanguage = intent.getStringExtra("language");
         }
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Create_Lesson.this, Create_Course.class);
+                startActivity(intent);
+            }
+        });
 
         Button saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +94,8 @@ public class Create_Lesson extends AppCompatActivity {
             public void onClick(View view) {
                 if (!save && !chooseImageList.isEmpty() && !chooseVideoList.isEmpty()) {
                     createCourse(courseTitle, courseDesc, courseLevel, courseLanguage, courseMode);
+                    Intent intent = new Intent(Create_Lesson.this, activity_course_display.class);
+                    startActivity(intent);
                 }
                 else if (save)
                     Toast.makeText(Create_Lesson.this, "Saved!", Toast.LENGTH_SHORT).show();
@@ -159,8 +170,7 @@ public class Create_Lesson extends AppCompatActivity {
                 videoUri = data.getClipData().getItemAt(i).getUri();
                 chooseVideoList.add(videoUri);
                 LayoutInflater layoutInflater = getLayoutInflater(); // Use the appropriate method to get LayoutInflater
-                VideoViewPagerAdapter videoPagerAdapter = new VideoViewPagerAdapter(getSupportFragmentManager(), chooseVideoList, layoutInflater);
-
+                VideoViewPagerAdapter videoPagerAdapter = new VideoViewPagerAdapter(getSupportFragmentManager(), chooseVideoList);
                 viewPagerVideo.setAdapter(videoPagerAdapter);
             }
         }
