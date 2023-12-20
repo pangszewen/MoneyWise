@@ -1,5 +1,7 @@
 package com.example.madassignment.quiz;
 
+import android.net.Uri;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -13,7 +15,10 @@ public class Course {
     private String courseLevel;
     private String courseLanguage;
     private String courseMode;
-    private Integer courseNumOfStudents;
+    private String advisorName;
+//    private Integer courseNumOfStudents;
+
+    private Uri coverImageUri;
 
     public Course(){
     }
@@ -98,11 +103,20 @@ public class Course {
         this.courseMode = courseMode;
     }
 
-    public Integer getCourseNumOfStudents() {
-        return courseNumOfStudents;
+    public Uri getCoverImageUri() {
+        return coverImageUri;
     }
 
-    public void setCourseNumOfStudents(Integer courseNumOfStudents) {
-        this.courseNumOfStudents = getCourseNumOfStudents()+1;
+    public void setCoverImageUri(Uri coverImageUri) {
+        this.coverImageUri = coverImageUri;
     }
+
+    public void setAdvisorName(String advisorName) {
+        this.advisorName = advisorName;
+    }
+
+    public String getAdvisorName() {
+        return advisorName;
+    }
+
 }

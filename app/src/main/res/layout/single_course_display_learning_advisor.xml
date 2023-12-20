@@ -11,7 +11,7 @@
         android:layout_height="140dp"
         android:layout_marginTop="32dp"
         android:background="@color/grey"
-        android:src="@drawable/orange_choice_box"
+        android:src="@drawable/grey_circle_corner_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"

@@ -54,7 +54,13 @@
             android:name=".quiz.activity_course_display"
             android:exported="true"
             android:label="@string/title_activity_course_display"
-            android:theme="@style/Theme.MADAssignment" />
+            android:theme="@style/Theme.MADAssignment">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".quiz.activity_display_course"
             android:exported="false" />
@@ -63,13 +69,7 @@
             android:exported="false" />
         <activity
             android:name=".quiz.Create_Course"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"/>
         <activity
             android:name=".quiz.Create_Quiz"
             android:exported="true" />

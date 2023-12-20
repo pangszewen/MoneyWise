@@ -1,58 +1,88 @@
 package com.example.madassignment.quiz;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madassignment.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class activity_course_display extends AppCompatActivity {
-//    activity_course_display binding;
-    BottomNavigationView bottomNavigationView;
+    private RecyclerView recyclerView;
+    private CoursesAdapter coursesAdapter;
+    FirebaseFirestore db;
+    List<Course> courseList;
+    FloatingActionButton createCourse;
+//    SwipeRefreshLayout RVForumRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_display);
+        db = FirebaseFirestore.getInstance();
+//        RVForumRefresh = findViewById(R.id.RVForumRefresh);
+        recyclerView = findViewById(R.id.course_recycle_view);
+        createCourse = findViewById(R.id.createCourseButton);
+        setUpRVCourse();
 
-//        bottomNavigationView = findViewById(R.id.bottomCourseNavigationView);
-//        bottomNavigationView.setBackground(null);
-//        MenuItem menuItemDisable = bottomNavigationView.getMenu().findItem(R.id.iconExpenses);
-//        menuItemDisable.setEnabled(false);
-//        Drawable icon = VectorDrawableCompat.create(getResources(), R.drawable.outline_expenses_white, getTheme());
-//        icon.setTintList(AppCompatResources.getColorStateList(this, R.color.grey));
-//        menuItemDisable.setIcon(icon);
-//
-//        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                int itemID = item.getItemId();
-//                if(itemID==R.id.iconHome) {
-//                    startActivity(new Intent(activity_course_display.this, HomeActivity.class));
-//                    return true;
-//                }else if(itemID==R.id.iconForum) {
-//                    startActivity(new Intent(activity_course_display.this, Forum_MainActivity.class));
-//                    return true;
-//                }else if (itemID==R.id.iconCnq) {
-//                    startActivity(new Intent(activity_course_display.this, activity_course_display.class));
-//                    return true;
-//                }else if(itemID==R.id.iconExpenses){
-//                    startActivity(new Intent(activity_course_display.this, MainActivity.class));
-//                    return true;
-//                }
-//                else
-//                    return false;
-//            }
-//        });
-//
-//        FloatingActionButton add = findViewById(R.id.add_button);
-//        add.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(activity_course_display.this, Activity_Add_Choose.class);
-//                startActivity(intent);            }
-//        });
+        createCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity_course_display.this, Create_Course.class);
+                startActivity(intent);
+            }
+        });
+    }
 
+    public void setUpRVCourse(){
+        courseList = new ArrayList<>();
+        CollectionReference collectionReference = db.collection("FORUM_TOPIC");
+        collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<Course> listOfCourse = new ArrayList<>();
+                for(QueryDocumentSnapshot dc : task.getResult()){
+                    Course topic = convertDocumentToListOfCourse(dc);
+                    listOfCourse.add(topic);
+                }
+                coursesAdapter = new CoursesAdapter(activity_course_display.this, listOfCourse);
+                prepareRecyclerView(activity_course_display.this, recyclerView, listOfCourse);
+            }
+        });
+    }
+
+    public void prepareRecyclerView(Context context, RecyclerView RV, List<Course> object){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+        RV.setLayoutManager(linearLayoutManager);
+        preAdapter(context, RV, object);
+    }
+
+    public void preAdapter(Context context, RecyclerView RV, List<Course> object){
+        coursesAdapter = new CoursesAdapter(context, object);
+        RV.setAdapter(coursesAdapter);
+    }
+
+    public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc){
+        Course course = new Course();
+        course.setCourseID(dc.getId());
+        course.setCourseTitle(dc.getString("title"));
+        course.setAdvisorName("Siti Ahminah");
+        return course;
     }
 }

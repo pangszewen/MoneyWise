@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -53,6 +54,7 @@ public class Create_Lesson extends AppCompatActivity {
     ArrayList<Uri> chooseVideoList;
     FirebaseAuth auth;
     FirebaseUser user;
+    String userID;
     FirebaseStorage storage;;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
@@ -64,6 +66,7 @@ public class Create_Lesson extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         auth=FirebaseAuth.getInstance();
         user= auth.getCurrentUser();
+        userID = "UrymMm91GEbdKUsAIQgj15ZMoOy2"; // Need to change
         Intent intent = getIntent();
         chooseImageList = new ArrayList<>();
         chooseVideoList = new ArrayList<>();
@@ -155,7 +158,9 @@ public class Create_Lesson extends AppCompatActivity {
             for (int i = 0; i < itemCount; i++) {
                 videoUri = data.getClipData().getItemAt(i).getUri();
                 chooseVideoList.add(videoUri);
-                VideoViewPagerAdapter videoPagerAdapter = new VideoViewPagerAdapter(getSupportFragmentManager(), chooseVideoList);
+                LayoutInflater layoutInflater = getLayoutInflater(); // Use the appropriate method to get LayoutInflater
+                VideoViewPagerAdapter videoPagerAdapter = new VideoViewPagerAdapter(getSupportFragmentManager(), chooseVideoList, layoutInflater);
+
                 viewPagerVideo.setAdapter(videoPagerAdapter);
             }
         }
@@ -190,6 +195,7 @@ public class Create_Lesson extends AppCompatActivity {
                 courseID = generateCourseID(courseList);
                 String advisorID = "A0000001"; // Need to change
                 Course newCourse = new Course(courseID, advisorID, title, description, level, language, mode);
+                newCourse.setCoverImageUri(imageUri);
                 insertTopicIntoDatabase(newCourse);
                 uploadImages(newCourse.getCourseID());
                 uploadLessons(newCourse.getCourseID());
