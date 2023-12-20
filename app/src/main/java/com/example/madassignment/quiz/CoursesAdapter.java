@@ -1,5 +1,6 @@
 package com.example.madassignment.quiz;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
@@ -13,12 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madassignment.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +48,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CourseViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Log.d("CourseAdapter", "Course List " + courseList);
         Course course = courseList.get(position);
         String courseTitle = course.getCourseTitle();
@@ -74,19 +78,46 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
         holder.imageViewCourseCover.setImageResource(R.drawable.outline_image_grey);
         storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + course.getCourseID()+"/");
-
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
             @Override
-            public void onSuccess(Uri uri) {
-                String imageUri = uri.toString();
-                Picasso.get().load(imageUri).into(holder.imageViewCourseCover);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("Adapter", "Failed to load image: " + e.getMessage());
+            public void onComplete(@NonNull Task<ListResult> task) {
+                Log.d("TAG", "complete");
+                if (task.isSuccessful()) {
+                    Log.d("TAG", "success");
+                    List<StorageReference> items = task.getResult().getItems();
+                    Log.d("TAG", items.toString());
+                    if (!items.isEmpty()) {
+                        // Get the first item (image) in the folder
+                        items.get(0).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String firstImageUri = uri.toString();
+                                if (position == holder.getAdapterPosition()) {
+                                    Picasso.get().load(firstImageUri).into(holder.imageViewCourseCover);
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Handle failure if needed
+                            }
+                        });
+                    }
+                }
             }
         });
+//        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//            @Override
+//            public void onSuccess(Uri uri) {
+//                String imageUri = uri.toString();
+//                Picasso.get().load(imageUri).into(holder.imageViewCourseCover);
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.e("Adapter", "Failed to load image: " + e.getMessage());
+//            }
+//        });
         holder.textViewCourseTitle.setText(courseTitle);
         holder.textViewAuthorName.setText("Poh Sharon");
     }

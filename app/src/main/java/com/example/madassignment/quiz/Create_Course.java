@@ -7,6 +7,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +24,7 @@ public class Create_Course extends AppCompatActivity {
         AutoCompleteTextView levelSpinner = findViewById(R.id.levelInput);
         AutoCompleteTextView languageSpinner = findViewById(R.id.languageInput);
         Button nextButton = findViewById(R.id.nextButton);
+        ImageButton cancelButton = findViewById(R.id.cancelButton);
 
         ArrayAdapter<CharSequence> adapterLevel = ArrayAdapter.createFromResource(getApplicationContext(), R.array.level_array, android.R.layout.simple_spinner_item);
         ArrayAdapter<CharSequence> adapterLanguage = ArrayAdapter.createFromResource(getApplicationContext(), R.array.language_array, android.R.layout.simple_spinner_item);
@@ -57,12 +60,23 @@ public class Create_Course extends AppCompatActivity {
                 courseLevel = levelSpinner.getText().toString(); // Updated here
                 courseLanguage = languageSpinner.getText().toString(); // Updated here
 
-                Intent intent = new Intent(Create_Course.this, Create_Lesson.class);
-                intent.putExtra("title", courseTitle);
-                intent.putExtra("desc", courseDesc);
-                intent.putExtra("language", courseLanguage);
-                intent.putExtra("level", courseLevel);
-                intent.putExtra("mode", "Online");
+                if (!courseTitle.isEmpty() && !courseDesc.isEmpty() && !courseLevel.equals("Please select") && !courseLanguage.equals("Please select")) {
+                    Intent intent = new Intent(Create_Course.this, Create_Lesson.class);
+                    intent.putExtra("title", courseTitle);
+                    intent.putExtra("desc", courseDesc);
+                    intent.putExtra("language", courseLanguage);
+                    intent.putExtra("level", courseLevel);
+                    intent.putExtra("mode", "Online");
+                    startActivity(intent);
+                }
+                else
+                    Toast.makeText(Create_Course.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Create_Course.this, activity_course_display.class);
                 startActivity(intent);
             }
         });

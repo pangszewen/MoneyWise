@@ -65,7 +65,7 @@
         android:fontFamily="@font/pt_sans_bold"
         android:text="Course Title"
         android:textColor="@color/black"
-        android:textSize="16dp"
+        android:textSize="18dp"
         android:textStyle="bold"
         android:paddingRight="10dp"
         android:layout_marginTop="15dp"
