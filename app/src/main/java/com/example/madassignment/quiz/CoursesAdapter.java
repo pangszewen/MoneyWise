@@ -22,17 +22,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseViewHolder> {
-    List<Course> courseList = new ArrayList<>();
+    List<Course> courseList;
     FirebaseFirestore db;
     FirebaseStorage storage;
     Context context;
 
-    public CoursesAdapter(Context context, List<Course> courses) {
-        this.courseList = courses;
+    public CoursesAdapter(Context context, List<Course> courseList) {
+        this.courseList = courseList;
         this.context = context;
     }
 
@@ -46,33 +45,36 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
+        Log.d("CourseAdapter", "Course List " + courseList);
         Course course = courseList.get(position);
         String courseTitle = course.getCourseTitle();
-        System.out.println("title "+ courseTitle);
+        Log.d("CourseAdapter", "Course Title: " + courseTitle);
         String advisorID = course.getAdvisorID();
         System.out.println(advisorID);
+
         db = FirebaseFirestore.getInstance();
-        if (advisorID != null) {
-            DocumentReference ref = db.collection("USER_DETAILS").document(advisorID);
+//        if (advisorID != null) {
+            DocumentReference ref = db.collection("USER_DETAILS").document("UrymMm91GEbdKUsAIQgj15ZMoOy2"); // Need change
             ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.exists()) {
+//                    if (documentSnapshot.exists()) {
                         holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.e("Adapter", "Failed to retrieve advisor name: " + e.getMessage());
-                }
-            });
-        } else {
-            Log.e("Adapter", "Advisor ID is null");
-        }
+//                    }
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Log.e("Adapter", "Failed to retrieve advisor name: " + e.getMessage());
+//                }
+            }
+//        } else {
+//            Log.e("Adapter", "Advisor ID is null");
+        });
         holder.imageViewCourseCover.setImageResource(R.drawable.outline_image_grey);
         storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + course.getCourseID());
+        StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + course.getCourseID()+"/");
+
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

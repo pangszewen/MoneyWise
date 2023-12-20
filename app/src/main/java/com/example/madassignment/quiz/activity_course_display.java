@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -52,8 +51,8 @@ public class activity_course_display extends AppCompatActivity {
 
     public void setUpRVCourse(){
         courseList = new ArrayList<>();
-        CollectionReference collectionReference = db.collection("FORUM_TOPIC");
-        collectionReference.orderBy("datePosted", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        CollectionReference collectionReference = db.collection("COURSE");
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 List<Course> listOfCourse = new ArrayList<>();
@@ -81,8 +80,8 @@ public class activity_course_display extends AppCompatActivity {
     public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc){
         Course course = new Course();
         course.setCourseID(dc.getId());
-        course.setCourseTitle(dc.getString("title"));
-        course.setAdvisorName("Siti Ahminah");
+        course.setCourseTitle(dc.get("title").toString());
+//        course.setAdvisorName("Siti Ahminah");
         return course;
     }
 }
