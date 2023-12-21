@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,13 +31,13 @@ import java.util.Random;
 public class Create_Quiz extends AppCompatActivity {
     String quizID, quesID;
     String quizTitle, advisorID;
-    
     String quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3;
     Boolean save = false;
     FirebaseAuth auth;
     FirebaseUser user;
     FirebaseStorage storage;;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Integer quesNum = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +57,15 @@ public class Create_Quiz extends AppCompatActivity {
         TextInputEditText option3 = findViewById(R.id.option3Input);
         FloatingActionButton addQues = findViewById(R.id.addQuesButton);
         Button saveButton = findViewById(R.id.saveButton);
-        
+        TextView numOfQues = findViewById(R.id.quesNum);
+
+        addQues.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quesNum++;
+                numOfQues.setText(quesNum+" Question(s)");
+            }
+        });
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +78,6 @@ public class Create_Quiz extends AppCompatActivity {
                     quesOption3 = option3.getText().toString();
 
                     createQuiz(quizTitle);
-//                    createQues(quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
                 }
             }
         });
