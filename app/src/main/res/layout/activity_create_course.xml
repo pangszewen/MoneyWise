@@ -51,12 +51,13 @@
         android:hint="Title"
         app:expandedHintEnabled="false"
         app:counterEnabled="true"
-        app:counterMaxLength="30"
+        app:counterMaxLength="50"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintTop_toBottomOf="@id/TBAddCourse">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/titleInput"
+            android:hint="eg. Introduction to Finance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -76,7 +77,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/descInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="Enter Course Description"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
