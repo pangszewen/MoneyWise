@@ -67,26 +67,55 @@ public class Create_Quiz extends AppCompatActivity {
                     quesOption1 = option1.getText().toString();
                     quesOption2 = option2.getText().toString();
                     quesOption3 = option3.getText().toString();
-                    createQuiz(String quizTitle, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
+
+                    createQuiz(quizTitle);
+//                    createQues(quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
                 }
             }
         });
     }
-
-    private void createQuiz(String quizTitle, String quesText, String quesCorrectAns, String quesOption1, String quesOption2, String quesOption3) {
+    private void createQuiz(String quizTitle) {
         Log.d("TAG", "CreateQuiz");
         CollectionReference collectionReference = db.collection("QUIZ");
         collectionReference.orderBy("dateCreated", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                ArrayList<Quiz> quizList = new ArrayList<>();
-                for (QueryDocumentSnapshot dc : task.getResult()) {
-                    Quiz quiz = convertDocumentToQuiz(dc);
-                    quizList.add(quiz);
+                if (task.isSuccessful()) {
+                    ArrayList<Quiz> quizList = new ArrayList<>();
+                    for (QueryDocumentSnapshot dc : task.getResult()) {
+                        Quiz quiz = convertDocumentToQuiz(dc);
+                        quizList.add(quiz);
+                    }
+                    quizID = generateQuizID(quizList);
+                    Quiz newQuiz = new Quiz(quizID, quizTitle, advisorID);
+                    insertQuizIntoDatabase(newQuiz);
+                    createQues(quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
+                } else {
+                    Log.d("TAG", "Failed to fetch quizzes");
+                    Toast.makeText(Create_Quiz.this, "Failed to fetch quizzes", Toast.LENGTH_SHORT).show();
                 }
-                quizID = generateQuizID(quizList);
-                Quiz newQuiz = new Quiz(quizID, quizTitle, advisorID);
-                insertQuizIntoDatabase(newQuiz);
+            }
+        });
+    }
+
+    private void createQues(String quesText, String quesCorrectAns, String quesOption1, String quesOption2, String quesOption3){
+        Log.d("TAG", "CreateQues");
+        if (quizID == null || quizID.isEmpty()) {
+            Log.d("TAG", "quizID is null or empty");
+            return;
+        }
+        CollectionReference collectionReference = db.collection("QUIZ").document(quizID).collection("QUESTION");
+        collectionReference.orderBy("dateCreated", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ArrayList<Question> quesList = new ArrayList<>();
+                for (QueryDocumentSnapshot dc : task.getResult()) {
+                    Question ques = convertDocumentToQues(dc);
+                    quesList.add(ques);
+                }
+                quesID = generateQuesID(quesList);
+                Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
+                insertQuesIntoDatabase(newQues);
             }
         });
     }
@@ -102,9 +131,30 @@ public class Create_Quiz extends AppCompatActivity {
                     save = true;
                     Log.d("TAG", "uploaded");
                     Toast.makeText(Create_Quiz.this, "Quiz Created!", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Log.d("TAG", "Failed");
                     Toast.makeText(Create_Quiz.this, "Failed to Create Quiz", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private void insertQuesIntoDatabase(Question ques) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("quesText", ques.getQuestionText());
+        map.put("correctAns", ques.getCorrectAns());
+        map.put("option1", ques.getOption1());
+        map.put("option2", ques.getOption2());
+        map.put("option3", ques.getOption3());
+        db.collection("QUIZ").document(quizID).collection("QUESTION").document(ques.getQuesID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    save = true;
+                    Log.d("TAG", "uploaded");
+                    Toast.makeText(Create_Quiz.this, "Question Added", Toast.LENGTH_SHORT).show();
+                }else {
+                    Log.d("TAG", "Failed");
+                    Toast.makeText(Create_Quiz.this, "Failed to add question", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -116,6 +166,17 @@ public class Create_Quiz extends AppCompatActivity {
         quiz.setAdvisorID(dc.get("advisorID").toString());
         quiz.setQuizTitle(dc.get("title").toString());
         return quiz;
+    }
+
+    private Question convertDocumentToQues(QueryDocumentSnapshot dc) {
+        Question ques = new Question();
+        ques.setQuesID(dc.getId());
+        ques.setQuestionText(dc.get("quesText").toString());
+        ques.setCorrectAns(dc.get("correctAns").toString());
+        ques.setOption1(dc.get("option1").toString());
+        ques.setOption2(dc.get("option2").toString());
+        ques.setOption3(dc.get("option3").toString());
+        return ques;
     }
 
     private String generateQuizID(ArrayList<Quiz> quiz) {
@@ -131,28 +192,26 @@ public class Create_Quiz extends AppCompatActivity {
         return newID;
     }
 
-//    private String generateQuesID(ArrayList<Question> ques) {
-//        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-//        int length = 10;
-//        Random rand = new Random();
-//        StringBuilder newID = new StringBuilder();
-//        while (true) {
-//            for (int i = 0; i < length; i++) {
-//                int index = rand.nextInt(characters.length());
-//                newID.append(characters.charAt(index));
-//            }
-//
-//            String generatedID = newID.toString();
-//
-//            if (checkDuplicatedTopicID(generatedID, ques)) {
-//                break;
-//            } else {
-//                newID.setLength(0);
-//            }
-//        }
-//        Log.d("TAG", "This is new quesID " + newID.toString());
-//        return newID.toString();
-//    }
+    private String generateQuesID(ArrayList<Question> ques) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        int length = 10;
+        Random rand = new Random();
+        StringBuilder newID = new StringBuilder();
+        while (true) {
+            for (int i = 0; i < length; i++) {
+                int index = rand.nextInt(characters.length());
+                newID.append(characters.charAt(index));
+            }
+            String generatedID = newID.toString();
+            if (checkDuplicatedQuesID(generatedID, ques)) {
+                break;
+            } else {
+                newID.setLength(0);
+            }
+        }
+        Log.d("TAG", "This is new quesID " + newID.toString());
+        return newID.toString();
+    }
 
     private boolean checkDuplicatedQuizID(String newID, ArrayList<Quiz> quiz){
         for(Quiz topic: quiz){
@@ -162,6 +221,13 @@ public class Create_Quiz extends AppCompatActivity {
         Log.d("TAG", "This is checked topic ID " + newID);
         return true;
     }
+
+    private boolean checkDuplicatedQuesID(String newID, ArrayList<Question> ques){
+        for(Question topic: ques){
+            if(newID.equals(topic.getQuesID()))
+                return false;
+        }
+        Log.d("TAG", "This is checked topic ID " + newID);
+        return true;
+    }
 }
-// quesID = generateQuesID();
-//        Question ques = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);

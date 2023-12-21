@@ -19,6 +19,13 @@ public class Question {
         this.option3 = option3;
     }
 
+    public String getQuesID() {
+        return quesID;
+    }
+
+    public void setQuesID(String quesID) {
+        this.quesID = quesID;
+    }
     public String getQuestionText() {
         return questionText;
     }
