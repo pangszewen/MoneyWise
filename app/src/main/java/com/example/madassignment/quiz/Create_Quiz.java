@@ -38,6 +38,7 @@ public class Create_Quiz extends AppCompatActivity {
     FirebaseStorage storage;;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Integer quesNum = 1;
+    ArrayList<Question> listOfQues;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +60,27 @@ public class Create_Quiz extends AppCompatActivity {
         Button saveButton = findViewById(R.id.saveButton);
         TextView numOfQues = findViewById(R.id.quesNum);
 
+        listOfQues = new ArrayList<>();
+
         addQues.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                quesText = QuesquesText.getText().toString();
+                quesCorrectAns = correctAns.getText().toString();
+                quesOption1 = option1.getText().toString();
+                quesOption2 = option2.getText().toString();
+                quesOption3 = option3.getText().toString();
+
+                quesID = generateQuesID(listOfQues);
+                Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
+                listOfQues.add(newQues);
+
+                QuesquesText.getText().clear();
+                correctAns.getText().clear();
+                option1.getText().clear();
+                option2.getText().clear();
+                option3.getText().clear();
+
                 quesNum++;
                 numOfQues.setText(quesNum+" Question(s)");
             }
@@ -69,14 +88,18 @@ public class Create_Quiz extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!save) {
-                    quizTitle = title.getText().toString();
-                    quesText = QuesquesText.getText().toString();
-                    quesCorrectAns = correctAns.getText().toString();
-                    quesOption1 = option1.getText().toString();
-                    quesOption2 = option2.getText().toString();
-                    quesOption3 = option3.getText().toString();
+                quesText = QuesquesText.getText().toString();
+                quesCorrectAns = correctAns.getText().toString();
+                quesOption1 = option1.getText().toString();
+                quesOption2 = option2.getText().toString();
+                quesOption3 = option3.getText().toString();
 
+                quesID = generateQuesID(listOfQues);
+                Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
+                listOfQues.add(newQues);
+
+                if (!save && !listOfQues.isEmpty()) {
+                    quizTitle = title.getText().toString();
                     createQuiz(quizTitle);
                 }
             }
@@ -97,7 +120,9 @@ public class Create_Quiz extends AppCompatActivity {
                     quizID = generateQuizID(quizList);
                     Quiz newQuiz = new Quiz(quizID, quizTitle, advisorID);
                     insertQuizIntoDatabase(newQuiz);
-                    createQues(quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
+                    for (Question question : listOfQues) {
+                        createQues(question.getQuestionText(), question.getCorrectAns(), question.getOption1(), question.getOption2(), question.getOption3());
+                    }
                 } else {
                     Log.d("TAG", "Failed to fetch quizzes");
                     Toast.makeText(Create_Quiz.this, "Failed to fetch quizzes", Toast.LENGTH_SHORT).show();
@@ -113,20 +138,10 @@ public class Create_Quiz extends AppCompatActivity {
             return;
         }
         CollectionReference collectionReference = db.collection("QUIZ").document(quizID).collection("QUESTION");
-        collectionReference.orderBy("dateCreated", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                ArrayList<Question> quesList = new ArrayList<>();
-                for (QueryDocumentSnapshot dc : task.getResult()) {
-                    Question ques = convertDocumentToQues(dc);
-                    quesList.add(ques);
-                }
-                quesID = generateQuesID(quesList);
-                Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
-                insertQuesIntoDatabase(newQues);
+            quesID = generateQuesID(listOfQues);
+            Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
+            insertQuesIntoDatabase(collectionReference, newQues);
             }
-        });
-    }
 
     private void insertQuizIntoDatabase(Quiz quiz) {
         Map<String, Object> map = new HashMap<>();
@@ -146,26 +161,26 @@ public class Create_Quiz extends AppCompatActivity {
             }
         });
     }
-    private void insertQuesIntoDatabase(Question ques) {
+    private void insertQuesIntoDatabase(CollectionReference collectionReference, Question ques) {
         Map<String, Object> map = new HashMap<>();
         map.put("quesText", ques.getQuestionText());
         map.put("correctAns", ques.getCorrectAns());
         map.put("option1", ques.getOption1());
         map.put("option2", ques.getOption2());
         map.put("option3", ques.getOption3());
-        db.collection("QUIZ").document(quizID).collection("QUESTION").document(ques.getQuesID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
-                    save = true;
-                    Log.d("TAG", "uploaded");
-                    Toast.makeText(Create_Quiz.this, "Question Added", Toast.LENGTH_SHORT).show();
-                }else {
-                    Log.d("TAG", "Failed");
-                    Toast.makeText(Create_Quiz.this, "Failed to add question", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        collectionReference.document(ques.getQuesID()).set(map)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("TAG", "Question uploaded");
+                            Toast.makeText(Create_Quiz.this, "Question Added", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.d("TAG", "Failed");
+                            Toast.makeText(Create_Quiz.this, "Failed to add question", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private Quiz convertDocumentToQuiz(QueryDocumentSnapshot dc) {
