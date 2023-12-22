@@ -1,16 +1,26 @@
 package com.example.madassignment.quiz;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -22,6 +32,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,12 +45,17 @@ public class Create_Quiz extends AppCompatActivity {
     String quizTitle, advisorID;
     String quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3;
     Boolean save = false;
+    Uri imageUri;
+    ArrayList<Uri> chooseImageList;
     FirebaseAuth auth;
     FirebaseUser user;
     FirebaseStorage storage;;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Integer quesNum = 1;
     ArrayList<Question> listOfQues;
+    private static final int REQUEST_CODE = 2;
+    private Uri selectedImageUri;
+    private Map<String, Object> map = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +75,11 @@ public class Create_Quiz extends AppCompatActivity {
         TextInputEditText option3 = findViewById(R.id.option3Input);
         FloatingActionButton addQues = findViewById(R.id.addQuesButton);
         Button saveButton = findViewById(R.id.saveButton);
+        ImageButton addQuizImage = findViewById(R.id.addQuizImage);
         TextView numOfQues = findViewById(R.id.quesNum);
 
         listOfQues = new ArrayList<>();
+        chooseImageList = new ArrayList<>();
 
         addQues.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +123,51 @@ public class Create_Quiz extends AppCompatActivity {
                 }
             }
         });
+        
+        addQuizImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkPermission();
+                pickImageFromGallery();
+            }
+        });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            selectedImageUri = data.getData();
+        }
+        if (data.getClipData() != null) {
+            int itemCount = data.getClipData().getItemCount();
+            for (int i = 0; i < itemCount; i++) {
+                imageUri = data.getClipData().getItemAt(i).getUri();
+                chooseImageList.add(imageUri);
+            }
+        }
+    }
+
+    private void pickImageFromGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    private void checkPermission(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            int check = ContextCompat.checkSelfPermission(Create_Quiz.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if(check!= PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(Create_Quiz.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
+            }else{
+                pickImageFromGallery();
+            }
+        }else{
+            pickImageFromGallery();
+        }
+    }
+    
     private void createQuiz(String quizTitle) {
         Log.d("TAG", "CreateQuiz");
         CollectionReference collectionReference = db.collection("QUIZ");
@@ -120,6 +183,7 @@ public class Create_Quiz extends AppCompatActivity {
                     quizID = generateQuizID(quizList);
                     Quiz newQuiz = new Quiz(quizID, quizTitle, advisorID);
                     insertQuizIntoDatabase(newQuiz);
+                    uploadImages(newQuiz.getQuizID());
                     for (Question question : listOfQues) {
                         createQues(question.getQuestionText(), question.getCorrectAns(), question.getOption1(), question.getOption2(), question.getOption3());
                     }
@@ -129,6 +193,20 @@ public class Create_Quiz extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void uploadImages(String quizID) {
+        for(int i =0; i<chooseImageList.size(); i++){
+            Uri image = chooseImageList.get(i);
+            if(image!=null){
+                StorageReference reference = storage.getReference().child("QUIZ_COVER_IMAGE").child(quizID);
+                StorageReference imageName = reference.child("Cover Image");
+                imageName.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
+                });
+            }
+        }
     }
 
     private void createQues(String quesText, String quesCorrectAns, String quesOption1, String quesOption2, String quesOption3){
@@ -191,16 +269,16 @@ public class Create_Quiz extends AppCompatActivity {
         return quiz;
     }
 
-    private Question convertDocumentToQues(QueryDocumentSnapshot dc) {
-        Question ques = new Question();
-        ques.setQuesID(dc.getId());
-        ques.setQuestionText(dc.get("quesText").toString());
-        ques.setCorrectAns(dc.get("correctAns").toString());
-        ques.setOption1(dc.get("option1").toString());
-        ques.setOption2(dc.get("option2").toString());
-        ques.setOption3(dc.get("option3").toString());
-        return ques;
-    }
+//    private Question convertDocumentToQues(QueryDocumentSnapshot dc) {
+//        Question ques = new Question();
+//        ques.setQuesID(dc.getId());
+//        ques.setQuestionText(dc.get("quesText").toString());
+//        ques.setCorrectAns(dc.get("correctAns").toString());
+//        ques.setOption1(dc.get("option1").toString());
+//        ques.setOption2(dc.get("option2").toString());
+//        ques.setOption3(dc.get("option3").toString());
+//        return ques;
+//    }
 
     private String generateQuizID(ArrayList<Quiz> quiz) {
         String newID;
