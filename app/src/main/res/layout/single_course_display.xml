@@ -9,7 +9,7 @@
     android:background="@drawable/grey_circle_corner_box">
 
     <ImageView
-        android:id="@+id/image_course_cover"
+        android:id="@+id/image_quiz_cover"
         android:layout_width="130dp"
         android:layout_height="85dp"
         android:layout_marginStart="15dp"
@@ -23,10 +23,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/image_course_cover"
+        android:layout_alignBottom="@id/image_quiz_cover"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_toRightOf="@+id/image_course_cover">
+        android:layout_toRightOf="@+id/image_quiz_cover">
 
         <ImageView
             android:id="@+id/image_author_icon"
@@ -69,6 +69,6 @@
         android:textStyle="bold"
         android:paddingRight="10dp"
         android:layout_marginTop="15dp"
-        android:layout_toRightOf="@+id/image_course_cover"/>
+        android:layout_toRightOf="@+id/image_quiz_cover"/>
 
 </RelativeLayout>

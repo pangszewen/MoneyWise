@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,45 +29,45 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseViewHolder> {
-    List<Course> courseList;
+public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizViewHolder>{
+    List<Quiz> quizList;
     FirebaseFirestore db;
     FirebaseStorage storage;
     Context context;
 
-    public CoursesAdapter(Context context, List<Course> courseList) {
-        this.courseList = courseList;
+    public QuizzesAdapter(Context context, List<Quiz> quizList) {
+        this.quizList = quizList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public QuizzesAdapter.QuizViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.single_course_display, parent, false);
-        return new CourseViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_quiz_display, parent, false);
+        return new QuizzesAdapter.QuizViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CourseViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Log.d("CourseAdapter", "Course List " + courseList);
-        Course course = courseList.get(position);
-        String courseTitle = course.getCourseTitle();
-        Log.d("CourseAdapter", "Course Title: " + courseTitle);
-        String advisorID = course.getAdvisorID();
+    public void onBindViewHolder(@NonNull QuizzesAdapter.QuizViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        Log.d("QuizAdapter", "Quiz List " + quizList);
+        Quiz quiz = quizList.get(position);
+        String quizTitle = quiz.getQuizTitle();
+        Log.d("QuizAdapter", "Quiz Title: " + quizTitle);
+        String advisorID = quiz.getAdvisorID();
         System.out.println(advisorID);
 
         db = FirebaseFirestore.getInstance();
-            DocumentReference ref = db.collection("USER_DETAILS").document("UrymMm91GEbdKUsAIQgj15ZMoOy2"); // Need change
-            ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
-                }
-            });
-        holder.imageViewCourseCover.setImageResource(R.drawable.outline_image_grey);
+        DocumentReference ref = db.collection("USER_DETAILS").document("UrymMm91GEbdKUsAIQgj15ZMoOy2"); // Need change
+        ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
+            }
+        });
+        holder.imageViewQuizCover.setImageResource(R.drawable.outline_image_grey);
         storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + course.getCourseID()+"/");
+        StorageReference storageReference = storage.getReference("QUIZ_COVER_IMAGE/" + quiz.getQuizID()+"/");
         storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
             @Override
             public void onComplete(@NonNull Task<ListResult> task) {
@@ -82,7 +83,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
                             public void onSuccess(Uri uri) {
                                 String firstImageUri = uri.toString();
                                 if (position == holder.getAdapterPosition()) {
-                                    Picasso.get().load(firstImageUri).into(holder.imageViewCourseCover);
+                                    Picasso.get().load(firstImageUri).into(holder.imageViewQuizCover);
                                 }
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -95,26 +96,32 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
                 }
             }
         });
-        holder.textViewCourseTitle.setText(courseTitle);
+        holder.textViewQuizTitle.setText(quizTitle);
         holder.textViewAuthorName.setText("Poh Sharon");
     }
 
     @Override
     public int getItemCount() {
-        return courseList.size();
+        return quizList.size();
     }
 
-    public class CourseViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageViewCourseCover;
-        TextView textViewCourseTitle;
+    public class QuizViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageViewQuizCover;
+        TextView textViewQuizTitle;
         TextView textViewAuthorName;
+        TextView numOfQues;
+        TextView numofPeopleTook;
+        ImageButton takeQuizButton;
 
-        public CourseViewHolder(@NonNull View itemView) {
+        public QuizViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewCourseCover = itemView.findViewById(R.id.image_quiz_cover);
-            textViewCourseTitle = itemView.findViewById(R.id.text_course_title);
+            imageViewQuizCover = itemView.findViewById(R.id.image_quiz_cover);
+            textViewQuizTitle = itemView.findViewById(R.id.text_quiz_title);
             textViewAuthorName = itemView.findViewById(R.id.text_author_name);
+            numOfQues = itemView.findViewById(R.id.numOfQues);
+            numofPeopleTook = itemView.findViewById(R.id.numofPeopleTook);
+            takeQuizButton = itemView.findViewById(R.id.takeQuizButton);
         }
     }
-}
 
+}
