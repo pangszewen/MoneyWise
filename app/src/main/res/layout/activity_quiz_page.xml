@@ -6,97 +6,99 @@
     android:layout_height="match_parent"
     tools:context=".quiz.Quiz_Page">
 
-    <LinearLayout
-        android:id="@+id/quiztop"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/TBQuizPage"
         android:layout_width="match_parent"
-        android:layout_height="109dp"
-        android:background="@color/blue_grey"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="70dp"
+        android:background="@color/high_class_blue"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
-        <ImageView
-            android:layout_width="54dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/round_arrow_back_black" />
-
-        <TextView
-            android:id="@+id/addQuiz_text"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif-black"
-            android:gravity="center_vertical"
-            android:paddingLeft="25dp"
-            android:text="INTRODUCTION TO FINANCE"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/progress_header"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/grey"
-        app:layout_constraintTop_toBottomOf="@+id/quiztop">
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/cancel_button"
+                android:background="@color/transparent">
+            </ImageButton>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:text="Question "
-            android:textSize="15dp"></TextView>
+            <TextView
+                android:id="@+id/quizTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/donegal_one"
+                android:text="Quiz Title"
+                android:textSize="24dp"
+                android:textColor="@color/white"
+                android:gravity="center_horizontal"
+                android:layout_marginRight="30dp">
+            </TextView>
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
 
-        <ProgressBar
-            android:id="@+id/progressBar_ques"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="293dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="20dp" />
-    </LinearLayout>
-
-    <LinearLayout
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBarQuestion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginBottom="28dp"
-        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        app:trackThickness="10dp"
+        app:trackColor="#AFC9CF"
+        app:indicatorColor="#738EA2"
+        app:trackCornerRadius="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/TBQuizPage"/>
+
+    <TextView
+        android:id="@+id/quesNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Question"
+        android:fontFamily="@font/pt_sans"
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@id/progressBarQuestion"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black">
+    </TextView>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/quesNum"
+        app:layout_constraintStart_toStartOf="parent"
+        android:name="com.example.madassignment.quiz.Fragment_Display_Ques"></androidx.fragment.app.FragmentContainerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
-            android:id="@+id/previousButton"
-            android:layout_width="175dp"
-            android:layout_height="55dp"
-            android:layout_margin="6dp"
-            android:background="@drawable/grey_circle_corner_box"
-            android:paddingStart="16dp"
-            android:text="Previous Question"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/black"
-            android:paddingEnd="12dp"
-            android:textSize="12sp" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="205.5dp"
+            android:layout_height="match_parent"
+            android:background="#789FCC"
+            style="@style/ShapeAppearanceOverlay.Material3.Button"
+            android:text="PREVIOUS"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            ></androidx.appcompat.widget.AppCompatButton>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="205.5dp"
+            android:layout_height="match_parent"
+            android:background="#27437B"
+            style="@style/ShapeAppearanceOverlay.Material3.Button"
+            android:text="NEXT"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            ></androidx.appcompat.widget.AppCompatButton>
 
-        <Button
-            android:id="@+id/nextButton"
-            android:layout_width="175dp"
-            android:layout_height="55dp"
-            android:layout_margin="6dp"
-            android:background="@drawable/grey_circle_corner_box"
-            android:paddingStart="16dp"
-            android:paddingEnd="12dp"
-            android:text="Next Question"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

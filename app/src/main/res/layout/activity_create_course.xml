@@ -8,7 +8,7 @@
     tools:context=".quiz.Create_Course">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/TBAddCourse"
+        android:id="@+id/TBQuizPage"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/high_class_blue"
@@ -53,7 +53,7 @@
         app:counterEnabled="true"
         app:counterMaxLength="50"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:layout_constraintTop_toBottomOf="@id/TBAddCourse">
+        app:layout_constraintTop_toBottomOf="@id/TBQuizPage">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/titleInput"

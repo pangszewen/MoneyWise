@@ -150,7 +150,7 @@
                         android:id="@+id/ETComment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rectangle_rounded_corner_blue_grey"
+                        android:background="@drawable/button_ABCD_square"
                         android:ems="10"
                         android:gravity="top"
                         android:hint="Type your opinion here..."

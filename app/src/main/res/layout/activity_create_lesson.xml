@@ -7,7 +7,7 @@
     tools:context=".quiz.Create_Lesson">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/TBAddCourse"
+        android:id="@+id/TBQuizPage"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/high_class_blue"
@@ -48,7 +48,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/TBAddCourse">
+        app:layout_constraintTop_toBottomOf="@id/TBQuizPage">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -136,8 +136,8 @@
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_width="414dp"
+        android:layout_height="73dp"
         android:backgroundTint="#27437B"
         android:text="SAVE"
         android:textSize="20dp"
