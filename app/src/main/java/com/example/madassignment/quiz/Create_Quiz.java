@@ -181,7 +181,7 @@ public class Create_Quiz extends AppCompatActivity {
                         quizList.add(quiz);
                     }
                     quizID = generateQuizID(quizList);
-                    Quiz newQuiz = new Quiz(quizID, quizTitle, advisorID);
+                    Quiz newQuiz = new Quiz(quizID, quizTitle, advisorID, quesNum);
                     insertQuizIntoDatabase(newQuiz);
                     uploadImages(newQuiz.getQuizID());
                     for (Question question : listOfQues) {
@@ -225,6 +225,7 @@ public class Create_Quiz extends AppCompatActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("advisorID", quiz.getAdvisorID());
         map.put("title", quiz.getQuizTitle());
+        map.put("num_of_ques", quiz.getNumOfQues());
         db.collection("QUIZ").document(quiz.getQuizID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

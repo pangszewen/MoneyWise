@@ -6,12 +6,14 @@ public class Quiz {
     private String advisorID;
     private Question ques;
 
+    private Integer numOfQues;
+
     public Quiz(){}
-    public Quiz(String quizID, String quizTitle,String adivisorID) {
+    public Quiz(String quizID, String quizTitle,String adivisorID, Integer numOfQues) {
         this.quizID = quizID;
         this.quizTitle = quizTitle;
-//        this.ques = ques;
         this.advisorID = adivisorID;
+        this.numOfQues = numOfQues;
     }
 
     public String getQuizID() {
@@ -45,4 +47,6 @@ public class Quiz {
     public void setAdvisorID(String advisorID) {
         this.advisorID = advisorID;
     }
+    public Integer getNumOfQues() {return numOfQues;}
+    public void setNumOfQues(Integer numOfQues) {this.numOfQues = numOfQues;}
 }

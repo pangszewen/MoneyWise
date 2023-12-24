@@ -2,6 +2,7 @@ package com.example.madassignment.quiz;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -97,7 +98,17 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
             }
         });
         holder.textViewQuizTitle.setText(quizTitle);
-        holder.textViewAuthorName.setText("Poh Sharon");
+//        holder.textViewAuthorName.setText("Poh Sharon"); // Need change
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Quiz_Page.class);
+                intent.putExtra("quizID", quiz.getQuizID());
+                intent.putExtra("title", quiz.getQuizID());
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
