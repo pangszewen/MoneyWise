@@ -1,7 +1,9 @@
 package com.example.madassignment.quiz;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,11 +23,12 @@ public class Quiz_Page extends AppCompatActivity {
    ImageButton cancel;
    TextView title;
    TextView quesNum, quesText, option1, option2, option3, option4;
-   String correctAns;
+   String correctAns, option1_text, option2_text, option3_text, option4_text;
    Integer ques = 0;
    LinearLayout A, B, C, D;
    ArrayList<String> questionIds = new ArrayList<>();
    int currentQuestionIndex = -1;
+   ArrayList<String> options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +57,62 @@ public class Quiz_Page extends AppCompatActivity {
         title.setText("Finance Quiz");
         quesNum.setText("Question "+ques);
 
-        A.setOnClickListener(view -> showNextQues(quizID));
-        B.setOnClickListener(view -> showNextQues(quizID));
-        C.setOnClickListener(view -> showNextQues(quizID));
-        D.setOnClickListener(view -> showNextQues(quizID));
+        A.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Option1 ",option1_text);
+                Log.d("Correct Ans", correctAns);
+                if (options.get(0).equals(correctAns))
+                    A.setBackgroundResource(R.drawable.quiz_button_outline_green);
+                else {
+                    A.setBackgroundResource(R.drawable.quiz_button_outline_red);
+                    showAns();
+                }
+                showNextQues(quizID);
+            }
+        });
+        B.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Option2 ",option2_text);
+                Log.d("Correct Ans", correctAns);
+                if (options.get(1).equals(correctAns))
+                    B.setBackgroundResource(R.drawable.quiz_button_outline_green);
+                else {
+                    B.setBackgroundResource(R.drawable.quiz_button_outline_red);
+                    showAns();
+                }
+                showNextQues(quizID);
+            }
+        });
+        C.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Option3 ",option3_text);
+                Log.d("Correct Ans", correctAns);
+                if (options.get(2).equals(correctAns))
+                    C.setBackgroundResource(R.drawable.quiz_button_outline_green);
+                else {
+                    C.setBackgroundResource(R.drawable.quiz_button_outline_red);
+                    showAns();
+                }
+                showNextQues(quizID);
+            }
+        });
+        D.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Option4 ",option4_text);
+                Log.d("Correct Ans", correctAns);
+                if (options.get(3).equals(correctAns))
+                    D.setBackgroundResource(R.drawable.quiz_button_outline_green);
+                else {
+                    D.setBackgroundResource(R.drawable.quiz_button_outline_red);
+                    showAns();
+                }
+                showNextQues(quizID);
+            }
+        });
     }
 
     private void fetchQuestionIds(String quizID) {
@@ -79,33 +134,45 @@ public class Quiz_Page extends AppCompatActivity {
         if (currentQuestionIndex < questionIds.size() - 1) {
             ++currentQuestionIndex;
             String questionId = questionIds.get(currentQuestionIndex);
-            fetchQuestionDetails(quizID, questionId);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fetchQuestionDetails(quizID, questionId);
+                }
+            }, 1000);
         } else {
         }
     }
 
     private void fetchQuestionDetails(String quizID, String questionId) {
+        A.setBackgroundResource(R.drawable.quiz_button_outline);
+        B.setBackgroundResource(R.drawable.quiz_button_outline);
+        C.setBackgroundResource(R.drawable.quiz_button_outline);
+        D.setBackgroundResource(R.drawable.quiz_button_outline);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference quizDocRef = db.collection("QUIZ").document(quizID);
         DocumentReference questionDocRef = quizDocRef.collection("QUESTION").document(questionId);
         questionDocRef.get().addOnSuccessListener(documentSnapshot -> {
             String questionText = documentSnapshot.getString("quesText");
-            String option1_text = documentSnapshot.getString("option1");
-            String option2_text = documentSnapshot.getString("option2");
-            String option3_text = documentSnapshot.getString("option3");
+            option1_text = documentSnapshot.getString("option1");
+            option2_text = documentSnapshot.getString("option2");
+            option3_text = documentSnapshot.getString("option3");
+            option4_text = documentSnapshot.getString("correctAns");
             correctAns = documentSnapshot.getString("correctAns");
 
-            ArrayList<String> options = new ArrayList<>();
+            options = new ArrayList<>();
             options.add(option1_text);
             options.add(option2_text);
             options.add(option3_text);
+            options.add(option4_text);
             Collections.shuffle(options);
 
             quesText.setText(questionText);
             option1.setText(options.get(0));
             option2.setText(options.get(1));
             option3.setText(options.get(2));
-            option4.setText(correctAns);
+            option4.setText(options.get(3));
 
             Log.d("FirebaseData", "Question: " + questionText);
             Log.d("FirebaseData", "Shuffled Options: " + options);
@@ -113,5 +180,12 @@ public class Quiz_Page extends AppCompatActivity {
 
             quesNum.setText("Question " + (++ques));
         });
+    }
+
+    private void showAns(){
+        if (options.get(0).equals(correctAns)) A.setBackgroundResource(R.drawable.quiz_button_outline_green);
+        else if (options.get(1).equals(correctAns)) B.setBackgroundResource(R.drawable.quiz_button_outline_green);
+        else if (options.get(2).equals(correctAns)) C.setBackgroundResource(R.drawable.quiz_button_outline_green);
+        else if (options.get(3).equals(correctAns)) D.setBackgroundResource(R.drawable.quiz_button_outline_green);
     }
 }
