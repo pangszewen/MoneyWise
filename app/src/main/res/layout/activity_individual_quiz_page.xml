@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".quiz.Quiz_Page">
+    tools:context=".quiz.activity_individual_quiz_page">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/TBQuizPage"
@@ -51,6 +51,7 @@
         app:trackColor="#AFC9CF"
         app:indicatorColor="#738EA2"
         app:trackCornerRadius="20dp"
+        android:max="100"
         app:layout_constraintTop_toBottomOf="@id/TBQuizPage"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>

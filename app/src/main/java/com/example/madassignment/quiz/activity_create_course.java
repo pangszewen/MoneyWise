@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.madassignment.R;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class Create_Course extends AppCompatActivity {
+public class activity_create_course extends AppCompatActivity {
     String courseDesc, courseLevel, courseLanguage, courseTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class Create_Course extends AppCompatActivity {
                 courseLanguage = languageSpinner.getText().toString(); // Updated here
 
                 if (!courseTitle.isEmpty() && !courseDesc.isEmpty() && !courseLevel.equals("Please select") && !courseLanguage.equals("Please select")) {
-                    Intent intent = new Intent(Create_Course.this, Create_Lesson.class);
+                    Intent intent = new Intent(activity_create_course.this, activity_create_lesson.class);
                     intent.putExtra("title", courseTitle);
                     intent.putExtra("desc", courseDesc);
                     intent.putExtra("language", courseLanguage);
@@ -70,13 +70,13 @@ public class Create_Course extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else
-                    Toast.makeText(Create_Course.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_course.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Create_Course.this, activity_course_display.class);
+                Intent intent = new Intent(activity_create_course.this, activity_course_display.class);
                 startActivity(intent);
             }
         });

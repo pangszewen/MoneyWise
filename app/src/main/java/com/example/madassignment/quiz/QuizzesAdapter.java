@@ -102,7 +102,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Quiz_Page.class);
+                Intent intent = new Intent(context, activity_individual_quiz_page.class);
                 intent.putExtra("quizID", quiz.getQuizID());
                 intent.putExtra("title", quiz.getQuizID());
                 context.startActivity(intent);

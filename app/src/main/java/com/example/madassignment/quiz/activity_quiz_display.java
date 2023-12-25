@@ -42,7 +42,7 @@ public class activity_quiz_display extends AppCompatActivity {
         createQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity_quiz_display.this, Create_Quiz.class);
+                Intent intent = new Intent(activity_quiz_display.this, activity_create_quiz.class);
                 startActivity(intent);
             }
         });

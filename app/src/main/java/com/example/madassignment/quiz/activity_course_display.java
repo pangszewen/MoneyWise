@@ -43,7 +43,7 @@ public class activity_course_display extends AppCompatActivity {
         createCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity_course_display.this, Create_Course.class);
+                Intent intent = new Intent(activity_course_display.this, activity_create_course.class);
                 startActivity(intent);
             }
         });

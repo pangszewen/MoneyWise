@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,12 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MADAssignment"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".quiz.activity_quiz_show_result"
+            android:exported="false" />
         <activity
             android:name=".quiz.activity_quiz_display"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
-            android:name=".quiz.Create_Lesson"
+            android:name=".quiz.activity_create_lesson"
             android:exported="false" />
         <activity
             android:name=".quiz.activity_course_display"
@@ -31,8 +34,8 @@
             android:label="@string/title_activity_course_display"
             android:theme="@style/Theme.MADAssignment" />
         <activity
-            android:name=".quiz.Quiz_Page"
-            android:exported="true" >
+            android:name=".quiz.activity_individual_quiz_page"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,10 +43,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".quiz.Create_Course"
+            android:name=".quiz.activity_create_course"
             android:exported="true" />
         <activity
-            android:name=".quiz.Create_Quiz"
+            android:name=".quiz.activity_create_quiz"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

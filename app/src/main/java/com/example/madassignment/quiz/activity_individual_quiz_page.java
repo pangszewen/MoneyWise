@@ -1,5 +1,6 @@
 package com.example.madassignment.quiz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madassignment.R;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,24 +21,26 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Quiz_Page extends AppCompatActivity {
+public class activity_individual_quiz_page extends AppCompatActivity {
    ImageButton cancel;
    TextView title;
    TextView quesNum, quesText, option1, option2, option3, option4;
-   String correctAns, option1_text, option2_text, option3_text, option4_text;
-   Integer ques = 0;
+   String quizTitle, quizID, correctAns, option1_text, option2_text, option3_text, option4_text;
+   Integer ques = 0, totalQues;
    LinearLayout A, B, C, D;
    ArrayList<String> questionIds = new ArrayList<>();
    int currentQuestionIndex = -1;
    ArrayList<String> options;
    Integer score = 0;
    Double totalScore;
+   LinearProgressIndicator progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz_page);
+        setContentView(R.layout.activity_individual_quiz_page);
 
+        progressBar = findViewById(R.id.progressBarQuestion);
         cancel = findViewById(R.id.cancelButton);
         title = findViewById(R.id.quizTitle);
         quesNum = findViewById(R.id.quesNum);
@@ -50,11 +54,16 @@ public class Quiz_Page extends AppCompatActivity {
         C = findViewById(R.id.option3);
         D = findViewById(R.id.option4);
 
+//        quizTitle = getIntent().getStringExtra("title");
 //        title.setText(getIntent().getStringExtra("title"));
 //        String quizID = getIntent().getStringExtra("quizID");
-        String quizID = "Q0836187"; //Need change
-        fetchQuestionIds(quizID); //
-        title.setText("Finance Quiz");
+//        Integer totalQues = Integer.parseInt(getIntent().getStringExtra("numOfQuus"));
+        totalQues = 5;
+        quizTitle = "Finance Quiz";
+        quizID = "Q0836187"; //Need change
+
+        fetchQuestionIds(quizID);
+        title.setText(quizTitle);
         quesNum.setText("Question "+ques);
 
         // When first option is chosen
@@ -133,6 +142,11 @@ public class Quiz_Page extends AppCompatActivity {
     // Calculate the total score of quiz
     private void calculateScore() {
         totalScore = ((double) score / ques) * 100;
+        Intent intent = new Intent(activity_individual_quiz_page.this, activity_quiz_show_result.class);
+        intent.putExtra("title", quizTitle);
+        intent.putExtra("score", totalScore);
+        intent.putExtra("quizID", quizID);
+        startActivity(intent);
     }
 
     private void fetchQuestionIds(String quizID) {
@@ -160,7 +174,6 @@ public class Quiz_Page extends AppCompatActivity {
                     fetchQuestionDetails(quizID, questionId);
                 }
             }, 1000);
-        } else {
         }
     }
 
@@ -198,6 +211,7 @@ public class Quiz_Page extends AppCompatActivity {
             Log.d("FirebaseData", "Correct Answer: " + correctAns);
 
             quesNum.setText("Question " + (++ques));
+            progressBar.setProgress((int) (((double) ques / totalQues) * 100));
         });
     }
     // Show the correct ans

@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class Create_Quiz extends AppCompatActivity {
+public class activity_create_quiz extends AppCompatActivity {
     String quizID, quesID;
     String quizTitle, advisorID;
     String quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3;
@@ -157,9 +157,9 @@ public class Create_Quiz extends AppCompatActivity {
 
     private void checkPermission(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            int check = ContextCompat.checkSelfPermission(Create_Quiz.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            int check = ContextCompat.checkSelfPermission(activity_create_quiz.this, Manifest.permission.READ_EXTERNAL_STORAGE);
             if(check!= PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(Create_Quiz.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
+                ActivityCompat.requestPermissions(activity_create_quiz.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
             }else{
                 pickImageFromGallery();
             }
@@ -189,7 +189,7 @@ public class Create_Quiz extends AppCompatActivity {
                     }
                 } else {
                     Log.d("TAG", "Failed to fetch quizzes");
-                    Toast.makeText(Create_Quiz.this, "Failed to fetch quizzes", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_quiz.this, "Failed to fetch quizzes", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -232,10 +232,10 @@ public class Create_Quiz extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     save = true;
                     Log.d("TAG", "uploaded");
-                    Toast.makeText(Create_Quiz.this, "Quiz Created!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_quiz.this, "Quiz Created!", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("TAG", "Failed");
-                    Toast.makeText(Create_Quiz.this, "Failed to Create Quiz", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_quiz.this, "Failed to Create Quiz", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -253,10 +253,10 @@ public class Create_Quiz extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("TAG", "Question uploaded");
-                            Toast.makeText(Create_Quiz.this, "Question Added", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity_create_quiz.this, "Question Added", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d("TAG", "Failed");
-                            Toast.makeText(Create_Quiz.this, "Failed to add question", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity_create_quiz.this, "Failed to add question", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

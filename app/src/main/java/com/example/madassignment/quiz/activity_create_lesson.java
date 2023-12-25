@@ -44,7 +44,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class Create_Lesson extends AppCompatActivity {
+public class activity_create_lesson extends AppCompatActivity {
     Boolean save = false;
     String courseID, courseTitle, courseDesc, courseLevel, courseMode, courseLanguage;
     ViewPager viewPagerImage;
@@ -83,7 +83,7 @@ public class Create_Lesson extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Create_Lesson.this, Create_Course.class);
+                Intent intent = new Intent(activity_create_lesson.this, activity_create_course.class);
                 startActivity(intent);
             }
         });
@@ -94,15 +94,15 @@ public class Create_Lesson extends AppCompatActivity {
             public void onClick(View view) {
                 if (!save && !chooseImageList.isEmpty() && !chooseVideoList.isEmpty()) {
                     createCourse(courseTitle, courseDesc, courseLevel, courseLanguage, courseMode);
-                    Intent intent = new Intent(Create_Lesson.this, activity_course_display.class);
+                    Intent intent = new Intent(activity_create_lesson.this, activity_course_display.class);
                     startActivity(intent);
                 }
                 else if (save)
-                    Toast.makeText(Create_Lesson.this, "Saved!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_lesson.this, "Saved!", Toast.LENGTH_SHORT).show();
                 else if (!save && chooseImageList.isEmpty())
-                    Toast.makeText(Create_Lesson.this, "Please select a cover image!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_lesson.this, "Please select a cover image!", Toast.LENGTH_SHORT).show();
                 else if (!save && chooseVideoList.isEmpty())
-                    Toast.makeText(Create_Lesson.this, "Please select videos to upload!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_lesson.this, "Please select videos to upload!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -260,10 +260,10 @@ public class Create_Lesson extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     save = true;
                     Log.d("TAG", "uploaded");
-                    Toast.makeText(Create_Lesson.this, "Course Created!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_lesson.this, "Course Created!", Toast.LENGTH_SHORT).show();
                 }else {
                     Log.d("TAG", "Failed");
-                    Toast.makeText(Create_Lesson.this, "Failed to Create Course", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity_create_lesson.this, "Failed to Create Course", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -306,9 +306,9 @@ public class Create_Lesson extends AppCompatActivity {
 
     private void checkPermission(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            int check = ContextCompat.checkSelfPermission(Create_Lesson.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            int check = ContextCompat.checkSelfPermission(activity_create_lesson.this, Manifest.permission.READ_EXTERNAL_STORAGE);
             if(check!= PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(Create_Lesson.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
+                ActivityCompat.requestPermissions(activity_create_lesson.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
             }else{
                 pickImageFromGallery();
             }
