@@ -19,6 +19,7 @@
            android:id="@+id/bottomHomeNavigationView"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
+           app:itemTextColor="@color/navbar_color_selector"
            app:menu="@menu/nav_menu"
            app:itemPaddingBottom="25dp"
            android:background="@color/transparent"

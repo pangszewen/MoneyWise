@@ -3,6 +3,7 @@ package com.example.madassignment.login_register;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,8 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,8 @@ import com.example.madassignment.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,19 +34,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Calendar;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    TextView qualification;
-    EditText editTextname,editTextage,editTextqualification,editTextemail,editTextpassword,editTextcpassword;
-    AutoCompleteTextView spinner_gender;
+    TextInputEditText editTextname,editTextemail,editTextpassword,editTextcpassword,editTextDOB;
+    TextInputLayout editLayoutDOB;
+    AutoCompleteTextView spinner_gender,spinner_role;
+    TextView signIn;
     Button btn_reg;
     ProgressBar progressBar;
     FirebaseAuth mAuth;
     FirebaseFirestore fstore;
-    ImageButton btn_back;
     String uid;
-    String role;
 
     @Override
     public void onStart() {
@@ -61,31 +64,16 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         mAuth=FirebaseAuth.getInstance();
-        qualification=findViewById(R.id.qualification_text);
         editTextname=findViewById(R.id.editTextName);
-        editTextage=findViewById(R.id.editTextAge);
-        editTextqualification=findViewById(R.id.editTextQualification);
         editTextemail=findViewById(R.id.editTextEmail);
         editTextpassword=findViewById(R.id.editTextPassword);
         editTextcpassword=findViewById(R.id.editTextCPassword);
+        editLayoutDOB=findViewById(R.id.EditLayoutDOB);
+        editTextDOB=findViewById(R.id.editTextDOB);
+        signIn =findViewById(R.id.signIn);
         btn_reg=findViewById(R.id.btn_signup);
-        btn_back=findViewById(R.id.btn_back);
         progressBar=findViewById(R.id.progressBar);
         fstore=FirebaseFirestore.getInstance();
-        role=getIntent().getStringExtra("role");
-
-        if (role.equals("Learner")){
-            qualification.setVisibility(View.GONE);
-            editTextqualification.setVisibility(View.GONE);
-        }
-
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Select_Role_Activity.class));
-                finish();
-            }
-        });
 
         spinner_gender=findViewById(R.id.gender_spinner);
         ArrayAdapter<CharSequence> g_adapter=ArrayAdapter.createFromResource(
@@ -101,49 +89,85 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        spinner_role=findViewById(R.id.role_spinner);
+        ArrayAdapter<CharSequence> r_adapter=ArrayAdapter.createFromResource(
+                this,
+                R.array.roles,
+                R.layout.dropdown_item
+        );
+        spinner_role.setAdapter(r_adapter);
+        spinner_role.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(RegisterActivity.this,spinner_role.getText().toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        editLayoutDOB.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar=Calendar.getInstance();
+                int y = calendar.get(Calendar.YEAR);
+                int m = calendar.get(Calendar.MONTH);
+                int d = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog=new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        editTextDOB.setText(year+"/"+(month+1)+"/"+dayOfMonth);
+                    }
+                }, y, m, d);
+
+                dialog.show();
+            }
+        });
+
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                finish();
+            }
+        });
+
         btn_reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                String name,gender,age,qualification,email,password,cpassword;
+                String name,gender,DOB,email,role,password,cpassword;
                 name=editTextname.getText().toString();
                 gender=spinner_gender.getText().toString();
-                age=editTextage.getText().toString();
-                qualification=editTextqualification.getText().toString();
+                DOB=editTextDOB.getText().toString();
                 email=editTextemail.getText().toString();
+                role=spinner_role.getText().toString();
                 password=editTextpassword.getText().toString();
                 cpassword=editTextcpassword.getText().toString();
 
                 if (TextUtils.isEmpty(name)){
-                    Toast.makeText(RegisterActivity.this,"Enter name",Toast.LENGTH_SHORT).show();
+                    editTextname.setError("Name field can't be empty");
                     return;
                 }
                 if (TextUtils.isEmpty(gender)){
-                    Toast.makeText(RegisterActivity.this,"Select gender",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(age)){
-                    Toast.makeText(RegisterActivity.this,"Enter age",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(qualification)){
-                    Toast.makeText(RegisterActivity.this,"Enter qualification",Toast.LENGTH_SHORT).show();
+                    editTextname.setError("Gender field can't be empty");
                     return;
                 }
                 if (TextUtils.isEmpty(email)){
-                    Toast.makeText(RegisterActivity.this,"Enter email",Toast.LENGTH_SHORT).show();
+                    editTextname.setError("Email field can't be empty");
+                    return;
+                }
+                if (TextUtils.isEmpty(DOB)){
+                    editTextname.setError("Date of birth field can't be empty");
                     return;
                 }
                 if (TextUtils.isEmpty(password)){
-                    Toast.makeText(RegisterActivity.this,"Enter password",Toast.LENGTH_SHORT).show();
+                    editTextname.setError("Password field can't be empty");
                     return;
                 }
                 if (TextUtils.isEmpty(cpassword)){
-                    Toast.makeText(RegisterActivity.this,"Please confirm your password",Toast.LENGTH_SHORT).show();
+                    editTextname.setError("Please confirm your password");
                     return;
                 }
                 if (!password.equals(cpassword)){
-                    Toast.makeText(RegisterActivity.this,"Password does not match",Toast.LENGTH_SHORT).show();
+                    editTextname.setError("Password does not match");
                     return;
                 }
 
@@ -163,9 +187,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     Map<String,Object> userdetails=new HashMap<>();
                                     userdetails.put("name",name);
                                     userdetails.put("gender",gender);
-                                    userdetails.put("role","Advisor");
-                                    userdetails.put("age",age);
-                                    userdetails.put("qualification",qualification);
+                                    userdetails.put("dob",DOB);
+                                    userdetails.put("role",role);
                                     documentReference.set(userdetails).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {

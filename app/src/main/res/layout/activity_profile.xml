@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="15dp"
-    android:background="@drawable/login_reg_background"
     tools:context=".login_register.ProfileActivity">
 
     <ImageButton
