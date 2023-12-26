@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".scholarship.ApplyScholarship">
+
+    <LinearLayout android:gravity="center_horizontal"
+        android:id="@+id/linearApplyScholarship"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:gravity="center_horizontal"
+            android:id="@+id/toolbarToolbar"
+            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            app:contentInsetStart="0dp"
+            style="@style/rectangle_header_blue_grey">
+            <LinearLayout
+                android:id="@+id/header_title"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="18dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/imageArrowleft"
+                    android:layout_height="30dp"
+                    android:layout_width="30dp"
+                    android:layout_marginStart="15dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_arrowleft"
+                    tools:ignore="ContentDescription"
+                    tools:src="@drawable/img_arrowleft"/>
+                <TextView android:ellipsize="end"
+                    android:id="@+id/txtScholarship"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="110dp"
+                    android:layout_width="wrap_content"
+                    android:singleLine="true"
+                    style="@style/txtDonegalOneregular20_white"
+                    tools:text="Scholarship"/>
+                <ImageView android:id="@+id/imageSave"
+                    android:gravity="end"
+                    android:layout_height="32dp"
+                    android:layout_width="32dp"
+                    android:layout_marginStart="90dp"
+                    android:scaleType="fitXY"
+                    tools:ignore="ContentDescription"
+                    tools:src="@drawable/img_bookmark_unchecked"/>
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="600dp">
+
+
+            <LinearLayout android:gravity="center_horizontal"
+                android:id="@+id/linearSchoDetails"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                style="@style/groupStyle_white_rec">
+
+                <FrameLayout android:gravity="start"
+                    android:id="@+id/frameImage"
+                    android:layout_height="260dp"
+                    android:layout_width="match_parent">
+
+                    <ImageView android:id="@+id/imageScho"
+                        android:layout_gravity="start"
+                        android:layout_height="250dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:scaleType="fitXY"
+                        tools:ignore="ContentDescription"
+                        tools:src="@drawable/img_image186"/>
+                    <View
+                        android:background="@drawable/rectangle_bg_white_radius_tl_tr_20"
+                        android:id="@+id/viewRectangle"
+                        android:layout_gravity="bottom|start"
+                        android:layout_height="23dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"/>
+                </FrameLayout>
+
+                <TextView android:gravity="start"
+                    android:id="@+id/headAbout"
+                    android:layout_height="23dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:lineSpacingExtra="10dp"
+                    style="@style/txtPTSansbold20_black"
+                    tools:text="About"/>
+
+                <TextView android:gravity="start"
+                    android:id="@+id/txtAbout"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:lineSpacingExtra="10dp"
+                    style="@style/txtPTSansregular20"
+                    tools:text="About"/>
+
+                <TextView android:gravity="start"
+                    android:id="@+id/headValueOfScho"
+                    android:layout_height="23dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:lineSpacingExtra="10dp"
+                    style="@style/txtPTSansbold20_black"
+                    tools:text="Value of Scholarship"/>
+
+                <TextView android:gravity="start"
+                    android:id="@+id/txtValue"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:lineSpacingExtra="10dp"
+                    style="@style/txtPTSansregular20"
+                    tools:text="RM25000"/>
+
+                <TextView android:gravity="start"
+                    android:id="@+id/headCriteria"
+                    android:layout_height="23dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:lineSpacingExtra="10dp"
+                    style="@style/txtPTSansbold20_black"
+                    tools:text="Selection Criteria"/>
+
+                <TextView android:gravity="start"
+                    android:id="@+id/txtCriteria"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:lineSpacingExtra="10dp"
+                    style="@style/txtPTSansregular20"
+                    tools:text="RM25000"/>
+
+                <TextView android:gravity="start"
+                    android:id="@+id/headWebsite"
+                    android:layout_height="23dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:lineSpacingExtra="10dp"
+                    style="@style/txtPTSansbold20_black"
+                    tools:text="More info"/>
+
+                <TextView android:gravity="start"
+                    android:id="@+id/txtWebsite"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:lineSpacingExtra="10dp"
+                    style="@style/txtPTSansregular20"
+                    tools:text="the website"/>
+
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:id="@+id/linearApply"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            style="@style/rectangle_header_blue_grey">
+            <TextView android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:id="@+id/txtApply"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="18dp"
+                android:layout_marginEnd="87dp"
+                android:layout_marginStart="88dp"
+                android:layout_marginTop="17dp"
+                android:layout_width="match_parent"
+                android:lineSpacingExtra="6dp"
+                android:singleLine="true"
+                android:textAllCaps="true"
+                style="@style/txtPTSansregular20_1"
+                tools:text="Apply Scholarship"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
