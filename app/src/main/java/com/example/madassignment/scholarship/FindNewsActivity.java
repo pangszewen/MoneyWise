@@ -31,7 +31,7 @@ public class FindNewsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<Article> articleList = new ArrayList<>();
     NewsRecyclerAdapter adapter;
-    LinearProgressIndicator progressIndicator;
+
     SearchView searchView;
 
     @Override
@@ -55,10 +55,12 @@ public class FindNewsActivity extends AppCompatActivity {
             }
         });
 
+        recyclerView = findViewById(R.id.recyclerNewsList);
+
         setUpRecyclerView();
         getNews();
 
-        recyclerView = findViewById(R.id.recyclerNewsList);
+
 
 
         ImageView back = findViewById(R.id.imageArrowleft);
@@ -96,28 +98,21 @@ public class FindNewsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    void changeInProgress(boolean show) {
-        if (show)
-            progressIndicator.setVisibility(View.VISIBLE);
-        else
-            progressIndicator.setVisibility(View.INVISIBLE);
-
-    }
 
 
     void getNews() {
-        changeInProgress(true);
 
         NewsApiClient newsApiClient = new NewsApiClient("d4c7f8fe18694e589bd30e86e04a908e");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
                         .language("en")
+                        .category("business")
                         .build(),
                 new NewsApiClient.ArticlesResponseCallback() {
                     @Override
                     public void onSuccess(ArticleResponse response) {
+
                        runOnUiThread(()->{
-                           changeInProgress(false);
                            articleList = (ArrayList<Article>) response.getArticles();
                            adapter.updateData(articleList);
                            adapter.notifyDataSetChanged();

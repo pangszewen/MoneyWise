@@ -39,6 +39,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         Article article = articleList.get(position);
         holder.titleTextView.setText(article.getTitle());
         holder.sourceTextView.setText(article.getSource().getName());
+        holder.dateTextView.setText(article.getPublishedAt());
         Picasso.get().load(article.getUrlToImage())
                 .error(R.drawable.no_image_icon)
                 .placeholder(R.drawable.no_image_icon)
@@ -57,15 +58,15 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
     class NewsViewHolder extends RecyclerView.ViewHolder{
 
-        TextView titleTextView, sourceTextView;
+        TextView titleTextView, sourceTextView, dateTextView;
         ImageView imageView;
 
         public NewsViewHolder(@NonNull View itemView){
             super(itemView);
             titleTextView = itemView.findViewById(R.id.txtNewsTitle);
-//            sourceTextView = itemView.findViewById(R.id.article_source);
+            sourceTextView = itemView.findViewById(R.id.txtAuthorName);
             imageView = itemView.findViewById(R.id.imageNews);
-
+            dateTextView = itemView.findViewById(R.id.txtDate);
         }
     }
 }

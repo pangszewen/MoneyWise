@@ -11,8 +11,8 @@
         android:id="@+id/linearFindNews"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        style="@style/rectangle_light_grey">
+        android:orientation="vertical">
+<!--        style="@style/rectangle_light_grey">-->
 
         <androidx.appcompat.widget.Toolbar
             android:gravity="center_horizontal"
@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:singleLine="true"
                     style="@style/txtDonegalOneregular20_white"
-                    tools:text="News"/>
+                    android:text="News"/>
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
@@ -74,36 +74,17 @@
         </FrameLayout>
 
 
-        <LinearLayout
-            android:id="@+id/NewsMainRecyclerViewContainer"
-            android:layout_gravity="center"
+        <androidx.recyclerview.widget.RecyclerView
             android:gravity="center"
-            android:layout_width="390dp"
-            android:layout_height="match_parent"
-            style="@style/rectangle_white_radius20">
-
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/RVNewsRefresh"
-                android:layout_marginTop="10dp"
-                android:layout_width="370dp"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:gravity="center"
-                    android:id="@+id/recyclerNewsList"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="306dp"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    itemSpace="25dp"
-                    tools:itemCount="10"
-                    tools:listitem="@layout/news_item"/>
-
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        </LinearLayout>
+            android:id="@+id/recyclerNewsList"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            itemSpace="25dp"
+            tools:itemCount="10"
+            tools:listitem="@layout/news_item"/>
 
 
     </LinearLayout>
