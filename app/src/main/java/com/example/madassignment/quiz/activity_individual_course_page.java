@@ -20,6 +20,7 @@ public class activity_individual_course_page extends AppCompatActivity {
     String courseID;
     TextView title, advisor;
     ImageView courseCoverImage;
+    Boolean atDesc = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,23 @@ public class activity_individual_course_page extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // pass courseID
+
+                if (atDesc){
+                    getSupportFragmentManager().beginTransaction()
+                            .setReorderingAllowed(true)
+                            .replace(R.id.FCVSingleCourse, fragment_course_lesson_single.class, null)
+                            .commit();
+                    atDesc = false;
+                    desc_lessonButton.setText("DESCRIPTION");
+                }
+                else{
+                    getSupportFragmentManager().beginTransaction()
+                            .setReorderingAllowed(true)
+                            .replace(R.id.FCVSingleCourse, fragment_course_desc.class, null)
+                            .commit();
+                    atDesc = true;
+                    desc_lessonButton.setText("LESSON");
+                }
             }
         });
     }
