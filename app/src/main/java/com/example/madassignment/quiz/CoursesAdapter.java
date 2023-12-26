@@ -3,7 +3,6 @@ package com.example.madassignment.quiz;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,12 +48,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Log.d("CourseAdapter", "Course List " + courseList);
         Course course = courseList.get(position);
         String courseTitle = course.getCourseTitle();
-        Log.d("CourseAdapter", "Course Title: " + courseTitle);
         String advisorID = course.getAdvisorID();
-        System.out.println(advisorID);
 
         db = FirebaseFirestore.getInstance();
             DocumentReference ref = db.collection("USER_DETAILS").document("UrymMm91GEbdKUsAIQgj15ZMoOy2"); // Need change
@@ -70,13 +66,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
         storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
             @Override
             public void onComplete(@NonNull Task<ListResult> task) {
-                Log.d("TAG", "complete");
                 if (task.isSuccessful()) {
-                    Log.d("TAG", "success");
                     List<StorageReference> items = task.getResult().getItems();
-                    Log.d("TAG", items.toString());
                     if (!items.isEmpty()) {
-                        // Get the first item (image) in the folder
                         items.get(0).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
