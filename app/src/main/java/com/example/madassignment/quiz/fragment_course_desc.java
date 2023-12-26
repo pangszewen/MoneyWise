@@ -27,8 +27,11 @@ public class fragment_course_desc extends Fragment {
         language = view.findViewById(R.id.TVLanguage);
         mode = view.findViewById(R.id.TVMode);
 
-        // Get courseID from bundle
         courseID = "C0085050";
+
+        Bundle bundle = getArguments();
+        if (bundle != null)
+            courseID = bundle.getString("courseID");
         displayDesc();
 
         return view;

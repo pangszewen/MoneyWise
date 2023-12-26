@@ -34,15 +34,15 @@ public class activity_quiz_show_result extends AppCompatActivity {
         if (score >= 80){
             display_text.setText("Congratulations!");
             score_text.setText("Your Score: "+score+"%");
-            image.setImageResource(R.drawable.trophy_remix_by_monsterbraingames);
+            image.setImageResource(R.drawable.course_quiz_high_trophy);
         } else if (score >= 50) {
             display_text.setText("Good Job!");
             score_text.setText("Your Score: "+score+"%");
-            image.setImageResource(R.drawable.keep_it_up_vector_image);
+            image.setImageResource(R.drawable.course_quiz_med_keepitup);
         } else {
             display_text.setText("Don't Give Up!");
             score_text.setText("Your Score: "+score+"%");
-            image.setImageResource(R.drawable.practice_makes_perfect_image_vector);
+            image.setImageResource(R.drawable.course_quiz_low_target);
         }
 
         retryButton.setOnClickListener(new View.OnClickListener() {

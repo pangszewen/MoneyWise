@@ -1,4 +1,4 @@
-package com.example.madassignment.forum;
+package com.example.madassignment.quiz;
 
 import android.content.Context;
 import android.net.Uri;
@@ -33,7 +33,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View view = layoutInflater.inflate(R.layout.forum_viewpager_image, container, false);
+        View view = layoutInflater.inflate(R.layout.course_viewpager_image, container, false);
         ImageView imageView = view.findViewById(R.id.UploadImage);
         imageView.setImageURI(ImageUris.get(position));
         container.addView(view);

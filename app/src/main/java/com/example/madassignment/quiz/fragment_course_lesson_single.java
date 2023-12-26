@@ -32,7 +32,11 @@ public class fragment_course_lesson_single extends Fragment {
         lessontext = view.findViewById(R.id.TVLesson);
         lessonTime = view.findViewById(R.id.TVCourseTime);
 
-        courseID = "C0085050"; // Need to change (get from bundle)
+//        Bundle bundle = getArguments();
+//        if (bundle != null)
+//            courseID = bundle.getString("courseID");
+
+        courseID = "C0085050";
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference().child("COURSE_LESSONS/" + courseID + "/lesson 1.mp4");
