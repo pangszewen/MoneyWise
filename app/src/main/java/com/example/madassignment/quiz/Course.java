@@ -17,7 +17,7 @@ public class Course {
     private String courseMode;
     private String advisorName;
 //    private Integer courseNumOfStudents;
-
+    private int lessonNum;
     private Uri coverImageUri;
 
     public Course(){
@@ -119,4 +119,7 @@ public class Course {
         return advisorName;
     }
 
+    public int getLessonNum() {return lessonNum;}
+
+    public void setLessonNum(int lessonNum) {this.lessonNum = lessonNum;}
 }

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/frame"
+<RelativeLayout android:id="@+id/frame"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="10dp"
     android:layout_marginHorizontal="20dp"
-    android:background="@drawable/course_rectangle_outline_grey">
+    android:layout_marginBottom="30dp"
+    android:background="@drawable/course_rectangle_outline_grey"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/image_quiz_cover"
+        android:id="@+id/image_course_cover"
         android:layout_width="130dp"
         android:layout_height="85dp"
         android:layout_marginStart="15dp"
@@ -23,10 +24,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/image_quiz_cover"
+        android:layout_alignBottom="@id/image_course_cover"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_toRightOf="@+id/image_quiz_cover">
+        android:layout_toRightOf="@+id/image_course_cover">
 
         <ImageView
             android:id="@+id/image_author_icon"
@@ -48,14 +49,6 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="8dp" />
 
-        <ImageButton
-            android:id="@+id/button_bookmark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_bookmark_border_24"
-            android:background="@color/transparent"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
     </RelativeLayout>
 
     <TextView
@@ -69,6 +62,35 @@
         android:textStyle="bold"
         android:paddingRight="10dp"
         android:layout_marginTop="15dp"
-        android:layout_toRightOf="@+id/image_quiz_cover"/>
+        android:layout_toRightOf="@+id/image_course_cover"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_course_cover"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/lessonProgressBar"
+        android:layout_width="260dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center_vertical"
+        app:trackThickness="10dp"
+        android:max="10"
+        app:trackColor="#D9E8F9"
+        app:indicatorColor="#4F77AA"
+        app:trackCornerRadius="20dp">
+    </com.google.android.material.progressindicator.LinearProgressIndicator>
+
+    <TextView
+        android:id="@+id/TVLessonProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0/0"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp">
+    </TextView>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -81,7 +81,6 @@ public class activity_course_display extends AppCompatActivity {
         Course course = new Course();
         course.setCourseID(dc.getId());
         course.setCourseTitle(dc.get("title").toString());
-//        course.setAdvisorName("Siti Ahminah");
         return course;
     }
 }
