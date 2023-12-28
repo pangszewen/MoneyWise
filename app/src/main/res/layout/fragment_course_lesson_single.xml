@@ -21,7 +21,7 @@
             ></VideoView>
 
         <TextView
-            android:id="@+id/TVLesson"
+            android:id="@+id/TVLessonTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lesson 1"
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0:00"
-            app:layout_constraintTop_toBottomOf="@id/TVLesson"
+            app:layout_constraintTop_toBottomOf="@id/TVLessonTitle"
             app:layout_constraintLeft_toRightOf="@id/VVLesson"
             android:layout_marginTop="10dp"
             android:textColor="#928E8E"

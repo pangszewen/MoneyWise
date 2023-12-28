@@ -116,7 +116,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/LLButton"
-        android:name="com.example.madassignment.quiz.fragment_course_desc">
+        android:name="com.example.madassignment.quiz.fragment_course_lesson_full">
     </androidx.fragment.app.FragmentContainerView>
 
     <LinearLayout

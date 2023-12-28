@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class fragment_course_lesson_single extends Fragment {
     VideoView lessonVid;
-    TextView lessontext, lessonTime;
+    TextView lessonText, lessonTime;
     String courseID;
     boolean isPlaying = false;
     int totalDuration = 0;
@@ -29,7 +29,7 @@ public class fragment_course_lesson_single extends Fragment {
         View view = inflater.inflate(R.layout.fragment_course_lesson_single, container, false);
 
         lessonVid = view.findViewById(R.id.VVLesson);
-        lessontext = view.findViewById(R.id.TVLesson);
+        lessonText = view.findViewById(R.id.TVLessonTitle);
         lessonTime = view.findViewById(R.id.TVCourseTime);
 
 //        Bundle bundle = getArguments();
@@ -67,7 +67,6 @@ public class fragment_course_lesson_single extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return view;
     }
 

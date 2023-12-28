@@ -20,10 +20,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".quiz.activity_complete_course"
+            android:exported="false" />
+        <activity
+            android:name=".quiz.activity_individual_course_enroll"
+            android:exported="false" />
+        <activity
             android:name=".quiz.activity_individual_course_page"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -43,7 +50,7 @@
             android:theme="@style/Theme.MADAssignment" />
         <activity
             android:name=".quiz.activity_individual_quiz_page"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".quiz.activity_create_course"
             android:exported="true" />
