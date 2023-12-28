@@ -5,11 +5,11 @@ public class Scholarship {
 
     String scholarshipID, institution, title, description, studyLevel, criteria, award, deadline, website;
 
-    boolean saved = false;
+    boolean saved;
     public Scholarship() {
     }
 
-    public Scholarship(String scholarshipID, String institution, String title, String description, String studyLevel, String criteria, String award, String deadline, String website) {
+    public Scholarship(String scholarshipID, String institution, String title, String description, String studyLevel, String criteria, String award, String deadline, String website, boolean saved) {
         this.scholarshipID = scholarshipID;
         this.institution = institution;
         this.title = title;
@@ -19,6 +19,7 @@ public class Scholarship {
         this.award = award;
         this.deadline = deadline;
         this.website = website;
+        this.saved = saved;
     }
 
     public String getScholarshipID() {

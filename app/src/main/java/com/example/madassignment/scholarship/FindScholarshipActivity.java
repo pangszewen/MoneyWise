@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.madassignment.R;
 import com.example.madassignment.login_register.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -51,6 +54,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
     SearchView searchView;
     BottomNavigationView bottomNavigationView;
 
+    String userID;
 
 
     @Override
@@ -64,7 +68,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
 
         back = findViewById(R.id.imageArrowleft);
 
-        String userID = user.getUid();
+        userID = user.getUid();
 
         // get Role of user + set visibility of the Add button
         getRole(userID);
@@ -163,6 +167,9 @@ public class FindScholarshipActivity extends AppCompatActivity {
                                 Scholarship scholarship = documentSnapshot.toObject(Scholarship.class);
                                 scholarship.setScholarshipID(scholarshipID);
 
+                                // Check if the scholarship is saved by the user
+                                checkIfScholarshipIsSaved(scholarship);
+
                                 // Add the scholarship to the list
                                 scholarshipArrayList.add(scholarship);
 
@@ -170,6 +177,37 @@ public class FindScholarshipActivity extends AppCompatActivity {
                                 scholarshipAdapter.notifyDataSetChanged();
                             }
                         }
+                    }
+                });
+    }
+
+    private void checkIfScholarshipIsSaved(final Scholarship scholarship) {
+
+        db.collection("USER_DETAILS")
+                .document(userID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            // Retrieve the saved_scholarship array from user_details
+                            List<String> savedScholarships = (List<String>) documentSnapshot.get("saved_scholarship");
+
+                            // Check if the scholarship ID is in the saved_scholarship array
+                            if (savedScholarships != null && savedScholarships.contains(scholarship.getScholarshipID())) {
+                                // Set the saved field in the Scholarship object to true
+                                scholarship.setSaved(true);
+                            } else {
+                                // Set the saved field in the Scholarship object to false
+                                scholarship.setSaved(false);
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Firestore error", e.getMessage());
                     }
                 });
     }
@@ -211,6 +249,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
             addButton.setVisibility(View.GONE);
         }
     }
+
 
 
 }

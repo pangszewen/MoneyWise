@@ -36,7 +36,7 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
         this.scholarshipArrayList = list;
     }
 
-    public void setFilteredList(ArrayList<Scholarship> filteredList){
+    public void setFilteredList(ArrayList<Scholarship> filteredList) {
         this.scholarshipArrayList = filteredList;
         notifyDataSetChanged();
     }
@@ -59,37 +59,27 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ApplyScholarship.class);
-                intent.putExtra("institution",scholarship.getInstitution());
+                intent.putExtra("scholarshipID", scholarship.getScholarshipID());
+                intent.putExtra("institution", scholarship.getInstitution());
                 intent.putExtra("title", scholarship.getTitle());
+                intent.putExtra("description", scholarship.getDescription());
+                intent.putExtra("studyLevel", scholarship.getStudyLevel());
+                intent.putExtra("criteria", scholarship.getCriteria());
                 intent.putExtra("award", scholarship.getAward());
                 intent.putExtra("deadline", scholarship.getDeadline());
-                intent.putExtra("studyLevel", scholarship.getStudyLevel());
-                intent.putExtra("description", scholarship.getDescription());
-                intent.putExtra("criteria", scholarship.getCriteria());
                 intent.putExtra("website", scholarship.getWebsite());
+                intent.putExtra("saved", scholarship.isSaved());
+
+                if (v.getContext() instanceof FindScholarshipActivity) {
+                    intent.putExtra("originActivity", "FindScholarshipActivity");
+                } else if (v.getContext() instanceof BookmarkActivity) {
+                    intent.putExtra("originActivity", "BookmarkActivity");
+                }
+
                 v.getContext().startActivity(intent);
             }
         });
-//        boolean isSaved = scholarship.isSaved();
-//        if (isSaved) {
-//            holder.bookmarkImageView.setImageResource(R.drawable.img_bookmark_long_coloured);
-//        } else {
-//            holder.bookmarkImageView.setImageResource(R.drawable.img_bookmark_long_hollow);
-//        }
 
-//        holder.bookmarkImageView.setOnClickListener(view -> {
-//            // Perform the add or remove operation based on the saved status
-//            if (isSaved) {
-//                removeFromSaved("L9250029", scholarship);
-//            } else {
-//                addToSaved("L9250029", scholarship);
-//            }
-//            if (isSaved) {
-//                holder.bookmarkImageView.setImageResource(R.drawable.img_bookmark_long_coloured);
-//            } else {
-//                holder.bookmarkImageView.setImageResource(R.drawable.img_bookmark_long_hollow);
-//            }
-//        });
     }
 
     @Override
@@ -100,7 +90,7 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
 
     public static class ScholarshipViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title,deadline;
+        TextView title, deadline;
 
         ImageView image;
         CardView scholarshipCard;
@@ -113,99 +103,5 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
             deadline = itemView.findViewById(R.id.txtDeadline);
             scholarshipCard = itemView.findViewById(R.id.scholarshipCard);
         }
-    }
-
-
-    private void addToSaved(String userID, Scholarship scholarship) {
-        // Get the current list of saved scholarship IDs
-        db.collection("SAVED_SCHOLARSHIP")
-                .document(userID)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        List<String> savedScholarships;
-
-                        if (document.exists()) {
-                            savedScholarships = (List<String>) document.get("scholarship_id");
-                        } else {
-                            savedScholarships = new ArrayList<>();
-                        }
-
-                        // Check if the scholarship is not already in the saved list
-                        if (!savedScholarships.contains(scholarship.getScholarshipID())) {
-                            // Add the new scholarship ID to the list
-                            savedScholarships.add(scholarship.getScholarshipID());
-
-                            // Update the document with the modified list
-                            Map<String, Object> data = new HashMap<>();
-                            data.put("scholarship_id", savedScholarships);
-
-                            // Update the document with the modified list
-                            db.collection("SAVED_SCHOLARSHIP")
-                                    .document(userID)
-                                    .update("scholarship_id", savedScholarships)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(context, "Added to saved scholarships", Toast.LENGTH_SHORT).show();
-
-                                        // Update the isSaved status of the scholarship
-                                        scholarship.setSaved(true);
-
-                                        // Notify the adapter that the dataset has changed
-                                        notifyDataSetChanged();
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(context, "Failed to update saved scholarships", Toast.LENGTH_SHORT).show();
-                                    });
-                        } else {
-                            // The scholarship is already in the saved list
-                            Toast.makeText(context, "Scholarship is already saved", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Log.e("Firestore error", "Error retrieving saved scholarships", task.getException());
-                        Toast.makeText(context, "Failed to retrieve saved scholarships", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-
-    private void removeFromSaved(String userID, Scholarship scholarship) {
-        db.collection("SAVED_SCHOLARSHIP")
-                .document("L9250029")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            List<String> savedScholarships = (List<String>) document.get("scholarship_id");
-
-                            // Check if the scholarship is in the saved list
-                            if (savedScholarships != null && savedScholarships.contains(scholarship.getScholarshipID())) {
-                                // Remove the scholarship ID from the list
-                                savedScholarships.remove(scholarship.getScholarshipID());
-
-                                // Update the document with the modified list
-                                db.collection("SAVED_SCHOLARSHIP")
-                                        .document(userID)
-                                        .update("scholarship_id", savedScholarships)
-                                        .addOnSuccessListener(aVoid -> {
-                                            Toast.makeText(context, "Removed from saved scholarships", Toast.LENGTH_SHORT).show();
-
-                                            // Update the isSaved status of the scholarship
-                                            scholarship.setSaved(false);
-
-                                            // Notify the adapter that the dataset has changed
-                                            notifyDataSetChanged();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Toast.makeText(context, "Failed to update saved scholarships", Toast.LENGTH_SHORT).show();
-                                        });
-                            }
-                        }
-                    } else {
-                        Log.e("Firestore error", "Error retrieving saved scholarships", task.getException());
-                        Toast.makeText(context, "Failed to retrieve saved scholarships", Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 }
