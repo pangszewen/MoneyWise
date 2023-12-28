@@ -45,6 +45,7 @@ public class FindNewsActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                getNews(query);
                 return false;
             }
 
@@ -58,7 +59,7 @@ public class FindNewsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerNewsList);
 
         setUpRecyclerView();
-        getNews();
+        getNews(null);
 
 
 
@@ -100,13 +101,14 @@ public class FindNewsActivity extends AppCompatActivity {
 
 
 
-    void getNews() {
+    void getNews(String query) {
 
         NewsApiClient newsApiClient = new NewsApiClient("d4c7f8fe18694e589bd30e86e04a908e");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
                         .language("en")
                         .category("business")
+                        .q(query)
                         .build(),
                 new NewsApiClient.ArticlesResponseCallback() {
                     @Override

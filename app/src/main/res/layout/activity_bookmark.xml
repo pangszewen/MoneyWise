@@ -34,8 +34,7 @@
                     android:layout_marginStart="15dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/img_arrowleft"
-                    tools:ignore="ContentDescription"
-                    tools:src="@drawable/img_arrowleft"/>
+                    tools:ignore="ContentDescription" />
                 <TextView android:ellipsize="end"
                     android:id="@+id/txtBookmarks"
                     android:gravity="center"
@@ -44,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:singleLine="true"
                     style="@style/txtDonegalOneregular20_white"
-                    tools:text="Bookmarks"/>
+                    android:text="Bookmarks"/>
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
@@ -58,45 +57,37 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             style="@style/rectangle_white_radius20">
-            <TextView android:ellipsize="end"
-                android:gravity="center_horizontal"
-                android:id="@+id/txtScholarshipCollection"
+
+            <LinearLayout android:gravity="center_horizontal"
+                android:id="@+id/linearBookmarkList"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginBottom="9dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
-                android:singleLine="true"
-                android:textAllCaps="true"
-                style="@style/txtPTSansbold20"
-                tools:text="Scholarship collection"/>
-
-            <LinearLayout
-                android:id="@+id/BookmarkRecyclerViewContainer"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_width="370dp"
-                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 style="@style/rectangle_white_radius20">
+                <TextView android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/txtScholarshipOffered"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:singleLine="true"
+                    android:textAllCaps="true"
+                    style="@style/txtPTSansbold20"
+                    android:text="Scholarship collection"/>
 
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/RVBookmarkRefresh"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="370dp"
-                    android:layout_height="wrap_content">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_gravity="center"
-                        android:id="@+id/recycleBookmarkList"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_width="160dp"
-                        android:orientation="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="5"
-                        tools:listitem="@layout/scholarship_item"/>
-
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_gravity="center"
+                    android:id="@+id/recyclerScholarshipList"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/scholarship_item"/>
 
             </LinearLayout>
         </LinearLayout>

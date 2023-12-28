@@ -40,13 +40,13 @@
         </activity>
 
         <activity
-            android:name=".scholarship.NewsPageActivity"
-            android:exported="false" />
-        <activity
             android:name=".scholarship.ScholarshipMainActivity"
             android:exported="false" />
         <activity
             android:name=".scholarship.FindNewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".scholarship.NewsFullActivity"
             android:exported="false" />
         <activity
             android:name=".scholarship.ApplyScholarship"
@@ -57,7 +57,6 @@
         <activity
             android:name=".scholarship.FindScholarshipActivity"
             android:exported="false" />
-
         <activity
             android:name=".forum.Forum_IndividualTopic_Activity"
             android:exported="false" />

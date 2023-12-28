@@ -66,6 +66,7 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
                 intent.putExtra("studyLevel", scholarship.getStudyLevel());
                 intent.putExtra("description", scholarship.getDescription());
                 intent.putExtra("criteria", scholarship.getCriteria());
+                intent.putExtra("website", scholarship.getWebsite());
                 v.getContext().startActivity(intent);
             }
         });

@@ -1,5 +1,7 @@
 package com.example.madassignment.scholarship;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,13 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
                 .error(R.drawable.no_image_icon)
                 .placeholder(R.drawable.no_image_icon)
                 .into(holder.imageView);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(),NewsFullActivity.class);
+            intent.putExtra("url", article.getUrl());
+            v.getContext().startActivity(intent);
+            ((Activity) v.getContext()).finish();
+        });
     }
 
     void updateData(List<Article> data){
