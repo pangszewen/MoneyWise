@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/donegal_one"
-                android:text="Completed"
+                android:text="Continue"
                 android:textSize="24dp"
                 android:textColor="@color/white"
                 android:gravity="center_horizontal">
@@ -85,7 +85,7 @@
             android:layout_width="206dp"
             android:layout_height="wrap_content"
             android:text="CONTINUE"
-            android:background="#27437B"
+            android:background="#789FCC"
             android:textColor="@color/white"
             android:fontFamily="@font/pt_sans_bold"
             android:textSize="18dp">
@@ -95,7 +95,7 @@
             android:layout_width="206dp"
             android:layout_height="wrap_content"
             android:text="COMPLETED"
-            android:background="#789FCC"
+            android:background="#27437B"
             android:textColor="@color/white"
             android:fontFamily="@font/pt_sans_bold"
             android:textSize="18dp">

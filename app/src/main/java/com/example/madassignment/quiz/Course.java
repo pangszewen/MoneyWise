@@ -18,6 +18,7 @@ public class Course {
     private String advisorName;
 //    private Integer courseNumOfStudents;
     private int lessonNum;
+    private int lessonProgress;
     private Uri coverImageUri;
 
     public Course(){
@@ -122,4 +123,8 @@ public class Course {
     public int getLessonNum() {return lessonNum;}
 
     public void setLessonNum(int lessonNum) {this.lessonNum = lessonNum;}
+
+    public int getLessonProgress() {return lessonProgress;}
+
+    public void setLessonProgress(int lessonProgress) {this.lessonProgress = lessonProgress;}
 }

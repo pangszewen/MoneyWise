@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,39 +28,40 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseViewHolder> {
+public class CoursesContinueAdapter extends RecyclerView.Adapter<CoursesContinueAdapter.CourseContinueViewHolder>{
     List<Course> courseList;
     FirebaseFirestore db;
     FirebaseStorage storage;
     Context context;
 
-    public CoursesAdapter(Context context, List<Course> courseList) {
+    public CoursesContinueAdapter(Context context, List<Course> courseList) {
         this.courseList = courseList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CoursesContinueAdapter.CourseContinueViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.single_course_display, parent, false);
-        return new CourseViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_complete_course, parent, false);
+        return new CoursesContinueAdapter.CourseContinueViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CourseViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull CoursesContinueAdapter.CourseContinueViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Course course = courseList.get(position);
         String courseTitle = course.getCourseTitle();
         String advisorID = course.getAdvisorID();
+        String lessonNum = String.valueOf(course.getLessonNum());
 
         db = FirebaseFirestore.getInstance();
-            DocumentReference ref = db.collection("USER_DETAILS").document("UrymMm91GEbdKUsAIQgj15ZMoOy2"); // Need change
-            ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
-                }
-            });
+        DocumentReference ref = db.collection("USER_DETAILS").document(advisorID); // Need change
+        ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
+            }
+        });
         holder.imageViewCourseCover.setImageResource(R.drawable.outline_image_grey);
         storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + course.getCourseID()+"/");
@@ -87,8 +89,10 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
                 }
             }
         });
+
+        holder.textViewCourseProgress.setText(5+"/"+lessonNum);
         holder.textViewCourseTitle.setText(courseTitle);
-//        holder.textViewAuthorName.setText("Poh Sharon");
+        holder.courseProgress.setProgress(5);
     }
 
     @Override
@@ -96,17 +100,22 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
         return courseList.size();
     }
 
-    public class CourseViewHolder extends RecyclerView.ViewHolder {
+    public class CourseContinueViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewCourseCover;
         TextView textViewCourseTitle;
         TextView textViewAuthorName;
+        LinearProgressIndicator courseProgress;
+        TextView textViewCourseProgress;
 
-        public CourseViewHolder(@NonNull View itemView) {
+        public CourseContinueViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewCourseCover = itemView.findViewById(R.id.image_quiz_cover);
+            imageViewCourseCover = itemView.findViewById(R.id.image_course_cover);
             textViewCourseTitle = itemView.findViewById(R.id.text_course_title);
             textViewAuthorName = itemView.findViewById(R.id.text_author_name);
+            courseProgress = itemView.findViewById(R.id.lessonProgressBar);
+            textViewCourseProgress = itemView.findViewById(R.id.TVLessonProgress);
         }
     }
 }
+
 

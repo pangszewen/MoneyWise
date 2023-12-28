@@ -22,28 +22,26 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class activity_complete_course extends AppCompatActivity {
+public class activity_continue_course extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private CoursesCompletedAdapter coursesCompletedAdapter;
+    private CoursesContinueAdapter coursesContinueAdapter;
     FirebaseFirestore db;
     List<Course> courseList;
-    Button continueButton;
-//    SwipeRefreshLayout RVForumRefresh;
-
+    Button completeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_complete_course);
+        setContentView(R.layout.activity_continue_course);
         db = FirebaseFirestore.getInstance();
 //        RVForumRefresh = findViewById(R.id.RVForumRefresh);
         recyclerView = findViewById(R.id.course_recycle_view);
         setUpRVCourse();
 
-        continueButton = findViewById(R.id.continueButton);
-        continueButton.setOnClickListener(new View.OnClickListener() {
+        completeButton = findViewById(R.id.completeButton);
+        completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity_complete_course.this, activity_continue_course.class);
+                Intent intent = new Intent(activity_continue_course.this, activity_complete_course.class);
                 startActivity(intent);
             }
         });
@@ -51,7 +49,7 @@ public class activity_complete_course extends AppCompatActivity {
 
     public void setUpRVCourse(){
         courseList = new ArrayList<>();
-        CollectionReference collectionReference = db.collection("COURSE");
+        CollectionReference collectionReference = db.collection("COURSE"); // Need change
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -60,8 +58,8 @@ public class activity_complete_course extends AppCompatActivity {
                     Course topic = convertDocumentToListOfCourse(dc);
                     listOfCourse.add(topic);
                 }
-                coursesCompletedAdapter = new CoursesCompletedAdapter(activity_complete_course.this, listOfCourse);
-                prepareRecyclerView(activity_complete_course.this, recyclerView, listOfCourse);
+                coursesContinueAdapter = new CoursesContinueAdapter(activity_continue_course.this, listOfCourse);
+                prepareRecyclerView(activity_continue_course.this, recyclerView, listOfCourse);
             }
         });
     }
@@ -73,8 +71,8 @@ public class activity_complete_course extends AppCompatActivity {
     }
 
     public void preAdapter(Context context, RecyclerView RV, List<Course> object){
-        coursesCompletedAdapter = new CoursesCompletedAdapter(context, object);
-        RV.setAdapter(coursesCompletedAdapter);
+        coursesContinueAdapter = new CoursesContinueAdapter(context, object);
+        RV.setAdapter(coursesContinueAdapter);
     }
 
     public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc){
