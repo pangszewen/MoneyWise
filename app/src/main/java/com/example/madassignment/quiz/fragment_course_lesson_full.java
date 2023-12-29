@@ -2,6 +2,7 @@ package com.example.madassignment.quiz;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,6 @@ public class fragment_course_lesson_full extends Fragment {
         recyclerView = view.findViewById(R.id.RVLessons);
         courseID = "C0085050";
         setUpRVLesson();
-
         return view;
     }
 
@@ -43,23 +43,29 @@ public class fragment_course_lesson_full extends Fragment {
     }
 
     private void retrieveVideoUrlsForLessons() {
+        lessonList = new ArrayList<>();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference("COURSE_LESSONS").child(courseID);
-        int i = 1;
-        for (Lesson lesson : lessonList) {
-            String lessonVideoPath = "Lesson " + i + ".mp4"; // Example video path
-            StorageReference lessonVideoRef = storageRef.child(lessonVideoPath);
-
-            lessonVideoRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                lesson.setLessonUrl(uri.toString());
-                lessonsAdapter.notifyDataSetChanged(); // Notify adapter of data changes
-            }).addOnFailureListener(exception -> {
-                // Handle any errors while retrieving video URLs
-            });
-            i++;
-        }
-        setAdapter();
+        storageRef.listAll()
+                .addOnSuccessListener(listResult -> {
+                    final int lessonNumber = 1;
+                    for (StorageReference item : listResult.getItems()) {
+                        item.getDownloadUrl().addOnSuccessListener(uri -> {
+                            Lesson lesson = new Lesson("Lesson " + lessonNumber, "", uri.toString());
+                            lessonList.add(lesson);
+                            lessonsAdapter.notifyDataSetChanged();
+                        }).addOnFailureListener(exception -> {
+                            Log.d("Lesson URL", "Fail to retrieve");
+                        });
+//                        lessonNumber++;
+                    }
+                    setAdapter();
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("Lesson URL", "Fail to retrieve");
+                });
     }
+
 
     private void setAdapter() {
         Context context = getContext();
@@ -70,3 +76,4 @@ public class fragment_course_lesson_full extends Fragment {
         }
     }
 }
+

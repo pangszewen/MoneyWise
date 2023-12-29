@@ -36,10 +36,10 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.LessonVi
 
         String lessonTitle = "Lesson " + (position + 1);
         holder.TVLessonTitle.setText(lessonTitle);
-
         VideoView videoView = holder.VVLesson;
         videoView.setVideoPath(lesson.getLessonUrl());
         videoView.setOnPreparedListener(mp -> {
+            mp.start();
             int totalDuration = videoView.getDuration(); // Get total duration in milliseconds
             int durationSeconds = totalDuration / 1000;
             int minutes = durationSeconds / 60;
@@ -52,19 +52,14 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.LessonVi
         videoView.setOnClickListener(v -> {
         });
     }
-
-
-
     @Override
     public int getItemCount() {
         return lessonList.size();
     }
-
     public class LessonViewHolder extends RecyclerView.ViewHolder {
         VideoView VVLesson;
         TextView TVLessonTitle;
         TextView TVLessonDuration;
-
         public LessonViewHolder(@NonNull View itemView) {
             super(itemView);
             VVLesson = itemView.findViewById(R.id.VVLesson);

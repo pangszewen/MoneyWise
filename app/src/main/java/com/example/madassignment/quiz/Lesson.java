@@ -5,9 +5,10 @@ public class Lesson {
     private String lessonDuration;
     private String lessonUrl;
 
-    public Lesson(String lessonTitle, String lessonDuration) {
+    public Lesson(String lessonTitle, String lessonDuration, String lessonUrl) {
         this.lessonTitle = lessonTitle;
         this.lessonDuration = lessonDuration;
+        this.lessonUrl = lessonUrl;
     }
 
     public String getLessonTitle() {

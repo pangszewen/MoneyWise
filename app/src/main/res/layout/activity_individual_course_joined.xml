@@ -138,10 +138,10 @@
             android:textSize="18dp">
         </androidx.appcompat.widget.AppCompatButton>
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/joinCourseButton"
+            android:id="@+id/continueCourseButton"
             android:layout_width="206dp"
             android:layout_height="wrap_content"
-            android:text="JOIN COURSE"
+            android:text="CONTINUE"
             android:background="#27437B"
             android:textColor="@color/white"
             android:fontFamily="@font/pt_sans_bold"
