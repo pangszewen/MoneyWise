@@ -20,7 +20,7 @@
             android:layout_width="330dp"
             android:layout_height="162dp"
             android:layout_marginStart="41dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="40dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
@@ -164,8 +164,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/scrollView2"
                 android:layout_width="341dp"
-                android:layout_height="461dp"
-                android:layout_marginTop="16dp"
+                android:layout_height="426dp"
+                android:layout_marginTop="6dp"
                 android:background="@color/grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -176,10 +176,10 @@
 
             <Button
                 android:id="@+id/addExpenseButton"
-                android:layout_width="63dp"
+                android:layout_width="58dp"
                 android:layout_height="63dp"
-                android:layout_marginEnd="39dp"
-                android:layout_marginBottom="150dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginBottom="200dp"
                 android:backgroundTint="@color/topnav_blue"
                 android:drawableTop="@drawable/pencil_svgrepo_com"
                 android:padding="10dp"

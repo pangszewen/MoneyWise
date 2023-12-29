@@ -10,9 +10,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/upLayout"
         android:layout_width="410dp"
-        android:layout_height="112dp"
+        android:layout_height="125dp"
         android:layout_marginBottom="44dp"
-        android:background="@drawable/circular_background"
+        android:background="@color/icon_blue"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -23,10 +23,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="145dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:layout_marginEnd="145dp"
-            android:fontFamily="@font/donegal_one"
+            android:fontFamily="@font/pt_sans"
             android:text="Expenses"
+            android:textColor="@color/white"
             android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,18 +36,19 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationViewExpenses"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginStart="1dp"
+            android:layout_height="65dp"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginBottom="3dp"
-            android:background="@drawable/circular_background"
+            android:background="@color/icon_blue"
+            app:itemBackground="@color/expenses_selector"
             app:itemIconSize="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/expensesTV"
+            app:layout_constraintVertical_bias="1.0"
             app:menu="@menu/expenses_navmenu" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
@@ -64,32 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomHomeAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:layout_gravity="bottom"
-            android:backgroundTint="#738EA2"
-            android:background="@color/transparent">
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottomHomeNavigationView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:itemTextColor="@color/navbar_color_selector"
-                app:menu="@menu/nav_menu"
-                app:itemPaddingBottom="25dp"
-                android:background="@color/transparent"
-                app:itemBackground="@drawable/navbar_selector"
-                app:itemIconSize="35dp"
-                app:itemIconTint="@color/navbar_color_selector">
-
-            </com.google.android.material.bottomnavigation.BottomNavigationView>
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

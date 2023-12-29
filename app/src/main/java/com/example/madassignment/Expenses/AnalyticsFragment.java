@@ -106,13 +106,14 @@ public class AnalyticsFragment extends Fragment {
         ArrayList<Float> dataValues = new ArrayList<>();
         ArrayList<Integer> colors = new ArrayList<>();
         ArrayList<String> category = new ArrayList<>();
-        colors.add(Color.parseColor("#3498db")); // Blue
-        colors.add(Color.parseColor("#2ecc71")); // Green
-        colors.add(Color.parseColor("#e74c3c")); // Red
-        colors.add(Color.parseColor("#f1c40f")); // Yellow
-        colors.add(Color.parseColor("#9b59b6")); // Purple
-        colors.add(Color.parseColor("#e67e22")); // Orange
-        colors.add(Color.parseColor("#1abc9c")); // Teal
+        colors.add(Color.parseColor("#FFADAD")); // Red
+        colors.add(Color.parseColor("#FFD6A5")); // Orange
+        colors.add(Color.parseColor("#FDFFB6")); // Yellow
+        colors.add(Color.parseColor("#CAFFBF")); // Green
+        colors.add(Color.parseColor("#B4E5FF")); // Light Blue
+        colors.add(Color.parseColor("#A0C4FF")); // Blue
+        colors.add(Color.parseColor("#BDB2FF")); // Purple
+
         TextView expenseTV = rootView.findViewById(R.id.expenseTV);
         TextView tvAmount1 = rootView.findViewById(R.id.tvAmountMeal);
         TextView tvAmount2 = rootView.findViewById(R.id.tvAmountDaily);

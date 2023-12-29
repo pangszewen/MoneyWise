@@ -1,46 +1,50 @@
 package com.example.madassignment.home;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
-import com.example.madassignment.Expenses.MainActivity;
+import com.example.madassignment.Expenses.MainExpensesFragment;
 import com.example.madassignment.R;
-import com.example.madassignment.forum.Forum_MainActivity;
-import com.example.madassignment.login_register.ProfileActivity;
+import com.example.madassignment.forum.Forum_MainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
-    ImageButton profile;
-    TextView welcome;
-    FirebaseAuth auth;
-    FirebaseUser user;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    FragmentContainerView FCVHome;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        auth=FirebaseAuth.getInstance();
-        user= auth.getCurrentUser();
+        drawerLayout = findViewById(R.id.DLHomePage);
+        navigationView = findViewById(R.id.nav_side);
+        toolbar = findViewById(R.id.myToolBar);
+        FCVHome = findViewById(R.id.FCVHome);
         bottomNavigationView = findViewById(R.id.bottomHomeNavigationView);
         bottomNavigationView.setBackground(null);
-        MenuItem menuItemDisable = bottomNavigationView.getMenu().findItem(R.id.iconHome);
-        menuItemDisable.setEnabled(false);
-        welcome=findViewById(R.id.TVWelcome);
+
+        replaceFragment(new HomeFragment());
+
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
 
         //need set welcome text
 
@@ -48,27 +52,33 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemID = item.getItemId();
-                if(itemID==R.id.iconHome) {
-                    startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+                if(itemID== R.id.iconHome) {
+                    replaceFragment(new HomeFragment());
                     return true;
-                }else if(itemID==R.id.iconForum) {
-                    startActivity(new Intent(HomeActivity.this, Forum_MainActivity.class));
+                }else if(itemID== R.id.iconForum) {
+                    replaceFragment(new Forum_MainFragment());
                     return true;
-                }else if(itemID==R.id.iconExpenses) {
-                    startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                }else if(itemID== R.id.iconExpenses) {
+                    replaceFragment(new MainExpensesFragment());
+                    return true;
+                }else if(itemID== R.id.iconCnq){
+                    //startActivity(new Intent(HomeActivity.this, activity_course_display.class));
                     return true;
                 }else
                     return false;
             }
         });
 
-        profile=findViewById(R.id.IBProfile);
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-            }
-        });
     }
+
+    public void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.FCVHome, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+
 
 }

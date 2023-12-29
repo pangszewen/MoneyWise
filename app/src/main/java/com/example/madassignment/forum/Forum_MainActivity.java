@@ -11,7 +11,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
-import com.example.madassignment.Expenses.MainActivity;
 import com.example.madassignment.R;
 import com.example.madassignment.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -67,23 +65,6 @@ public class Forum_MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         setUpRVForum();
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemID = item.getItemId();
-                if(itemID==R.id.iconHome) {
-                    startActivity(new Intent(Forum_MainActivity.this, HomeActivity.class));
-                    return true;
-                }else if(itemID==R.id.iconForum) {
-                    startActivity(new Intent(Forum_MainActivity.this, Forum_MainActivity.class));
-                    return true;
-                }else if(itemID==R.id.iconExpenses) {
-                    startActivity(new Intent(Forum_MainActivity.this, MainActivity.class));
-                    return true;
-                }else
-                    return false;
-            }
-        });
 
         btn_myTopic.setOnClickListener(new View.OnClickListener() {
             @Override

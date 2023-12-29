@@ -16,7 +16,7 @@ public class LineGraph extends View {
     private ArrayList<String> monthLabels;
     private float marginStart = 100; // Adjust as needed
     private float marginTop = 50; // Adjust as needed
-    private float marginEnd = 50; // Adjust as needed
+    private float marginEnd = 60; // Adjust as needed
     private float marginBottom = 100; // Adjust as needed
 
     public LineGraph(Context context, AttributeSet attrs) {

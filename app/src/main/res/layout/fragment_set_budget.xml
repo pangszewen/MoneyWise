@@ -14,7 +14,7 @@
         android:id="@+id/MBTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:fontFamily="@font/pt_sans"
         android:text="Monthly Budget"
         android:textSize="23dp"
@@ -26,7 +26,7 @@
         android:id="@+id/bookTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="45dp"
         android:layout_marginEnd="215dp"
         android:fontFamily="@font/pt_sans"
         android:text="AccountBook Budget"
@@ -38,7 +38,7 @@
         android:id="@+id/categoryTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="145dp"
         android:layout_marginEnd="270dp"
         android:fontFamily="@font/pt_sans"
         android:text="Category Budget"
@@ -50,7 +50,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="371dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="73dp"
         android:background="@drawable/circular_lightblue"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,9 +60,10 @@
 
         <Button
             android:id="@+id/buttonBook"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_margin="5dp"
+            android:paddingTop="3dp"
             android:backgroundTint="@color/transparent"
             android:drawableTop="@drawable/small_book_closed_svgrepo_com" />
 
@@ -79,10 +80,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="RM"
+            android:layout_marginLeft="110dp"
             android:fontFamily="@font/pt_sans"
-            android:textSize="18dp"
-            android:layout_marginLeft="110dp"/>
+            android:text="RM"
+            android:textSize="18dp" />
 
         <EditText
             android:id="@+id/ETBudgetDB"
@@ -99,7 +100,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="371dp"
-        android:layout_height="395dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:background="@drawable/circular_lightblue"
         android:orientation="vertical"
@@ -110,7 +111,7 @@
         <LinearLayout
             android:id="@+id/linearLayoutMeal"
             android:layout_width="371dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -123,6 +124,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_margin="5dp"
+                android:paddingTop="2dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableTop="@drawable/small_hamburger_burger_svgrepo_com" />
 
@@ -160,7 +162,7 @@
         <LinearLayout
             android:id="@+id/linearLayoutDaily"
             android:layout_width="371dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -173,6 +175,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_margin="5dp"
+                android:paddingTop="2dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableTop="@drawable/small_groceries_grocery_svgrepo_com" />
 
@@ -210,7 +213,7 @@
         <LinearLayout
             android:id="@+id/linearLayoutTransport"
             android:layout_width="371dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -223,6 +226,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_margin="5dp"
+                android:paddingTop="2dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableTop="@drawable/small_bus_svgrepo_com" />
 
@@ -259,7 +263,7 @@
         <LinearLayout
             android:id="@+id/linearLayoutCommunicate"
             android:layout_width="371dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -272,6 +276,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_margin="5dp"
+                android:paddingTop="2dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableTop="@drawable/small_smartphone_touch_screen_svgrepo_com" />
 
@@ -309,7 +314,7 @@
         <LinearLayout
             android:id="@+id/linearLayoutRecreation"
             android:layout_width="371dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -322,6 +327,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_margin="5dp"
+                android:paddingTop="2dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableTop="@drawable/small_cinema_screen_cinema_svgrepo_com" />
 
@@ -358,7 +364,7 @@
         <LinearLayout
             android:id="@+id/linearLayoutMedical"
             android:layout_width="371dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -371,6 +377,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_margin="5dp"
+                android:paddingTop="2dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableTop="@drawable/small_medical_kit_svgrepo_com" />
 
@@ -408,7 +415,7 @@
         <LinearLayout
             android:id="@+id/linearLayoutOther"
             android:layout_width="371dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/circular_lightblue"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -421,6 +428,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_margin="5dp"
+                android:paddingTop="2dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableTop="@drawable/small_more_circle_horizontal_svgrepo_com" />
 
@@ -460,7 +468,7 @@
         android:id="@+id/buttonDone"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/blue_navbar"
         android:fontFamily="@font/pt_sans"
         android:text="Done"

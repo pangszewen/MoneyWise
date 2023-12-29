@@ -1,106 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
- <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:app="http://schemas.android.com/apk/res-auto"
-     xmlns:tools="http://schemas.android.com/tools"
-     android:id="@+id/homePage"
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     tools:context=".home.HomeActivity">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home.HomeActivity">
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomHomeAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="78dp"
-        android:layout_gravity="bottom"
-        android:backgroundTint="#738EA2"
-        android:background="@color/transparent">
-
-       <com.google.android.material.bottomnavigation.BottomNavigationView
-           android:id="@+id/bottomHomeNavigationView"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           app:itemTextColor="@color/navbar_color_selector"
-           app:menu="@menu/nav_menu"
-           app:itemPaddingBottom="25dp"
-           android:background="@color/transparent"
-           app:itemBackground="@drawable/navbar_selector"
-           app:itemIconSize="35dp"
-           app:itemIconTint="@color/navbar_color_selector">
-
-       </com.google.android.material.bottomnavigation.BottomNavigationView>
-
-    </com.google.android.material.bottomappbar.BottomAppBar>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/DLHomePage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchor="@+id/constraintLayout"
-        app:layout_anchorGravity="center">
+        android:layout_marginBottom="80dp"
+        android:fitsSystemWindows="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
 
-        <ImageView
-            android:id="@+id/IVWelcomeBanner"
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_side"
             android:layout_width="wrap_content"
-            android:layout_height="202dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/home_welcome_banner" />
+            android:layout_height="match_parent"
+            app:headerLayout="@layout/header_navside"
+            app:menu="@menu/overflow_menu"
+            android:layout_gravity="start"
+            android:backgroundTint="@color/white"/>
 
-        <TextView
-            android:id="@+id/TVWelcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="30dp"
-            android:fontFamily="@font/donegal_one"
-            android:text="Welcome, "
-            android:textColor="@color/blue"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/IVWelcomeBanner"
-            app:layout_constraintStart_toStartOf="@+id/IVWelcomeBanner" />
-
-        <ImageButton
-            android:id="@+id/IBProfile"
-            android:layout_width="70dp"
-            android:layout_height="76dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/transparent"
-            android:contentDescription="buttonToProfileFromHome"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/IVWelcomeBanner"
-            app:srcCompat="@drawable/baseline_account_blue_grey" />
-
-        <ImageButton
-            android:id="@+id/IBNoti"
-            android:layout_width="61dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:background="@color/transparent"
-            android:contentDescription="buttonToNotiFromHome"
-            android:scaleType="fitCenter"
-            app:layout_constraintStart_toStartOf="@+id/IVWelcomeBanner"
-            app:layout_constraintTop_toTopOf="@+id/IVWelcomeBanner"
-            app:srcCompat="@drawable/outline_notifications_maroon" />
-
-        <ImageButton
-            android:id="@+id/btn_expenses_home"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/FCVHome"
             android:layout_width="match_parent"
-            android:layout_height="127dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/rectangle_rounded_corners_light_cream_yellow_with_border"
-            android:backgroundTint="@color/orange_grey"
-            android:contentDescription="buttonToExpensesFromHome"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/IVWelcomeBanner" />
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.fragment.app.FragmentContainerView>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/CLNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomHomeAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/light_blue_grey"
+            android:background="@color/transparent">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomHomeNavigationView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:menu="@menu/nav_menu"
+                android:layout_marginRight="16dp"
+                app:itemPaddingBottom="25dp"
+                android:background="@color/transparent"
+                app:itemBackground="@drawable/navbar_selector"
+                app:itemTextColor="@color/navbar_color_selector"
+                app:itemIconSize="35dp"
+                app:itemIconTint="@color/navbar_color_selector">
+
+            </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <include
+        layout="@layout/toolbar"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

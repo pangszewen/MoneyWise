@@ -229,6 +229,10 @@ public class BudgetFragment extends Fragment {
                             float progress = (float) (newExpense / newBudget);
                             pb0.setProgress(progress);
                             tvPercent0.setText(String.format("%.2f%%", progress * 100));
+                            if (newBudget == 0){
+                                pb0.setProgress(0);
+                                tvPercent0.setText("Not Set");
+                            }
                         } catch (NumberFormatException e) {
                             // Handle the case where parsing fails
                             e.printStackTrace();
