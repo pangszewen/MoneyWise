@@ -126,6 +126,71 @@ public class Firebase_Expenses {
         });
     }
 
+    public interface MonthExpenseCallback {
+        void onMonthExpenseCalculated(double monthExpense);
+        void onError(Exception exception);
+    }
+
+    public void calculateMonthExpense(CollectionReference collectionReference, MonthExpenseCallback callback) {
+        double[] monthExpense = {0}; // Using an array to make it effectively final
+
+        collectionReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    String expenseAmountStr = document.getString("expense_amount");
+                    if (expenseAmountStr != null) {
+                        double expenseAmount = Double.parseDouble(expenseAmountStr);
+                        monthExpense[0] += expenseAmount;
+                    }
+                }
+                // Now 'monthExpense[0]' contains the sum of all "expense_amount" values
+                callback.onMonthExpenseCalculated(monthExpense[0]);
+            } else {
+                // Handle failures
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                    callback.onError(exception);
+                }
+            }
+        });
+    }
+
+    public interface MonthBudgetCallback {
+        void onMonthBudgetRetrieved(double budget);
+        void onError(Exception exception);
+    }
+
+    public void getMonthBudget(CollectionReference collectionReference, int categoryID, MonthBudgetCallback callback) {
+        AtomicReference<Double> budget = new AtomicReference<>((double) 0);
+        collectionReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    // Retrieve budget values for each category
+                    Long categoryId = document.getLong("category_id");
+                    String value = document.getString("budget_amount");
+
+                    if (categoryId != null && !value.equals("not set") && categoryId == categoryID) {
+                        // Set the values in the corresponding EditText views
+                        budget.set(Double.parseDouble(value));
+                        break;
+                    }
+                }
+                // Call the callback with the retrieved budget
+                callback.onMonthBudgetRetrieved(budget.get());
+            } else {
+                // Handle failures
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                    callback.onError(exception);
+                }
+            }
+        });
+    }
+
+
+
 
 
 

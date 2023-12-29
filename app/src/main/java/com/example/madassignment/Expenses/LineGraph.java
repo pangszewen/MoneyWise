@@ -7,131 +7,125 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
-
 import java.util.ArrayList;
 
 public class LineGraph extends View {
-    private ArrayList<Float> dataPoints;
+    private ArrayList<Double> dataPoints;
     private Paint linePaint;
     private Paint axisPaint;
     private ArrayList<String> monthLabels;
-
-    private float marginStart = 60; // Adjust as needed
-    private float marginTop = 20; // Adjust as needed
-    private float marginEnd = 20; // Adjust as needed
-    private float marginBottom = 60; // Adjust as needed
+    private float marginStart = 100; // Adjust as needed
+    private float marginTop = 50; // Adjust as needed
+    private float marginEnd = 50; // Adjust as needed
+    private float marginBottom = 100; // Adjust as needed
 
     public LineGraph(Context context, AttributeSet attrs) {
         super(context, attrs);
         dataPoints = new ArrayList<>();
         linePaint = new Paint();
-        linePaint.setColor(Color.BLUE);
-        linePaint.setStrokeWidth(5);
+        linePaint.setColor(Color.parseColor("#82C876"));
+        linePaint.setStrokeWidth(8);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setAntiAlias(true);
 
         axisPaint = new Paint();
-        axisPaint.setColor(Color.BLACK);
+        axisPaint.setColor(Color.WHITE);
         axisPaint.setStrokeWidth(2);
         axisPaint.setStyle(Paint.Style.STROKE);
         axisPaint.setAntiAlias(true);
+        axisPaint.setTextSize(40);
 
         monthLabels = new ArrayList<>();
-        // Add month labels (adjust as needed)
-        monthLabels.add("Jan");
-        monthLabels.add("Feb");
-        monthLabels.add("Mar");
-        monthLabels.add("Apr");
-        monthLabels.add("May");
-        monthLabels.add("Jun");
-        monthLabels.add("Jul");
-        monthLabels.add("Aug");
-        monthLabels.add("Sep");
-        monthLabels.add("Oct");
-        monthLabels.add("Nov");
-        monthLabels.add("Dec");
+        // Use numbers 1 to 12 as month labels
+        for (int i = 1; i <= 12; i++) {
+            monthLabels.add(String.valueOf(i));
+        }
     }
 
-    public void setData(ArrayList<Float> points) {
+    public void setData(ArrayList<Double> points) {
         dataPoints = points;
         invalidate(); // Trigger redraw
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int numMonths = monthLabels.size();
+        float width = getWidth() - marginStart - marginEnd;
+        float height = getHeight() - marginTop - marginBottom;
+        float maxX = dataPoints.size() - 1;
+        double maxY = getMaxValue(dataPoints);
 
-        if (numMonths < 2) {
-            return; // Need at least two months to draw a line
-        }
-
-        float width = getWidth();
-        float height = getHeight();
-        float maxX = numMonths - 1;
-        float maxY = getMaxValue(dataPoints);
-
-        float xInterval = (width - marginStart - marginEnd) / maxX; // Adjusted for margins
-        float yScale = (height - marginTop - marginBottom) / maxY; // Adjusted for margins
+        float xInterval = width / (monthLabels.size() - 1);  // Use the fixed range of months
+        float yScale = (float) (height / (maxY + 0.1 * maxY)); // Adjust the factor (0.1) as needed
 
         Path path = new Path();
 
-        for (int i = 0; i < numMonths; i++) {
+
+        int numMonthsToDraw = monthLabels.size();  // Draw labels for all months
+
+        for (int i = 0; i < numMonthsToDraw; i++) {
             float x = marginStart + i * xInterval;
 
             // Draw a line if there's data for the month
             if (i < dataPoints.size()) {
-                float dataPoint = dataPoints.get(i);
-                float yPos = height - dataPoint * yScale;
+                double dataPoint = dataPoints.get(i);
+                float yPos = (float) (height - dataPoint*yScale + marginTop);
+
+                // Draw circular dot
+                canvas.drawCircle(x, yPos, 8, axisPaint);
 
                 if (i == 0) {
-                    path.moveTo(x, yPos); // Move to the starting point for the first data point
+                    path.moveTo(x, yPos);
                 } else {
                     path.lineTo(x, yPos);
                 }
             }
-
-            // Draw X-axis labels
-            float labelY = height - marginBottom + 20; // Adjusted for margins
-            canvas.drawText(monthLabels.get(i), x, labelY, axisPaint);
+            // Draw vertical line for each month
+            //canvas.drawLine(x, marginTop, x, height + marginTop, axisPaint);
         }
+
+
+        // Draw X and Y axes with margins
+        canvas.drawLine(marginStart, getHeight() - marginBottom, getWidth() - marginEnd, getHeight() - marginBottom, axisPaint); // X-axis
+        canvas.drawLine(marginStart, marginTop, marginStart, getHeight() - marginBottom, axisPaint); // Y-axis
+
+        // Draw X-axis labels
+        for (int i = 0; i < numMonthsToDraw; i++) {
+            float x = marginStart + i * xInterval;
+            float y = getHeight() - marginBottom + 40; // Adjust the distance below the X-axis
+            canvas.drawText(monthLabels.get(i), x, y, axisPaint);
+        }
+
+        // Draw Y-axis labels
+        int numYLabels = 5; // Adjust the number of Y-axis labels as needed
+        for (int i = 0; i <= numYLabels; i++) {
+            double labelValue = maxY * (i / (double) numYLabels);
+            float y = (float) (height - labelValue * yScale) + marginTop;
+            canvas.drawText(String.format("%d", (int) labelValue), marginStart-80, y, axisPaint);
+        }
+
+        // Draw Y-axis title
+        String yAxisTitle = "Expenses";
+        float yAxisTitleX = 10; // Adjusted for margins
+        float yAxisTitleY = marginTop - 10;
+        canvas.drawText(yAxisTitle, yAxisTitleX, yAxisTitleY, axisPaint);
 
         // Draw X-axis title
         String xAxisTitle = "Months";
         float xAxisTitleX = marginStart + (width - marginStart - marginEnd) / 2;
-        float xAxisTitleY = height - 10; // Adjusted for margins
+        float xAxisTitleY = height + 130; // Adjusted for margins
         canvas.drawText(xAxisTitle, xAxisTitleX, xAxisTitleY, axisPaint);
 
-        // Draw X-axis
-        canvas.drawLine(marginStart, height - marginBottom, width - marginEnd, height - marginBottom, axisPaint); // X-axis
-
-        // Draw Y-axis labels
-        for (float yLabel = 0; yLabel <= maxY; yLabel += maxY / 5) {
-            float y = height - marginBottom - yLabel * yScale;
-            float labelX = marginStart - 40; // Adjusted for margins
-            canvas.drawText(String.valueOf((int) yLabel), labelX, y, axisPaint);
-        }
-
-        // Draw Y-axis title
-        String yAxisTitle = "com/example/madassignment/Expenses";
-        float yAxisTitleX = 10; // Adjusted for margins
-        float yAxisTitleY = marginTop;
-        canvas.drawText(yAxisTitle, yAxisTitleX, yAxisTitleY, axisPaint);
-
-        // Draw Y-axis
-        canvas.drawLine(marginStart, marginTop, marginStart, height - marginBottom, axisPaint); // Y-axis
-
         canvas.drawPath(path, linePaint);
+
+
     }
 
 
-
-
-    private float getMaxValue(ArrayList<Float> values) {
-        float max = Float.MIN_VALUE;
-        for (float value : values) {
+    private double getMaxValue(ArrayList<Double> values) {
+        double max = Double.MIN_VALUE;
+        for (double value : values) {
             max = Math.max(max, value);
         }
         return max;
