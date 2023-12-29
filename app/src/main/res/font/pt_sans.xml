@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<font-family xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <font
-        android:font="@font/pt_sans"
-        android:fontStyle="normal"
-        android:fontWeight="400"
-        tools:ignore="ResourceCycle" />
-
-    <!-- You can add additional styles or weights here as needed -->
-
+<font-family xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:fontProviderAuthority="com.google.android.gms.fonts"
+        app:fontProviderPackage="com.google.android.gms"
+        app:fontProviderQuery="PT Sans"
+        app:fontProviderCerts="@array/com_google_android_gms_fonts_certs">
 </font-family>

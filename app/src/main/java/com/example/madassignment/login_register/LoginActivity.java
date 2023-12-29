@@ -18,6 +18,7 @@ import com.example.madassignment.R;
 import com.example.madassignment.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
-    EditText editTextEmail,editTextPassword;
+    TextInputEditText editTextEmail,editTextPassword;
     Button btn_login;
     TextView forget_pw,signup;
     ProgressBar progressBar;
@@ -46,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth=FirebaseAuth.getInstance();
-        editTextEmail=findViewById(R.id.editTextAge);
+        editTextEmail=findViewById(R.id.editTextEmail);
         editTextPassword=findViewById(R.id.editTextPassword);
         btn_login=findViewById(R.id.btn_login);
         forget_pw=findViewById(R.id.forget_password);
@@ -56,7 +57,15 @@ public class LoginActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Select_Role_Activity.class));
+                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                finish();
+            }
+        });
+
+        forget_pw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),ForgetPasswordActivity.class));
                 finish();
             }
         });
