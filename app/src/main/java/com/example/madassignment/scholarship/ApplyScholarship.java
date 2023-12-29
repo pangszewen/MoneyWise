@@ -22,9 +22,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Date;
+
 public class ApplyScholarship extends AppCompatActivity {
 
-    String scholarshipID, institution, title, description, studyLevel, criteria, award, deadline, website;
+    String scholarshipID, institution, title, description, studyLevel, criteria, award, website;
+    Date deadline;
     boolean saved;
     TextView txtTitle, txtAbout, txtValue, txtCriteria, txtWebsite;
     Button apply;
@@ -50,14 +53,13 @@ public class ApplyScholarship extends AppCompatActivity {
         institution = getIntent().getStringExtra("institution");
         title = getIntent().getExtras().getString("title");
         description = getIntent().getExtras().getString("description");
-        studyLevel = getIntent().getExtras().getString("studyLevel");
         criteria = getIntent().getExtras().getString("criteria");
         award = getIntent().getExtras().getString("award");
-        deadline = getIntent().getExtras().getString("deadline");
+        deadline = (Date) getIntent().getSerializableExtra("deadline");
         website = getIntent().getExtras().getString("website");
         isSaved = getIntent().getExtras().getBoolean("saved");
 
-        Scholarship scholarship = new Scholarship(scholarshipID, institution, title, description, studyLevel, criteria, award, deadline, website, saved);
+        Scholarship scholarship = new Scholarship(scholarshipID, institution, title, description, criteria, award, deadline, website, saved);
 
         txtTitle.setText(getIntent().getExtras().getString("title"));
         txtAbout.setText(getIntent().getExtras().getString("description"));

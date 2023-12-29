@@ -1,31 +1,37 @@
 package com.example.madassignment.scholarship;
 
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.Exclude;
+
+import java.util.Date;
+
 public class Scholarship {
 
-    String scholarshipID, institution, title, description, studyLevel, criteria, award, deadline, website;
+    String scholarshipID, institution, title, description, criteria, award, website;
 
+    Date deadline;
     boolean saved;
     public Scholarship() {
     }
 
-    public Scholarship(String scholarshipID, String institution, String title, String description, String studyLevel, String criteria, String award, String deadline, String website, boolean saved) {
+    public Scholarship(String scholarshipID, String institution, String title, String description, String criteria, String award, Date deadline, String website, boolean saved) {
         this.scholarshipID = scholarshipID;
         this.institution = institution;
         this.title = title;
         this.description = description;
-        this.studyLevel = studyLevel;
         this.criteria = criteria;
         this.award = award;
         this.deadline = deadline;
         this.website = website;
         this.saved = saved;
     }
-
+    @Exclude
     public String getScholarshipID() {
         return scholarshipID;
     }
 
+    @Exclude
     public void setScholarshipID(String scholarshipID) {
         this.scholarshipID = scholarshipID;
     }
@@ -54,14 +60,6 @@ public class Scholarship {
         this.description = description;
     }
 
-    public String getStudyLevel() {
-        return studyLevel;
-    }
-
-    public void setStudyLevel(String studyLevel) {
-        this.studyLevel = studyLevel;
-    }
-
     public String getCriteria() {
         return criteria;
     }
@@ -78,14 +76,19 @@ public class Scholarship {
         this.award = award;
     }
 
-    public String getDeadline() {
+    public Date getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
 
+    public void setDeadlineFromTimestamp(Timestamp timestamp) {
+        if (timestamp != null) {
+            this.deadline = timestamp.toDate();
+        }
+    }
     public String getWebsite() {
         return website;
     }
@@ -94,10 +97,12 @@ public class Scholarship {
         this.website = website;
     }
 
+    @Exclude
     public boolean isSaved() {
         return saved;
     }
 
+    @Exclude
     public void setSaved(boolean saved) {
         this.saved = saved;
     }

@@ -47,6 +47,10 @@
         <item name="android:background">@drawable/rectangle_border_blue_radius_12</item>
     </style>
 
+    <style name="rectangle_border_grey">
+        <item name="android:background">@drawable/rectangle_border_gray_600_radius_tl_4_tr_4</item>
+    </style>
+
 
 
     //Donegal One
@@ -117,6 +121,13 @@
         <item name="android:textFontWeight" tools:targetApi="p">400</item>
     </style>
 
+    <style name="txtPTSansregular14_dark_grey">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
     <style name="txtPTSansregular15_dark_grey">
         <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/dark_grey</item>
@@ -136,6 +147,13 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/ptsansbold</item>
         <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+
+    <style name="txtPTSansregular16">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/pt_sans</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
     </style>
 
     <style name="txtPTSansbold20_white">

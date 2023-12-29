@@ -25,6 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class BookmarkActivity extends AppCompatActivity {
@@ -36,7 +38,7 @@ public class BookmarkActivity extends AppCompatActivity {
     String userID;
 
     RecyclerView recyclerView;
-    ArrayList<Scholarship> bookmarkArrayList;
+    ArrayList<Scholarship> sortedBookmarkList, bookmarkArrayList;
     ScholarshipAdapter bookmarkAdapter;
 
     @Override
@@ -54,7 +56,7 @@ public class BookmarkActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
+        sortedBookmarkList = new ArrayList<Scholarship>();
         bookmarkArrayList = new ArrayList<Scholarship>();
         bookmarkAdapter = new ScholarshipAdapter(BookmarkActivity.this, bookmarkArrayList);
 
@@ -97,8 +99,10 @@ public class BookmarkActivity extends AppCompatActivity {
 
                                 // Check if the scholarship is saved by the user
                                 checkIfScholarshipIsSaved(scholarship);
+
                             }
                         }
+
                     }
                 });
     }
@@ -121,11 +125,24 @@ public class BookmarkActivity extends AppCompatActivity {
                                 // Set the saved field in the Scholarship object to true
                                 scholarship.setSaved(true);
 
-                                // Add the scholarship to the list if it is saved
-                                bookmarkArrayList.add(scholarship);
+                                // Add the scholarship to the sorted list
+                                sortedBookmarkList.add(scholarship);
+
+                                // Sort the list based on the deadline
+                                Collections.sort(sortedBookmarkList, new Comparator<Scholarship>() {
+                                    @Override
+                                    public int compare(Scholarship s1, Scholarship s2) {
+                                        return s2.getDeadline().compareTo(s1.getDeadline());
+                                    }
+                                });
+
+                                // Update the main list with the sorted list
+                                bookmarkArrayList.clear();
+                                bookmarkArrayList.addAll(sortedBookmarkList);
 
                                 // Notify the adapter that the data set has changed
                                 bookmarkAdapter.notifyDataSetChanged();
+
                             } else {
                                 // Set the saved field in the Scholarship object to false
                                 scholarship.setSaved(false);

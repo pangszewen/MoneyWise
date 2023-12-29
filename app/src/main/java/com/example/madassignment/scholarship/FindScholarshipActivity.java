@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -36,13 +38,15 @@ import com.google.firebase.firestore.DocumentReference;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
 public class FindScholarshipActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    ArrayList<Scholarship> scholarshipArrayList;
+    ArrayList<Scholarship> sortedScholarships, scholarshipArrayList;
     ScholarshipAdapter scholarshipAdapter;
     FirebaseFirestore db;
 
@@ -53,9 +57,8 @@ public class FindScholarshipActivity extends AppCompatActivity {
 
     SearchView searchView;
     BottomNavigationView bottomNavigationView;
-
     String userID;
-
+    FloatingActionButton addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +72,18 @@ public class FindScholarshipActivity extends AppCompatActivity {
         back = findViewById(R.id.imageArrowleft);
 
         userID = user.getUid();
+        addButton = findViewById(R.id.fabAdd);
 
         // get Role of user + set visibility of the Add button
         getRole(userID);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FindScholarshipActivity.this, AdminAddScholarshipActivity.class);
+                startActivity(intent);
+            }
+        });
 
         ImageView back = findViewById(R.id.imageArrowleft);
 
@@ -103,7 +115,7 @@ public class FindScholarshipActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
+        sortedScholarships = new ArrayList<Scholarship>();
         scholarshipArrayList = new ArrayList<Scholarship>();
         scholarshipAdapter = new ScholarshipAdapter(FindScholarshipActivity.this, scholarshipArrayList);
 
@@ -167,19 +179,36 @@ public class FindScholarshipActivity extends AppCompatActivity {
                                 Scholarship scholarship = documentSnapshot.toObject(Scholarship.class);
                                 scholarship.setScholarshipID(scholarshipID);
 
+                                // Set the deadline from Timestamp
+                                scholarship.setDeadlineFromTimestamp(documentSnapshot.getTimestamp("deadline"));
+
+
                                 // Check if the scholarship is saved by the user
                                 checkIfScholarshipIsSaved(scholarship);
 
-                                // Add the scholarship to the list
-                                scholarshipArrayList.add(scholarship);
-
-                                // Notify the adapter that the data set has changed
-                                scholarshipAdapter.notifyDataSetChanged();
+                                // Add the scholarship to the sorted list
+                                sortedScholarships.add(scholarship);
                             }
                         }
+
+                        // Sort the list based on the deadline
+                        Collections.sort(sortedScholarships, new Comparator<Scholarship>() {
+                            @Override
+                            public int compare(Scholarship s1, Scholarship s2) {
+                                return s2.getDeadline().compareTo(s1.getDeadline());
+                            }
+                        });
+
+                        // Update the main list with the sorted list
+                        scholarshipArrayList.clear();
+                        scholarshipArrayList.addAll(sortedScholarships);
+
+                        // Notify the adapter that the data set has changed
+                        scholarshipAdapter.notifyDataSetChanged();
                     }
                 });
     }
+
 
     private void checkIfScholarshipIsSaved(final Scholarship scholarship) {
 
@@ -241,9 +270,8 @@ public class FindScholarshipActivity extends AppCompatActivity {
     }
 
     private void updateUIBasedOnRole(String role) {
-        ImageView addButton = findViewById(R.id.imageAdd);
 
-        if ("admin".equals(role)) {
+        if ("Admin".equals(role)) {
             addButton.setVisibility(View.VISIBLE);
         } else {
             addButton.setVisibility(View.GONE);

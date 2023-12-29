@@ -42,15 +42,6 @@
                     style="@style/txtDonegalOneregular20_white"
                     android:text="Scholarship"/>
 
-                <ImageView android:id="@+id/imageAdd"
-                    android:gravity="end"
-                    android:layout_height="30dp"
-                    android:layout_width="30dp"
-                    android:layout_marginStart="80dp"
-                    android:scaleType="fitXY"
-                    tools:ignore="ContentDescription"
-                    android:src="@drawable/img_add"
-                    />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
@@ -102,6 +93,22 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
+        app:srcCompat="@drawable/img_add_vector"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        app:tint="@android:color/white"
+        app:backgroundTint="@color/sharp_blue"
+        />
+
+
 
 
 

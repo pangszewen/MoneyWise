@@ -19,9 +19,12 @@ import com.example.madassignment.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.ScholarshipViewHolder> {
@@ -52,8 +55,14 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
     public void onBindViewHolder(@NonNull ScholarshipViewHolder holder, int position) {
         Scholarship scholarship = scholarshipArrayList.get(position);
         holder.title.setText(scholarship.getTitle() + " | " + scholarship.getInstitution());
-        holder.deadline.setText(scholarship.getDeadline());
-        holder.image.setImageResource(R.drawable.img_image201);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Date deadline = scholarship.getDeadline();
+        String formattedDate = (deadline != null) ? dateFormat.format(deadline) : "N/A";
+
+        holder.deadline.setText(formattedDate);
+
+        holder.image.setImageResource(R.drawable.img_schorecyclerview);
 
         holder.scholarshipCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +72,6 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
                 intent.putExtra("institution", scholarship.getInstitution());
                 intent.putExtra("title", scholarship.getTitle());
                 intent.putExtra("description", scholarship.getDescription());
-                intent.putExtra("studyLevel", scholarship.getStudyLevel());
                 intent.putExtra("criteria", scholarship.getCriteria());
                 intent.putExtra("award", scholarship.getAward());
                 intent.putExtra("deadline", scholarship.getDeadline());
@@ -98,7 +106,7 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
         public ScholarshipViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            image = itemView.findViewById(R.id.imageImage201);
+            image = itemView.findViewById(R.id.imageScho);
             title = itemView.findViewById(R.id.txtTitle);
             deadline = itemView.findViewById(R.id.txtDeadline);
             scholarshipCard = itemView.findViewById(R.id.scholarshipCard);
