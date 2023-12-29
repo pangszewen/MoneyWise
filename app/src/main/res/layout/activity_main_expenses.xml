@@ -60,52 +60,36 @@
     </FrameLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/CLExpenseNavBar"
-        android:layout_width="418dp"
-        android:layout_height="891dp"
+        android:id="@+id/CLNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
 
         <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomExpenseAppBar"
+            android:id="@+id/bottomHomeAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="78dp"
             android:layout_gravity="bottom"
-            android:background="@color/transparent"
-            android:backgroundTint="@color/yellow"
-            app:fabAlignmentMode="end"
-            app:fabAlignmentModeEndMargin="265dp"
-            app:fabCradleMargin="15dp"
-            app:fabCradleRoundedCornerRadius="20dp">
+            android:backgroundTint="#738EA2"
+            android:background="@color/transparent">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottomExpenseNavigationView"
+                android:id="@+id/bottomHomeNavigationView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
+                android:layout_height="match_parent"
+                app:itemTextColor="@color/navbar_color_selector"
+                app:menu="@menu/nav_menu"
+                app:itemPaddingBottom="25dp"
                 android:background="@color/transparent"
+                app:itemBackground="@drawable/navbar_selector"
                 app:itemIconSize="35dp"
-                app:itemIconTint="@color/white"
-                app:menu="@menu/nav_menu" />
+                app:itemIconTint="@color/navbar_color_selector">
+
+            </com.google.android.material.bottomnavigation.BottomNavigationView>
 
         </com.google.android.material.bottomappbar.BottomAppBar>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_expenses"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue_grey"
-            android:clickable="true"
-            android:contentDescription="Expenses"
-            android:tint="@color/white"
-            app:layout_anchor="@id/bottomExpenseAppBar"
-            app:layout_anchorGravity="top|center"
-            app:maxImageSize="40dp"
-            app:srcCompat="@drawable/outline_expenses_white" />
-
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
