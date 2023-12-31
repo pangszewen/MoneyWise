@@ -8,11 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madassignment.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class activity_create_course extends AppCompatActivity {
@@ -69,8 +69,10 @@ public class activity_create_course extends AppCompatActivity {
                     intent.putExtra("mode", "Online");
                     startActivity(intent);
                 }
-                else
-                    Toast.makeText(activity_create_course.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                else {
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Please fill in all fields", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {

@@ -51,12 +51,9 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
 
     @Override
     public void onBindViewHolder(@NonNull QuizzesAdapter.QuizViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Log.d("QuizAdapter", "Quiz List " + quizList);
         Quiz quiz = quizList.get(position);
         String quizTitle = quiz.getQuizTitle();
-        Log.d("QuizAdapter", "Quiz Title: " + quizTitle);
         String advisorID = quiz.getAdvisorID();
-        System.out.println(advisorID);
 
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("USER_DETAILS").document("UrymMm91GEbdKUsAIQgj15ZMoOy2"); // Need change

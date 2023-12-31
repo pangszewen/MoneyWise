@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,22 +30,40 @@ public class activity_course_display extends AppCompatActivity {
     FirebaseFirestore db;
     List<Course> courseList;
     FloatingActionButton createCourse;
-//    SwipeRefreshLayout RVForumRefresh;
+    SwipeRefreshLayout RVCourseRefresh;
+    ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_display);
         db = FirebaseFirestore.getInstance();
-//        RVForumRefresh = findViewById(R.id.RVForumRefresh);
+        RVCourseRefresh = findViewById(R.id.RVCourseRefresh);
         recyclerView = findViewById(R.id.course_recycle_view);
         createCourse = findViewById(R.id.createCourseButton);
+        backButton = findViewById(R.id.backButton);
         setUpRVCourse();
 
         createCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity_course_display.this, activity_create_course.class);
+                startActivity(intent);
+            }
+        });
+
+        RVCourseRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setUpRVCourse();
+                RVCourseRefresh.setRefreshing(false);
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity_course_display.this, main_page.class);
                 startActivity(intent);
             }
         });
@@ -81,6 +101,8 @@ public class activity_course_display extends AppCompatActivity {
         Course course = new Course();
         course.setCourseID(dc.getId());
         course.setCourseTitle(dc.get("title").toString());
+        course.setAdvisorID(dc.get("advisorID").toString());
+        course.setCourseDesc(dc.get("description").toString());
         return course;
     }
 }

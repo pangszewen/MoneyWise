@@ -2,6 +2,7 @@ package com.example.madassignment.quiz;
 
 import android.graphics.text.LineBreaker;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +28,8 @@ public class fragment_course_desc extends Fragment {
         language = view.findViewById(R.id.TVLanguage);
         mode = view.findViewById(R.id.TVMode);
 
-        courseID = "C0085050";
-
         Bundle bundle = getArguments();
+        Log.d("Bundle", bundle.toString());
         if (bundle != null)
             courseID = bundle.getString("courseID");
         displayDesc();

@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +26,7 @@ import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -97,12 +97,16 @@ public class activity_create_lesson extends AppCompatActivity {
                     Intent intent = new Intent(activity_create_lesson.this, activity_course_display.class);
                     startActivity(intent);
                 }
-                else if (save)
-                    Toast.makeText(activity_create_lesson.this, "Saved!", Toast.LENGTH_SHORT).show();
-                else if (!save && chooseImageList.isEmpty())
-                    Toast.makeText(activity_create_lesson.this, "Please select a cover image!", Toast.LENGTH_SHORT).show();
-                else if (!save && chooseVideoList.isEmpty())
-                    Toast.makeText(activity_create_lesson.this, "Please select videos to upload!", Toast.LENGTH_SHORT).show();
+                else if (save) {
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Saved!", Snackbar.LENGTH_SHORT).show();
+                } else if (!save && chooseImageList.isEmpty()) {
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Please select a cover image!", Snackbar.LENGTH_SHORT).show();
+                } else if (!save && chooseVideoList.isEmpty()) {
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Please select videos to upload!", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -259,11 +263,12 @@ public class activity_create_lesson extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
                     save = true;
-                    Log.d("TAG", "uploaded");
-                    Toast.makeText(activity_create_lesson.this, "Course Created!", Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Course Created!", Snackbar.LENGTH_SHORT).show();
+
                 }else {
-                    Log.d("TAG", "Failed");
-                    Toast.makeText(activity_create_lesson.this, "Failed to Create Course", Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Failed to Create Course", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });

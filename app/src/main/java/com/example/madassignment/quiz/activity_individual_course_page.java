@@ -3,10 +3,12 @@ package com.example.madassignment.quiz;
 import static android.content.ContentValues.TAG;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madassignment.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,6 +35,8 @@ public class activity_individual_course_page extends AppCompatActivity {
     TextView title, advisor;
     ImageView courseCoverImage;
     Boolean atDesc = true, saved = false;
+    Course course = new Course();
+    ImageButton backButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,18 +44,30 @@ public class activity_individual_course_page extends AppCompatActivity {
         Bundle bundle = new Bundle();
         fragment_course_lesson_single fragLesson = new fragment_course_lesson_single();
         fragment_course_desc fragDesc = new fragment_course_desc();
-//        fragment_course_lesson_full fragLessonFull = new fragment_course_lesson_full();
 
+        course.setCourseID(getIntent().getStringExtra("courseID"));
+        course.setCourseDesc(getIntent().getStringExtra("description"));
+        course.setCourseTitle(getIntent().getStringExtra("title"));
+        course.setCourseMode(getIntent().getStringExtra("mode"));
+        course.setCourseLanguage(getIntent().getStringExtra("language"));
+        course.setCourseLevel(getIntent().getStringExtra("level"));
+
+        bundle.putString("description", course.getCourseDesc());
+        bundle.putString("level", course.getCourseLevel());
+        bundle.putString("mode", course.getCourseMode());
+        bundle.putString("language", course.getCourseLanguage());
+        bundle.putString("courseID", course.getCourseID());
+        fragDesc.setArguments(bundle);
         fragLesson.setArguments(bundle);
 
-//        courseID = getIntent().getStringExtra("courseID");
-        courseID = "C0085050";
+        courseID = course.getCourseID();
         db = FirebaseFirestore.getInstance();
         courseCoverImage = findViewById(R.id.courseImage);
         title = findViewById(R.id.TVCourseTitle);
         advisor = findViewById(R.id.TVAdvisorName);
         Button desc_lessonButton = findViewById(R.id.desc_lessonButton);
         Button joinCourse = findViewById(R.id.joinCourseButton);
+        backButton = findViewById(R.id.backButton);
 
         displayCourse();
 
@@ -79,21 +96,6 @@ public class activity_individual_course_page extends AppCompatActivity {
                     atDesc = true;
                     desc_lessonButton.setText("LESSON");
                 }
-//                else if (atDesc && saved){
-//                    getSupportFragmentManager().beginTransaction()
-//                            .show(fragLessonFull)
-//                            .hide(fragDesc)
-//                            .commit();
-//                    atDesc = false;
-//                    desc_lessonButton.setText("DESCRIPTION");
-//                } else {
-//                    getSupportFragmentManager().beginTransaction()
-//                            .show(fragDesc)
-//                            .hide(fragLessonFull)
-//                            .commit();
-//                    atDesc = true;
-//                    desc_lessonButton.setText("LESSON");
-//                }
             }
         });
 
@@ -102,8 +104,18 @@ public class activity_individual_course_page extends AppCompatActivity {
             public void onClick(View view) {
                 if (!saved)
                     showDialog();
-                else
-                    Toast.makeText(activity_individual_course_page.this, "Already Enroll in Course!", Toast.LENGTH_SHORT).show();
+                else {
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Already enroll in course!", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity_individual_course_page.this, activity_course_display.class);
+                startActivity(intent);
             }
         });
     }
@@ -186,7 +198,7 @@ public class activity_individual_course_page extends AppCompatActivity {
     private void displayCoverImage() {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + courseID + "/");
-        storageReference.child("Cover Image.jpeg").getDownloadUrl().addOnSuccessListener(uri -> { // Need remove jpeg
+        storageReference.child("Cover Image").getDownloadUrl().addOnSuccessListener(uri -> {
             String imageUri = uri.toString();
             Picasso.get().load(imageUri).into(courseCoverImage);
             Log.d("Cover Image", "Successful");

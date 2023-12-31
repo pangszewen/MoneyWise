@@ -2,6 +2,7 @@ package com.example.madassignment.quiz;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +54,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
         String advisorID = course.getAdvisorID();
 
         db = FirebaseFirestore.getInstance();
-            DocumentReference ref = db.collection("USER_DETAILS").document("UrymMm91GEbdKUsAIQgj15ZMoOy2"); // Need change
+            DocumentReference ref = db.collection("USER_DETAILS").document(advisorID); // Need change
             ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -88,7 +89,20 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
             }
         });
         holder.textViewCourseTitle.setText(courseTitle);
-//        holder.textViewAuthorName.setText("Poh Sharon");
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, activity_individual_course_page.class);
+                intent.putExtra("courseID", course.getCourseID());
+                intent.putExtra("title", course.getCourseTitle());
+                intent.putExtra("description", course.getCourseDesc());
+                intent.putExtra("advisorID", course.getAdvisorID());
+                intent.putExtra("language", course.getCourseLanguage());
+                intent.putExtra("level", course.getCourseLevel());
+                intent.putExtra("mode", course.getCourseMode());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

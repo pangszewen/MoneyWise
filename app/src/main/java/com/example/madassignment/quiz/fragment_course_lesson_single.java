@@ -21,7 +21,6 @@ public class fragment_course_lesson_single extends Fragment {
     VideoView lessonVid;
     TextView lessonText, lessonTime;
     String courseID;
-    boolean isPlaying = false;
     int totalDuration = 0;
 
     @Override
@@ -32,14 +31,12 @@ public class fragment_course_lesson_single extends Fragment {
         lessonText = view.findViewById(R.id.TVLessonTitle);
         lessonTime = view.findViewById(R.id.TVCourseTime);
 
-//        Bundle bundle = getArguments();
-//        if (bundle != null)
-//            courseID = bundle.getString("courseID");
-
-        courseID = "C0085050";
+        Bundle bundle = getArguments();
+        if (bundle != null)
+            courseID = bundle.getString("courseID");
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference().child("COURSE_LESSONS/" + courseID + "/lesson 1.mp4");
+        StorageReference storageRef = storage.getReference().child("COURSE_LESSONS/" + courseID + "/lesson 1");
 
         try {
             final File localFile = File.createTempFile("lesson 1", "mp4");
@@ -51,42 +48,14 @@ public class fragment_course_lesson_single extends Fragment {
                             int durationSeconds = totalDuration / 1000;
                             int minutes = durationSeconds / 60;
                             int seconds = durationSeconds % 60;
-                            lessonTime.setText(String.format("%02d:%02d", minutes, seconds));
+                            lessonTime.setText(String.format("%dm %ds", minutes, seconds));
                         });
                         lessonVid.requestFocus();
-                        lessonVid.setOnClickListener(v -> {
-                            if (isPlaying) {
-                                lessonVid.pause();
-                            } else {
-                                lessonVid.start();
-                                updateCountdown();
-                            }
-                            isPlaying = !isPlaying;
-                        });
+                        lessonVid.start();
                     });
         } catch (IOException e) {
             e.printStackTrace();
         }
         return view;
-    }
-
-    private void updateCountdown() {
-        new Thread(() -> {
-            while (lessonVid.isPlaying()) {
-                getActivity().runOnUiThread(() -> {
-                    int currentTime = lessonVid.getCurrentPosition();
-                    int remainingTime = totalDuration - currentTime;
-                    int seconds = remainingTime / 1000;
-                    int minutes = seconds / 60;
-                    seconds = seconds % 60;
-                    lessonTime.setText(String.format("%02d:%02d", minutes, seconds));
-                });
-                try {
-                    Thread.sleep(1000); // Update every second
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 }
