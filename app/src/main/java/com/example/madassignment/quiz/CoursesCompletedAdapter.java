@@ -17,7 +17,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -90,9 +89,9 @@ public class CoursesCompletedAdapter extends RecyclerView.Adapter<CoursesComplet
             }
         });
 
-        holder.textViewCourseProgress.setText(lessonNum+"/"+lessonNum);
+//        holder.textViewCourseProgress.setText(lessonNum+"/"+lessonNum);
         holder.textViewCourseTitle.setText(courseTitle);
-        holder.courseProgress.setProgress(10);
+//        holder.courseProgress.setProgress(10);
     }
 
     @Override
@@ -104,16 +103,16 @@ public class CoursesCompletedAdapter extends RecyclerView.Adapter<CoursesComplet
         ImageView imageViewCourseCover;
         TextView textViewCourseTitle;
         TextView textViewAuthorName;
-        LinearProgressIndicator courseProgress;
-        TextView textViewCourseProgress;
+//        LinearProgressIndicator courseProgress;
+//        TextView textViewCourseProgress;
 
         public CourseCompletedViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewCourseCover = itemView.findViewById(R.id.image_course_cover);
             textViewCourseTitle = itemView.findViewById(R.id.text_course_title);
             textViewAuthorName = itemView.findViewById(R.id.text_author_name);
-            courseProgress = itemView.findViewById(R.id.lessonProgressBar);
-            textViewCourseProgress = itemView.findViewById(R.id.TVLessonProgress);
+//            courseProgress = itemView.findViewById(R.id.lessonProgressBar);
+//            textViewCourseProgress = itemView.findViewById(R.id.TVLessonProgress);
         }
     }
 }

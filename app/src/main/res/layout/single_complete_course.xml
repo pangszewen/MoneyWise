@@ -64,33 +64,4 @@
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@+id/image_course_cover"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/image_course_cover"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp">
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/lessonProgressBar"
-        android:layout_width="260dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_gravity="center_vertical"
-        app:trackThickness="10dp"
-        android:max="10"
-        app:trackColor="#D9E8F9"
-        app:indicatorColor="#4F77AA"
-        app:trackCornerRadius="20dp">
-    </com.google.android.material.progressindicator.LinearProgressIndicator>
-
-    <TextView
-        android:id="@+id/TVLessonProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0/0"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp">
-    </TextView>
-    </LinearLayout>
-
 </RelativeLayout>
