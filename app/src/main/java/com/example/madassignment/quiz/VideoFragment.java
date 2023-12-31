@@ -38,6 +38,7 @@ public class VideoFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_video, container, false);
         videoView = rootView.findViewById(R.id.videoView);
         videoView.setVideoURI(videoUri);
+        videoView.start();
         return rootView;
     }
 }
