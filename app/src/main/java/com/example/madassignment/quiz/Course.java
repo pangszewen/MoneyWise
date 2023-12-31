@@ -32,6 +32,15 @@ public class Course {
         this.courseLevel = courseLevel;
         this.courseLanguage = courseLanguage;
         this.courseMode = "Online";
+        this.dateCreated = LocalDateTime.now();
+    }
+
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDateTime datePosted) {
+        this.dateCreated = datePosted;
     }
 
     public String getCourseID() {
@@ -56,10 +65,6 @@ public class Course {
 
     public void setAdvisorID(String advisorID) {
         this.advisorID = advisorID;
-    }
-
-    public LocalDateTime getDateCreated() {
-        return dateCreated;
     }
 
     public void setDateCreated(String dateCreated) {

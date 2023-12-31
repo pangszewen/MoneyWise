@@ -38,6 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -245,9 +246,9 @@ public class activity_create_lesson extends AppCompatActivity {
     private void insertTopicIntoDatabase(Course course) {
         Map<String, Object> map = new HashMap<>();
         map.put("advisorID", course.getAdvisorID());
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-//            String formattedDateTime = course.getDateCreated().format(formatter);
-//            map.put("dateCreated", formattedDateTime);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        String formattedDateTime = course.getDateCreated().format(formatter);
+        map.put("dateCreated", formattedDateTime);
         map.put("title", course.getCourseTitle());
         map.put("description", course.getCourseDesc());
         map.put("level", course.getCourseLevel());
