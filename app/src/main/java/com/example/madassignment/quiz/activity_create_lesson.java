@@ -83,8 +83,7 @@ public class activity_create_lesson extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity_create_lesson.this, activity_create_course.class);
-                startActivity(intent);
+                onBackPressed();
             }
         });
 
@@ -207,7 +206,7 @@ public class activity_create_lesson extends AppCompatActivity {
                     courseList.add(course);
                 }
                 courseID = generateCourseID(courseList);
-                String advisorID = "A0000001"; // Need to change
+                String advisorID = "UrymMm91GEbdKUsAIQgj15ZMoOy2"; // Need to change
                 Course newCourse = new Course(courseID, advisorID, title, description, level, language, mode);
                 newCourse.setCoverImageUri(imageUri);
                 insertTopicIntoDatabase(newCourse);
@@ -258,7 +257,7 @@ public class activity_create_lesson extends AppCompatActivity {
         map.put("level", course.getCourseLevel());
         map.put("language", course.getCourseLanguage());
         map.put("mode", course.getCourseMode());
-        db.collection("COURSE").document(course.getCourseID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection("COURSE_PENDING").document(course.getCourseID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
