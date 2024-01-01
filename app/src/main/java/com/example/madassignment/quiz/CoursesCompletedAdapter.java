@@ -53,7 +53,6 @@ public class CoursesCompletedAdapter extends RecyclerView.Adapter<CoursesComplet
         Course course = courseList.get(position);
         String courseTitle = course.getCourseTitle();
         String advisorID = course.getAdvisorID();
-        String lessonNum = String.valueOf(course.getLessonNum());
 
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("USER_DETAILS").document(advisorID); // Need change

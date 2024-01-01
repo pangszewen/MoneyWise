@@ -1,21 +1,27 @@
 package com.example.madassignment.quiz;
 
+import java.time.LocalDateTime;
+
 public class Quiz {
     private String quizID;
     private String quizTitle;
     private String advisorID;
     private Question ques;
-
-    private Integer numOfQues;
+    private LocalDateTime dateCreated;
+    private String numOfQues;
 
     public Quiz(){}
-    public Quiz(String quizID, String quizTitle,String adivisorID, Integer numOfQues) {
+    public Quiz(String quizID, String quizTitle,String adivisorID, String numOfQues) {
         this.quizID = quizID;
         this.quizTitle = quizTitle;
         this.advisorID = adivisorID;
         this.numOfQues = numOfQues;
+        this.dateCreated = LocalDateTime.now();
     }
 
+    public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
     public String getQuizID() {
         return quizID;
     }
@@ -32,14 +38,6 @@ public class Quiz {
         this.quizTitle = quizTitle;
     }
 
-    public Question getQues() {
-        return ques;
-    }
-
-    public void setQues(Question ques) {
-        this.ques = ques;
-    }
-
     public String getAdvisorID() {
         return advisorID;
     }
@@ -47,6 +45,6 @@ public class Quiz {
     public void setAdvisorID(String advisorID) {
         this.advisorID = advisorID;
     }
-    public Integer getNumOfQues() {return numOfQues;}
-    public void setNumOfQues(Integer numOfQues) {this.numOfQues = numOfQues;}
+    public String getNumOfQues() {return numOfQues;}
+    public void setNumOfQues(String numOfQues) {this.numOfQues = numOfQues;}
 }

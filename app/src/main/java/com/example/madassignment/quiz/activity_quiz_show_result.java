@@ -2,8 +2,10 @@ package com.example.madassignment.quiz;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,8 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.madassignment.R;
 
 public class activity_quiz_show_result extends AppCompatActivity {
-    String quizTitle, quizID;
+    String quizTitle, quizID, numOfQues;
     double score;
+    ImageButton cancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,14 +25,16 @@ public class activity_quiz_show_result extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             quizTitle = intent.getStringExtra("title");
-            score = intent.getDoubleExtra("score", 0.0);
+            score = intent.getIntExtra("score", 0);
             quizID = intent.getStringExtra("quizID");
+            numOfQues = intent.getStringExtra("numOfQues");
         }
 
         TextView display_text = findViewById(R.id.TVdisplay);
         TextView score_text = findViewById(R.id.score_text);
         ImageView image = findViewById(R.id.image);
         Button retryButton = findViewById(R.id.retryButton);
+        cancel = findViewById(R.id.cancelButton);
 
         if (score >= 80){
             display_text.setText("Congratulations!");
@@ -51,6 +56,18 @@ public class activity_quiz_show_result extends AppCompatActivity {
                 Intent intent = new Intent(activity_quiz_show_result.this, activity_individual_quiz_page.class);
                 intent.putExtra("title", quizTitle);
                 intent.putExtra("quizID", quizID);
+                intent.putExtra("numOfQues", numOfQues);
+                Log.d("title", quizTitle);
+                Log.d("quizID", quizID);
+                Log.d("numOfQuesInResults", numOfQues);
+                startActivity(intent);
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (activity_quiz_show_result.this, activity_quiz_display.class);
                 startActivity(intent);
             }
         });

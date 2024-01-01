@@ -25,15 +25,16 @@ public class activity_individual_quiz_page extends AppCompatActivity {
    ImageButton cancel;
    TextView title;
    TextView quesNum, quesText, option1, option2, option3, option4;
-   String quizTitle, quizID, correctAns, option1_text, option2_text, option3_text, option4_text;
-   Integer ques = 0, totalQues;
+   String correctAns, option1_text, option2_text, option3_text, option4_text;
+   Integer ques = 0;
    LinearLayout A, B, C, D;
    ArrayList<String> questionIds = new ArrayList<>();
    int currentQuestionIndex = -1;
    ArrayList<String> options;
    Integer score = 0;
-   Double totalScore;
+   int totalScore;
    LinearProgressIndicator progressBar;
+   Quiz quiz = new Quiz();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +55,11 @@ public class activity_individual_quiz_page extends AppCompatActivity {
         C = findViewById(R.id.option3);
         D = findViewById(R.id.option4);
 
-//        quizTitle = getIntent().getStringExtra("title");
-//        title.setText(getIntent().getStringExtra("title"));
-//        String quizID = getIntent().getStringExtra("quizID");
-//        Integer totalQues = Integer.parseInt(getIntent().getStringExtra("numOfQuus"));
-        totalQues = 5;
-        quizTitle = "Finance Quiz";
-        quizID = "Q0836187"; //Need change
+        quiz.setQuizTitle(getIntent().getStringExtra("title"));
+        quiz.setQuizID(getIntent().getStringExtra("quizID"));
+        quiz.setNumOfQues(getIntent().getStringExtra("numOfQues"));
 
-        fetchQuestionIds(quizID);
-        title.setText(quizTitle);
+        fetchQuestionIds();
         quesNum.setText("Question "+ques);
 
         // When first option is chosen
@@ -81,7 +77,7 @@ public class activity_individual_quiz_page extends AppCompatActivity {
                 if (ques == questionIds.size()){ // End of quiz
                     calculateScore();
                 }
-                else showNextQues(quizID);
+                else showNextQues();
             }
         });
         // When second option is chosen
@@ -99,7 +95,7 @@ public class activity_individual_quiz_page extends AppCompatActivity {
                 if (ques == questionIds.size()){ // End of quiz
                     calculateScore();
                 }
-                else showNextQues(quizID);
+                else showNextQues();
             }
         });
         // When third option is chosen
@@ -117,7 +113,7 @@ public class activity_individual_quiz_page extends AppCompatActivity {
                 if (ques == questionIds.size()){ // End of quiz
                     calculateScore();
                 }
-                else showNextQues(quizID);
+                else showNextQues();
             }
         });
         // When forth option is chosen
@@ -135,23 +131,35 @@ public class activity_individual_quiz_page extends AppCompatActivity {
                 if (ques == questionIds.size()){ // End of quiz
                     calculateScore();
                 }
-                else showNextQues(quizID);
+                else showNextQues();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (activity_individual_quiz_page.this, activity_quiz_display.class);
+                startActivity(intent);
             }
         });
     }
     // Calculate the total score of quiz
     private void calculateScore() {
-        totalScore = ((double) score / ques) * 100;
+        Log.d("quesNum", quiz.getNumOfQues());
+        int numOfQues = Integer.parseInt(quiz.getNumOfQues());
+        double totalScoreDouble = (score * 100.0) / numOfQues;
+        totalScore = (int) totalScoreDouble;
         Intent intent = new Intent(activity_individual_quiz_page.this, activity_quiz_show_result.class);
-        intent.putExtra("title", quizTitle);
+        intent.putExtra("title", quiz.getQuizTitle());
         intent.putExtra("score", totalScore);
-        intent.putExtra("quizID", quizID);
+        intent.putExtra("quizID", quiz.getQuizID());
+        intent.putExtra("numOfQues", quiz.getNumOfQues());
+        Log.d("numOfQuesInQuizPage", quiz.getNumOfQues());
         startActivity(intent);
     }
 
-    private void fetchQuestionIds(String quizID) {
+    private void fetchQuestionIds() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference quizDocRef = db.collection("QUIZ").document(quizID);
+        DocumentReference quizDocRef = db.collection("QUIZ").document(quiz.getQuizID());
         CollectionReference questionsRef = quizDocRef.collection("QUESTION");
         questionsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
@@ -159,11 +167,11 @@ public class activity_individual_quiz_page extends AppCompatActivity {
                 questionIds.add(questionId);
             }
             Collections.shuffle(questionIds); // Shuffle questions
-            showNextQues(quizID);
+            showNextQues();
         });
     }
 
-    private void showNextQues(String quizID) {
+    private void showNextQues() {
         if (currentQuestionIndex < questionIds.size() - 1) {
             ++currentQuestionIndex;
             String questionId = questionIds.get(currentQuestionIndex);
@@ -171,19 +179,19 @@ public class activity_individual_quiz_page extends AppCompatActivity {
             handler.postDelayed(new Runnable() { // Delay for 1s to show colour
                 @Override
                 public void run() {
-                    fetchQuestionDetails(quizID, questionId);
+                    fetchQuestionDetails(questionId);
                 }
             }, 1000);
         }
     }
 
-    private void fetchQuestionDetails(String quizID, String questionId) {
+    private void fetchQuestionDetails(String questionId) {
         A.setBackgroundResource(R.drawable.quiz_button_outline); // Reset colour of option box
         B.setBackgroundResource(R.drawable.quiz_button_outline);
         C.setBackgroundResource(R.drawable.quiz_button_outline);
         D.setBackgroundResource(R.drawable.quiz_button_outline);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference quizDocRef = db.collection("QUIZ").document(quizID);
+        DocumentReference quizDocRef = db.collection("QUIZ").document(quiz.getQuizID());
         DocumentReference questionDocRef = quizDocRef.collection("QUESTION").document(questionId);
         questionDocRef.get().addOnSuccessListener(documentSnapshot -> {
             String questionText = documentSnapshot.getString("quesText");
@@ -211,6 +219,8 @@ public class activity_individual_quiz_page extends AppCompatActivity {
             Log.d("FirebaseData", "Correct Answer: " + correctAns);
 
             quesNum.setText("Question " + (++ques));
+            Log.d("numOfQues", quiz.getNumOfQues());
+            Integer totalQues = Integer.parseInt(quiz.getNumOfQues());
             progressBar.setProgress((int) (((double) ques / totalQues) * 100));
         });
     }

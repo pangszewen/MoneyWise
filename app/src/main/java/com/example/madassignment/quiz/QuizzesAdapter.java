@@ -56,7 +56,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         String advisorID = quiz.getAdvisorID();
 
         db = FirebaseFirestore.getInstance();
-        DocumentReference ref = db.collection("USER_DETAILS").document("UrymMm91GEbdKUsAIQgj15ZMoOy2"); // Need change
+        DocumentReference ref = db.collection("USER_DETAILS").document(advisorID);
         ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -95,13 +95,14 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
             }
         });
         holder.textViewQuizTitle.setText(quizTitle);
-//        holder.textViewAuthorName.setText("Poh Sharon"); // Need change
+        holder.numOfQues.setText(quiz.getNumOfQues()+" Questions");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, activity_individual_quiz_page.class);
                 intent.putExtra("quizID", quiz.getQuizID());
                 intent.putExtra("title", quiz.getQuizID());
+                intent.putExtra("numOfQues", quiz.getNumOfQues());
                 context.startActivity(intent);
             }
         });

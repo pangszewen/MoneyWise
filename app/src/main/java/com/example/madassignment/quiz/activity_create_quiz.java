@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,6 +36,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +46,6 @@ public class activity_create_quiz extends AppCompatActivity {
     String quizID, quesID;
     String quizTitle, advisorID;
     String quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3;
-    Boolean save = false;
     Uri imageUri;
     ArrayList<Uri> chooseImageList;
     FirebaseAuth auth;
@@ -53,9 +54,9 @@ public class activity_create_quiz extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Integer quesNum = 1;
     ArrayList<Question> listOfQues;
+    Boolean pickImage = false;
     private static final int REQUEST_CODE = 2;
     private Uri selectedImageUri;
-    private Map<String, Object> map = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,9 +118,14 @@ public class activity_create_quiz extends AppCompatActivity {
                 Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
                 listOfQues.add(newQues);
 
-                if (!save && !listOfQues.isEmpty()) {
+                if (!listOfQues.isEmpty() && pickImage) {
                     quizTitle = title.getText().toString();
                     createQuiz(quizTitle);
+                }
+
+                if (!pickImage){
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Please select a Cover Image!", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -152,6 +158,7 @@ public class activity_create_quiz extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        pickImage = true;
         startActivityForResult(intent, REQUEST_CODE);
     }
 
@@ -181,7 +188,7 @@ public class activity_create_quiz extends AppCompatActivity {
                         quizList.add(quiz);
                     }
                     quizID = generateQuizID(quizList);
-                    Quiz newQuiz = new Quiz(quizID, quizTitle, advisorID, quesNum);
+                    Quiz newQuiz = new Quiz(quizID, quizTitle, advisorID, quesNum.toString());
                     insertQuizIntoDatabase(newQuiz);
                     uploadImages(newQuiz.getQuizID());
                     for (Question question : listOfQues) {
@@ -199,7 +206,7 @@ public class activity_create_quiz extends AppCompatActivity {
             Uri image = chooseImageList.get(i);
             if(image!=null){
                 StorageReference reference = storage.getReference().child("QUIZ_COVER_IMAGE").child(quizID);
-                StorageReference imageName = reference.child("Cover Image");
+                StorageReference imageName = reference.child("Cover Image.jpeg");
                 imageName.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
@@ -209,11 +216,6 @@ public class activity_create_quiz extends AppCompatActivity {
     }
 
     private void createQues(String quesText, String quesCorrectAns, String quesOption1, String quesOption2, String quesOption3){
-        Log.d("TAG", "CreateQues");
-        if (quizID == null || quizID.isEmpty()) {
-            Log.d("TAG", "quizID is null or empty");
-            return;
-        }
         CollectionReference collectionReference = db.collection("QUIZ").document(quizID).collection("QUESTION");
             quesID = generateQuesID(listOfQues);
             Question newQues = new Question(quesID, quesText, quesCorrectAns, quesOption1, quesOption2, quesOption3);
@@ -222,19 +224,23 @@ public class activity_create_quiz extends AppCompatActivity {
 
     private void insertQuizIntoDatabase(Quiz quiz) {
         Map<String, Object> map = new HashMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        String formattedDateTime = quiz.getDateCreated().format(formatter);
+        map.put("dateCreated", formattedDateTime);
         map.put("advisorID", quiz.getAdvisorID());
         map.put("title", quiz.getQuizTitle());
-        map.put("num_of_ques", quiz.getNumOfQues());
+        map.put("numOfQues", quiz.getNumOfQues());
         db.collection("QUIZ").document(quiz.getQuizID()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    save = true;
-                    Log.d("TAG", "uploaded");
-                    Toast.makeText(activity_create_quiz.this, "Quiz Created!", Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Quiz Created!", Snackbar.LENGTH_SHORT).show();
+                    Intent intent = new Intent(activity_create_quiz.this, activity_quiz_display.class);
+                    startActivity(intent);
                 } else {
-                    Log.d("TAG", "Failed");
-                    Toast.makeText(activity_create_quiz.this, "Failed to Create Quiz", Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Fail to Create Quiz", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -252,10 +258,8 @@ public class activity_create_quiz extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("TAG", "Question uploaded");
-                            Toast.makeText(activity_create_quiz.this, "Question Added", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d("TAG", "Failed");
-                            Toast.makeText(activity_create_quiz.this, "Failed to add question", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -268,17 +272,6 @@ public class activity_create_quiz extends AppCompatActivity {
         quiz.setQuizTitle(dc.get("title").toString());
         return quiz;
     }
-
-//    private Question convertDocumentToQues(QueryDocumentSnapshot dc) {
-//        Question ques = new Question();
-//        ques.setQuesID(dc.getId());
-//        ques.setQuestionText(dc.get("quesText").toString());
-//        ques.setCorrectAns(dc.get("correctAns").toString());
-//        ques.setOption1(dc.get("option1").toString());
-//        ques.setOption2(dc.get("option2").toString());
-//        ques.setOption3(dc.get("option3").toString());
-//        return ques;
-//    }
 
     private String generateQuizID(ArrayList<Quiz> quiz) {
         String newID;

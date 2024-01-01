@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,13 +29,14 @@ public class activity_quiz_display extends AppCompatActivity {
     FirebaseFirestore db;
     List<Quiz> quizList;
     FloatingActionButton createQuiz;
+    SwipeRefreshLayout RVQuizRefresh;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_display);
 
         db = FirebaseFirestore.getInstance();
-//        RVForumRefresh = findViewById(R.id.RVForumRefresh);
+        RVQuizRefresh = findViewById(R.id.RVQuizRefresh);
         recyclerView = findViewById(R.id.quiz_recycle_view);
         createQuiz = findViewById(R.id.createQuizButton);
         setUpRVQuiz();
@@ -44,6 +46,14 @@ public class activity_quiz_display extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(activity_quiz_display.this, activity_create_quiz.class);
                 startActivity(intent);
+            }
+        });
+
+        RVQuizRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setUpRVQuiz();
+                RVQuizRefresh.setRefreshing(false);
             }
         });
     }
@@ -80,7 +90,8 @@ public class activity_quiz_display extends AppCompatActivity {
         Quiz quiz = new Quiz();
         quiz.setQuizID(dc.getId());
         quiz.setQuizTitle(dc.get("title").toString());
-//        quiz.setAdvisorName("Siti Ahminah");
+        quiz.setAdvisorID(dc.get("advisorID").toString());
+        quiz.setNumOfQues(dc.get("numOfQues").toString());
         return quiz;
     }
 }
