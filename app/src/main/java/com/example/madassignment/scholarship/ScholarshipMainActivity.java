@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.madassignment.MainActivity;
 import com.example.madassignment.R;
 import com.example.madassignment.forum.Forum_MainActivity;
 import com.example.madassignment.home.HomeActivity;
@@ -79,7 +80,7 @@ public class ScholarshipMainActivity extends AppCompatActivity {
         AppCompatButton btnBookMark = findViewById(R.id.btnBookMark);
 
         btnBookMark.setOnClickListener(view -> {
-            Intent intent = new Intent(ScholarshipMainActivity.this, BookmarkActivity.class);
+            Intent intent = new Intent(ScholarshipMainActivity.this, MainActivity.class);
             startActivity(intent);
         });
 

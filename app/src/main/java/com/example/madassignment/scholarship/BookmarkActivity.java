@@ -3,18 +3,24 @@ package com.example.madassignment.scholarship;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.madassignment.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -23,11 +29,25 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class BookmarkActivity extends AppCompatActivity {
 
@@ -45,6 +65,7 @@ public class BookmarkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark);
+
 
         auth= FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -73,6 +94,8 @@ public class BookmarkActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
 
     }
@@ -125,6 +148,8 @@ public class BookmarkActivity extends AppCompatActivity {
                                 // Set the saved field in the Scholarship object to true
                                 scholarship.setSaved(true);
 
+                                scheduleNotification(scholarship);
+
                                 // Add the scholarship to the sorted list
                                 sortedBookmarkList.add(scholarship);
 
@@ -157,5 +182,26 @@ public class BookmarkActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void scheduleNotification(Scholarship scholarship) {
+        // Calculate the time difference between the current time and the scholarship deadline
+        long currentTimeMillis = System.currentTimeMillis();
+        long deadlineMillis = scholarship.getDeadline().getTime();
+        long oneDayInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+        long timeDifference = deadlineMillis - currentTimeMillis;
+
+        // If the time difference is approximately one day, schedule an FCM notification
+        if (timeDifference > 0 && timeDifference <= oneDayInMillis) {
+            // Schedule your FCM notification
+            String notificationTitle = "Scholarship Deadline Reminder";
+            String notificationBody = "The deadline for '" + scholarship.getTitle() + "' is tomorrow.";
+        }
+    }
+
+
+
+
+
 
 }

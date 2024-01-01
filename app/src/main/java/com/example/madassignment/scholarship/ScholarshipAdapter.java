@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.ScholarshipViewHolder> {
 
@@ -56,11 +57,14 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
         Scholarship scholarship = scholarshipArrayList.get(position);
         holder.title.setText(scholarship.getTitle() + " | " + scholarship.getInstitution());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        Date deadline = scholarship.getDeadline();
-        String formattedDate = (deadline != null) ? dateFormat.format(deadline) : "N/A";
+        // Set the time zone to UTC
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        holder.deadline.setText(formattedDate);
+        // Format the deadline as a string with UTC time zone
+        String utcDeadlineString = sdf.format(scholarship.getDeadline());
+
+
+        holder.deadline.setText(utcDeadlineString);
 
         holder.image.setImageResource(R.drawable.img_schorecyclerview);
 

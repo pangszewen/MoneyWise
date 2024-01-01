@@ -9,7 +9,6 @@ import java.util.Date;
 public class Scholarship {
 
     String scholarshipID, institution, title, description, criteria, award, website;
-
     Date deadline;
     boolean saved;
     public Scholarship() {
@@ -106,6 +105,7 @@ public class Scholarship {
     public void setSaved(boolean saved) {
         this.saved = saved;
     }
+
 }
 
 

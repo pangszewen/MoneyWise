@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.load.data.DataRewinder;
@@ -44,7 +46,7 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
     private EditText ETTitle, ETInsititution, ETAbout, ETValue, ETDetails, ETWebsite;
     private Date deadline;
     private Calendar selectedDate = Calendar.getInstance();
-
+    private int year, month, dayOfMonth, hour, minute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +95,14 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
                 details = ETDetails.getText().toString();
                 website = ETWebsite.getText().toString();
 
+                // Check if any field is empty
+                if (title.isEmpty() || institution.isEmpty() || about.isEmpty() ||
+                        valueOfScho.isEmpty() || details.isEmpty() || website.isEmpty()) {
+                    // Display an error message or prevent the save action
+                    Toast.makeText(AdminAddScholarshipActivity.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 deadline = selectedDate.getTime();
 
                 scholarshipID = generateScholarshipID(scholarshipArrayList);
@@ -116,21 +126,39 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
         updateDeadlineText();
 
     }
-    private void openDialog(){
-        DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+    private void openDateDialog() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+            public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDayOfMonth) {
+                year = selectedYear;
+                month = selectedMonth;
+                dayOfMonth = selectedDayOfMonth;
 
-                selectedDate.set(Calendar.YEAR, year);
-                selectedDate.set(Calendar.MONTH, month);
-                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                openTimeDialog();
+            }
+        }, selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH), selectedDate.get(Calendar.DAY_OF_MONTH));
 
-                month = month + 1;
+        datePickerDialog.show();
+    }
+
+    private void openTimeDialog() {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
+                hour = selectedHour;
+                minute = selectedMinute;
+
+                selectedDate.set(year, month, dayOfMonth, hour, minute);
+
                 updateDeadlineText();
             }
-        },selectedDate.get(Calendar.YEAR), selectedDate.get(Calendar.MONTH), selectedDate.get(Calendar.DAY_OF_MONTH));
+        }, selectedDate.get(Calendar.HOUR_OF_DAY), selectedDate.get(Calendar.MINUTE), true);
 
-        dialog.show();
+        timePickerDialog.show();
+    }
+
+    private void openDialog() {
+        openDateDialog();
     }
 
     private void updateDeadlineText() {

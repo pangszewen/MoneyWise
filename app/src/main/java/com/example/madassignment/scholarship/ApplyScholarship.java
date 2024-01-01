@@ -1,10 +1,27 @@
 package com.example.madassignment.scholarship;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +39,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class ApplyScholarship extends AppCompatActivity {
 
@@ -38,10 +59,32 @@ public class ApplyScholarship extends AppCompatActivity {
     ImageView bookmark;
     boolean isSaved;
 
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+    private Calendar calendar;
+    private static final int defaultValue = 100;
+    private BroadcastReceiver localReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply_scholarship);
+
+        createNotificationChannel();
+
+        // Register a local broadcast receiver
+        localReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // Handle the broadcast and call makeNotification
+                String scholarshipTitle = intent.getStringExtra("scholarshipTitle");
+                makeNotification(scholarshipTitle);
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(localReceiver, new IntentFilter("com.example.madassignment.scholarship.NOTIFICATION_RECEIVED"));
+
 
         txtTitle = findViewById(R.id.txtTitle);
         txtAbout = findViewById(R.id.txtAbout);
@@ -49,7 +92,7 @@ public class ApplyScholarship extends AppCompatActivity {
         txtCriteria = findViewById(R.id.txtCriteria);
         txtWebsite = findViewById(R.id.txtWebsite);
 
-        scholarshipID = getIntent().getStringExtra("scholarshipId");
+        scholarshipID = getIntent().getStringExtra("scholarshipID");
         institution = getIntent().getStringExtra("institution");
         title = getIntent().getExtras().getString("title");
         description = getIntent().getExtras().getString("description");
@@ -73,9 +116,16 @@ public class ApplyScholarship extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         userID = user.getUid();
 
-        // Get the scholarship ID from the intent
-        String scholarshipID = getIntent().getStringExtra("scholarshipID");
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if(ContextCompat.checkSelfPermission(ApplyScholarship.this,
+                    Manifest.permission.POST_NOTIFICATIONS)!=
+                    PackageManager.PERMISSION_GRANTED){
+
+                ActivityCompat.requestPermissions(ApplyScholarship.this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
 
         //change bookmark according to saved/not saved
 
@@ -97,6 +147,8 @@ public class ApplyScholarship extends AppCompatActivity {
 
                 // Update the isSaved property in the Scholarship object
                 scholarship.setSaved(isSaved);
+
+
             }
         });
 
@@ -141,11 +193,80 @@ public class ApplyScholarship extends AppCompatActivity {
             }
         });
 
-        // press bookmark to add scholarship to saved
+
 
         ImageView save = findViewById(R.id.imageSave);
 
+
+
     }
+    @Override
+    protected void onDestroy() {
+        // Unregister the local broadcast receiver to avoid memory leaks
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(localReceiver);
+        super.onDestroy();
+    }
+
+    private void createNotificationChannel(){
+
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = "ReminderChannel";
+            String description = "Channel for Deadline Reminder";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notifyDeadline", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+    public void makeNotification(String scholarshipTitle){
+
+        String channelID = "CHANNEL_ID_NOTIFICATION";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),channelID);
+
+        // Set the time zone to UTC
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        // Format the deadline as a string with UTC time zone
+        String utcDeadlineString = sdf.format(deadline);
+
+        builder.setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
+                .setContentTitle("Reminder")
+                .setContentText("The scholarship deadline for "+title+" is "+utcDeadlineString+" .Apply on time!")
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        Intent intent = new Intent(getApplicationContext(), BookmarkActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.putExtra("title",scholarshipTitle);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0 , intent, PendingIntent.FLAG_IMMUTABLE);
+        builder.setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if(Build.VERSION.SDK_INT >=Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelID);
+
+            if(notificationChannel == null){
+                int importance =  NotificationManager.IMPORTANCE_HIGH;
+                notificationChannel =new NotificationChannel(channelID, "Reminder", importance);
+                notificationChannel.setLightColor(Color.GREEN);
+                notificationChannel.enableVibration(true);
+                notificationManager.createNotificationChannel(notificationChannel);
+
+            }
+        }
+
+        notificationManager.notify(0, builder.build());
+    }
+
+
+
+
+
 
     private void setBookmarkImage(boolean isSaved) {
         if (isSaved) {
@@ -168,7 +289,10 @@ public class ApplyScholarship extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
                             // Update successful
                             Log.d("Firestore", "Saved scholarship ID added to user_details");
-                            Toast.makeText(getApplicationContext(), "Scholarship added!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Scholarship saved!", LENGTH_SHORT).show();
+
+                            // Schedule the notification when saved
+                            scheduleNotification(deadline.getTime() - 8*60*60*1000 - System.currentTimeMillis());
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -186,7 +310,10 @@ public class ApplyScholarship extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
                             // Update successful
                             Log.d("Firestore", "Saved scholarship ID removed from user_details");
-                            Toast.makeText(getApplicationContext(), "Scholarship removed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Scholarship unsaved!", LENGTH_SHORT).show();
+
+                            // Cancel the scheduled notification when unsaved
+                            cancelNotification();
 
                         }
                     })
@@ -199,5 +326,76 @@ public class ApplyScholarship extends AppCompatActivity {
                     });
         }
     }
+
+    private void scheduleNotification(long timeDifference) {
+
+//        int scholarshipNum = scholarshipId.hashCode();
+
+//        String numericPart = scholarshipID.replaceAll("\\D+", "");
+//        scholarshipNum = Integer.parseInt(numericPart);
+
+        if ((timeDifference - 24 * 60 * 60 * 1000 )>0) {
+
+
+            // Calculate the time for the notification one day before the deadline
+            long notificationTimeMillis = System.currentTimeMillis() + timeDifference - 24 * 60 * 60 * 1000;
+
+            // Create an Intent to be triggered when the alarm fires
+            Intent notificationIntent = new Intent(this, NotificationReceiver.class);
+            notificationIntent.putExtra("scholarshipTitle", title);
+
+            // Create a PendingIntent for the Intent
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    this,
+                    defaultValue,
+                    notificationIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+
+            // Get the AlarmManager service
+            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            // Schedule the alarm
+            alarmManager.set(
+                    AlarmManager.RTC_WAKEUP,
+                    notificationTimeMillis,
+                    pendingIntent
+            );
+            Log.d("Notification", "Reminder set");
+            Toast.makeText(getApplicationContext(), "Reminder set!", LENGTH_SHORT).show();
+
+
+        } else {
+            // Handle the case where the calculated time is in the past
+            Log.d("Notification", "Invalid reminder time");
+            Toast.makeText(getApplicationContext(), "Deadline is less than 24 hours", LENGTH_SHORT).show();
+
+        }
+    }
+
+    private void cancelNotification() {
+
+//        String numericPart = scholarshipID.replaceAll("\\D+", "");
+//        scholarshipNum = Integer.parseInt(numericPart);
+//        int scholarshipNum = scholarshipId.hashCode();
+
+        Intent notificationIntent = new Intent(this, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                defaultValue,
+                notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        // Get the AlarmManager service and cancel the scheduled notification
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+            Log.d("Notification", "Reminder cancelled");
+            Toast.makeText(getApplicationContext(), "Reminder cancelled!", LENGTH_SHORT).show();
+
+
+        }
+    }
+
 
 }

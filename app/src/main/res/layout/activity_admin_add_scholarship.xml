@@ -187,7 +187,7 @@
                                 android:paddingEnd="4dp"
                                 android:singleLine="true"
                                 style="@style/txtPTSansregular14_dark_grey"
-                                android:text="Deadline"/>
+                                android:text="Deadline(UTC+8)"/>
 
                             <TextView
                                 android:id="@+id/txtDeadline"
