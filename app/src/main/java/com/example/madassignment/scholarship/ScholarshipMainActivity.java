@@ -80,7 +80,7 @@ public class ScholarshipMainActivity extends AppCompatActivity {
         AppCompatButton btnBookMark = findViewById(R.id.btnBookMark);
 
         btnBookMark.setOnClickListener(view -> {
-            Intent intent = new Intent(ScholarshipMainActivity.this, MainActivity.class);
+            Intent intent = new Intent(ScholarshipMainActivity.this, BookmarkActivity.class);
             startActivity(intent);
         });
 

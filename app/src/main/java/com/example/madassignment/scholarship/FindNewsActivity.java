@@ -51,8 +51,7 @@ public class FindNewsActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterList(newText);
-                return true;
+                return false;
             }
         });
 
@@ -76,21 +75,21 @@ public class FindNewsActivity extends AppCompatActivity {
         });
     }
 
-    private void filterList(String text) {
-        ArrayList<Article> filteredList = new ArrayList<>();
-        for(Article article : articleList){
-            if(article.getTitle().toLowerCase().contains(text.toLowerCase()) ||
-                    article.getDescription().toLowerCase().contains(text.toLowerCase())){
-                filteredList.add(article);
-            }
-        }
-        if(filteredList.isEmpty()){
-            Toast.makeText(this, "No article found", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            adapter.setFilteredList(filteredList);
-        }
-    }
+//    private void filterList(String text) {
+//        ArrayList<Article> filteredList = new ArrayList<>();
+//        for(Article article : articleList){
+//            if(article.getTitle().toLowerCase().contains(text.toLowerCase()) ||
+//                    article.getDescription().toLowerCase().contains(text.toLowerCase())){
+//                filteredList.add(article);
+//            }
+//        }
+//        if(filteredList.isEmpty()){
+//            Toast.makeText(this, "No article found", Toast.LENGTH_SHORT).show();
+//        }
+//        else {
+//            adapter.setFilteredList(filteredList);
+//        }
+//    }
 
 
     void setUpRecyclerView(){

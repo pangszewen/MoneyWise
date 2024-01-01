@@ -1,6 +1,5 @@
 package com.example.madassignment.scholarship;
 
-import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 
 import androidx.annotation.NonNull;
@@ -293,7 +292,7 @@ public class ApplyScholarship extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
                             // Update successful
                             Log.d("Firestore", "Saved scholarship ID added to user_details");
-                            Toast.makeText(getApplicationContext(), "Scholarship saved!", LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Scholarship saved!", LENGTH_SHORT).show();
 
                             // Schedule the notification when saved
                             scheduleNotification(deadline.getTime() - 8*60*60*1000 - System.currentTimeMillis());
@@ -314,7 +313,7 @@ public class ApplyScholarship extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
                             // Update successful
                             Log.d("Firestore", "Saved scholarship ID removed from user_details");
-                            Toast.makeText(getApplicationContext(), "Scholarship unsaved!", LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Scholarship unsaved!", LENGTH_SHORT).show();
 
                             // Cancel the scheduled notification when unsaved
                             cancelNotification();
@@ -363,13 +362,13 @@ public class ApplyScholarship extends AppCompatActivity {
                     pendingIntent
             );
             Log.d("Notification", "Reminder set");
-            Toast.makeText(getApplicationContext(), "Reminder set!", LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Reminder set!", LENGTH_SHORT).show();
 
 
         } else {
             // Handle the case where the calculated time is in the past
             Log.d("Notification", "Invalid reminder time");
-            Toast.makeText(getApplicationContext(), "Deadline is less than 24 hours", LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Deadline is less than 24 hours", LENGTH_SHORT).show();
 
         }
     }
@@ -391,7 +390,7 @@ public class ApplyScholarship extends AppCompatActivity {
         if (alarmManager != null) {
             alarmManager.cancel(pendingIntent);
             Log.d("Notification", "Reminder cancelled");
-            Toast.makeText(getApplicationContext(), "Reminder cancelled!", LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Reminder cancelled!", LENGTH_SHORT).show();
 
 
         }
