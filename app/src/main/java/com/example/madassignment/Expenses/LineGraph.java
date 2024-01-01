@@ -15,7 +15,7 @@ public class LineGraph extends View {
     private Paint axisPaint;
     private ArrayList<String> monthLabels;
     private float marginStart = 100; // Adjust as needed
-    private float marginTop = 50; // Adjust as needed
+    private float marginTop = 60; // Adjust as needed
     private float marginEnd = 60; // Adjust as needed
     private float marginBottom = 100; // Adjust as needed
 
@@ -30,10 +30,10 @@ public class LineGraph extends View {
 
         axisPaint = new Paint();
         axisPaint.setColor(Color.WHITE);
-        axisPaint.setStrokeWidth(2);
+        axisPaint.setStrokeWidth(3);
         axisPaint.setStyle(Paint.Style.STROKE);
         axisPaint.setAntiAlias(true);
-        axisPaint.setTextSize(40);
+        axisPaint.setTextSize(45);
 
         monthLabels = new ArrayList<>();
         // Use numbers 1 to 12 as month labels
@@ -114,7 +114,7 @@ public class LineGraph extends View {
         // Draw X-axis title
         String xAxisTitle = "Months";
         float xAxisTitleX = marginStart + (width - marginStart - marginEnd) / 2;
-        float xAxisTitleY = height + 130; // Adjusted for margins
+        float xAxisTitleY = height + 140; // Adjusted for margins
         canvas.drawText(xAxisTitle, xAxisTitleX, xAxisTitleY, axisPaint);
 
         canvas.drawPath(path, linePaint);

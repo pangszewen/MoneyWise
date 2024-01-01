@@ -128,6 +128,8 @@ public class BookFragment extends Fragment {
         TextView budgetTV = rootView.findViewById(R.id.TVAmountBudget);
         TextView expenseTV = rootView.findViewById(R.id.TVAmountExpenses);
         TextView differenceTV = rootView.findViewById(R.id.TVAmountBalance);
+        TextView monthTV = rootView.findViewById(R.id.TVMonth);
+        monthTV.setText(formattedDate);
         //final double[] budget = {0};
         setUpRVExpense();
         ProgressBar progressBar = rootView.findViewById(R.id.progressBar);

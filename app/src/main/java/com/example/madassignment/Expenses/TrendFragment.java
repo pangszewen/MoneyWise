@@ -197,30 +197,58 @@ public class TrendFragment extends Fragment {
 
                             @Override
                             public void onMonthBudgetRetrieved(double monthBudget) {
-                                if (finalMonth == Calendar.JANUARY){
-                                    setText(tvB1, monthBudget);
-                                } else if (finalMonth == Calendar.FEBRUARY) {
-                                    setText(tvB2, monthBudget);
-                                } else if (finalMonth == Calendar.MARCH) {
-                                    setText(tvB3, monthBudget);
-                                } else if (finalMonth == Calendar.APRIL) {
-                                    setText(tvB4, monthBudget);
-                                } else if (finalMonth == Calendar.MAY) {
-                                    setText(tvB5, monthBudget);
-                                } else if (finalMonth == Calendar.JUNE) {
-                                    setText(tvB6, monthBudget);
-                                } else if (finalMonth == Calendar.JULY) {
-                                    setText(tvB7, monthBudget);
-                                } else if (finalMonth == Calendar.AUGUST) {
-                                    setText(tvB8, monthBudget);
-                                } else if (finalMonth == Calendar.SEPTEMBER) {
-                                    setText(tvB9, monthBudget);
-                                } else if (finalMonth == Calendar.OCTOBER) {
-                                    setText(tvB10, monthBudget);
-                                } else if (finalMonth == Calendar.NOVEMBER) {
-                                    setText(tvB11, monthBudget);
+                                if (monthBudget==0) {
+                                    if (finalMonth == Calendar.JANUARY){
+                                        tvB1.setText("Not Set");
+                                    } else if (finalMonth == Calendar.FEBRUARY) {
+                                        tvB2.setText("Not Set");
+                                    } else if (finalMonth == Calendar.MARCH) {
+                                        tvB3.setText("Not Set");
+                                    } else if (finalMonth == Calendar.APRIL) {
+                                        tvB4.setText("Not Set");
+                                    } else if (finalMonth == Calendar.MAY) {
+                                        tvB5.setText("Not Set");
+                                    } else if (finalMonth == Calendar.JUNE) {
+                                        tvB6.setText("Not Set");
+                                    } else if (finalMonth == Calendar.JULY) {
+                                        tvB7.setText("Not Set");
+                                    } else if (finalMonth == Calendar.AUGUST) {
+                                        tvB8.setText("Not Set");
+                                    } else if (finalMonth == Calendar.SEPTEMBER) {
+                                        tvB9.setText("Not Set");
+                                    } else if (finalMonth == Calendar.OCTOBER) {
+                                        tvB10.setText("Not Set");
+                                    } else if (finalMonth == Calendar.NOVEMBER) {
+                                        tvB11.setText("Not Set");
+                                    } else {
+                                        tvB12.setText("Not Set");
+                                    }
                                 } else {
-                                    setText(tvB12, monthBudget);
+                                    if (finalMonth == Calendar.JANUARY){
+                                        setText(tvB1, monthBudget);
+                                    } else if (finalMonth == Calendar.FEBRUARY) {
+                                        setText(tvB2, monthBudget);
+                                    } else if (finalMonth == Calendar.MARCH) {
+                                        setText(tvB3, monthBudget);
+                                    } else if (finalMonth == Calendar.APRIL) {
+                                        setText(tvB4, monthBudget);
+                                    } else if (finalMonth == Calendar.MAY) {
+                                        setText(tvB5, monthBudget);
+                                    } else if (finalMonth == Calendar.JUNE) {
+                                        setText(tvB6, monthBudget);
+                                    } else if (finalMonth == Calendar.JULY) {
+                                        setText(tvB7, monthBudget);
+                                    } else if (finalMonth == Calendar.AUGUST) {
+                                        setText(tvB8, monthBudget);
+                                    } else if (finalMonth == Calendar.SEPTEMBER) {
+                                        setText(tvB9, monthBudget);
+                                    } else if (finalMonth == Calendar.OCTOBER) {
+                                        setText(tvB10, monthBudget);
+                                    } else if (finalMonth == Calendar.NOVEMBER) {
+                                        setText(tvB11, monthBudget);
+                                    } else {
+                                        setText(tvB12, monthBudget);
+                                    }
                                 }
                                 monthExpensesCollection.get().addOnCompleteListener(task2 -> {
                                     if (task2.isSuccessful()) {
