@@ -128,7 +128,7 @@ public class activity_individual_course_page extends AppCompatActivity {
         Timestamp currentTime = Timestamp.now();
         courseData.put("title", course.getCourseTitle());
         courseData.put("advisorID", course.getAdvisorID());
-        courseData.put("dateCompleted", currentTime);
+        courseData.put("dateJoined", currentTime);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference userRef = db.collection("USER_DETAILS").document(userID);
         userRef.collection("COURSES_JOINED").document(courseID).set(courseData)

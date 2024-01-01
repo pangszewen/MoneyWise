@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -69,21 +70,26 @@ public class activity_course_display extends AppCompatActivity {
         });
     }
 
-    public void setUpRVCourse(){
+    public void setUpRVCourse() { // Not in latest sequence
         courseList = new ArrayList<>();
         CollectionReference collectionReference = db.collection("COURSE");
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                List<Course> listOfCourse = new ArrayList<>();
-                for(QueryDocumentSnapshot dc : task.getResult()){
-                    Course topic = convertDocumentToListOfCourse(dc);
-                    listOfCourse.add(topic);
-                }
-                coursesAdapter = new CoursesAdapter(activity_course_display.this, listOfCourse);
-                prepareRecyclerView(activity_course_display.this, recyclerView, listOfCourse);
-            }
-        });
+
+        collectionReference.orderBy("dateCreated", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Course> listOfCourse = new ArrayList<>();
+                            for (QueryDocumentSnapshot dc : task.getResult()) {
+                                Course topic = convertDocumentToListOfCourse(dc);
+                                listOfCourse.add(topic);
+                            }
+                            coursesAdapter = new CoursesAdapter(activity_course_display.this, listOfCourse);
+                            prepareRecyclerView(activity_course_display.this, recyclerView, listOfCourse);
+                        }
+                    }
+                });
     }
 
     public void prepareRecyclerView(Context context, RecyclerView RV, List<Course> object){

@@ -144,7 +144,7 @@ public class activity_individual_course_joined extends AppCompatActivity {
         Log.d("title", course.getCourseTitle());
         courseData.put("title", course.getCourseTitle());
         courseData.put("advisorID", course.getAdvisorID());
-        courseData.put("dateJoined", currentTime);
+        courseData.put("dateCompleted", currentTime);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference userRef = db.collection("USER_DETAILS").document(userID);
         userRef.collection("COURSES_COMPLETED").document(course.getCourseID()).set(courseData)
