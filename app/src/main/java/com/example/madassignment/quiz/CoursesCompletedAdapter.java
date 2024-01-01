@@ -2,7 +2,9 @@ package com.example.madassignment.quiz;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,10 +90,22 @@ public class CoursesCompletedAdapter extends RecyclerView.Adapter<CoursesComplet
                 }
             }
         });
-
-//        holder.textViewCourseProgress.setText(lessonNum+"/"+lessonNum);
         holder.textViewCourseTitle.setText(courseTitle);
-//        holder.courseProgress.setProgress(10);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("tag", "Clicked");
+                Intent intent = new Intent(context, activity_individual_course_joined.class);
+                intent.putExtra("courseID", course.getCourseID());
+                intent.putExtra("title", course.getCourseTitle());
+                intent.putExtra("description", course.getCourseDesc());
+                intent.putExtra("advisorID", course.getAdvisorID());
+                intent.putExtra("language", course.getCourseLanguage());
+                intent.putExtra("level", course.getCourseLevel());
+                intent.putExtra("mode", course.getCourseMode());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

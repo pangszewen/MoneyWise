@@ -2,17 +2,25 @@ package com.example.madassignment.quiz;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.madassignment.R;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,79 +33,123 @@ import java.util.Map;
 
 public class activity_individual_course_joined extends AppCompatActivity {
     FirebaseFirestore db;
-    String courseID, advisorID;
+    String courseID, advisorID, userID;
     TextView title, advisor;
     ImageView courseCoverImage;
-    Boolean atDesc = true, saved = false;
+    Course course = new Course();
+    ImageButton backButton;
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    Button completeCourse;
     int i = 1;
-    Fragment fragmentLessonFull, fragmentDesc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_course_joined);
-
-        courseID = "C0085050"; // Assign your course ID here
         db = FirebaseFirestore.getInstance();
+
+        course.setAdvisorID(getIntent().getStringExtra("advisorID"));
+        course.setCourseID(getIntent().getStringExtra("courseID"));
+        course.setCourseDesc(getIntent().getStringExtra("description"));
+        course.setCourseTitle(getIntent().getStringExtra("title"));
+        course.setCourseMode(getIntent().getStringExtra("mode"));
+        course.setCourseLanguage(getIntent().getStringExtra("language"));
+        course.setCourseLevel(getIntent().getStringExtra("level"));
+
+        courseID = course.getCourseID();
+        Bundle bundle = new Bundle();
+        bundle.putString("advisorID", course.getAdvisorID());
+        bundle.putString("description", course.getCourseDesc());
+        bundle.putString("level", course.getCourseLevel());
+        bundle.putString("mode", course.getCourseMode());
+        bundle.putString("language", course.getCourseLanguage());
+        bundle.putString("courseID", course.getCourseID());
+
         courseCoverImage = findViewById(R.id.courseImage);
         title = findViewById(R.id.TVCourseTitle);
         advisor = findViewById(R.id.TVAdvisorName);
-        Button desc_lessonButton = findViewById(R.id.desc_lessonButton);
-        Button continueCourse = findViewById(R.id.continueCourseButton);
+        backButton = findViewById(R.id.backButton);
+        tabLayout = findViewById(R.id.TLCourse);
+        viewPager = findViewById(R.id.VPCourse);
+        completeCourse = findViewById(R.id.completeCourseButton);
 
-        fragmentLessonFull = new fragment_course_lesson_full();
-        fragmentDesc = new fragment_course_desc();
+        CourseViewpagerAdapter courseViewpagerAdapter = new CourseViewpagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        fragment_course_desc fragDesc = new fragment_course_desc();
+        fragDesc.setArguments(bundle);
+        fragment_course_lesson_full fragLessonFull = new fragment_course_lesson_full();
+        fragLessonFull.setArguments(bundle);
+        courseViewpagerAdapter.addFragment(fragDesc, "Description");
+        courseViewpagerAdapter.addFragment(fragLessonFull, "Lessons");
+        viewPager.setAdapter(courseViewpagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.FCVSingleCourse, fragmentDesc, "fragDesc")
-                .hide(fragmentDesc)
-                .add(R.id.FCVSingleCourse, fragmentLessonFull, "fragLesson")
-                .commit();
-
-        desc_lessonButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (atDesc) {
-                    getSupportFragmentManager().beginTransaction()
-                            .show(fragmentLessonFull)
-                            .hide(fragmentDesc)
-                            .commit();
-                    atDesc = false;
-                    desc_lessonButton.setText("DESCRIPTION");
-                } else {
-                    getSupportFragmentManager().beginTransaction()
-                            .show(fragmentDesc)
-                            .hide(fragmentLessonFull)
-                            .commit();
-                    atDesc = true;
-                    desc_lessonButton.setText("LESSON");
-                }
-            }
-        });
-
-        continueCourse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Handle what happens when the "Continue Course" button is clicked
-            }
-        });
-
+        userID = "UrymMm91GEbdKUsAIQgj15ZMoOy2";
         displayCourse();
+
+        completeCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity_individual_course_joined.this, activity_complete_continue_course.class);
+                startActivity(intent);
+            }
+        });
+    }
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity_individual_course_joined.this);
+        builder.setTitle("Confirmation");
+        builder.setMessage("Are you sure you completed this course?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                removeStatusFromComplete();
+                saveStatusToDatabase();
+                View rootView = findViewById(android.R.id.content);
+                Snackbar.make(rootView, "Completed Course!", Snackbar.LENGTH_SHORT).show();
+                Intent intent = new Intent(activity_individual_course_joined.this, activity_complete_continue_course.class);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void removeStatusFromComplete() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("USER_DETAILS")
+                .document(userID)
+                .collection("COURSES_JOINED")
+                .document(course.getCourseID())
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                   Log.d("TAG", "Removed from joined course");
+                });
     }
 
     private void saveStatusToDatabase() {
         Map<String, Object> courseData = new HashMap<>();
-        courseData.put("courseID", courseID);
-        courseData.put("progress", "Lesson "+i);
-
+        Timestamp currentTime = Timestamp.now();
+        Log.d("title", course.getCourseTitle());
+        courseData.put("title", course.getCourseTitle());
+        courseData.put("advisorID", course.getAdvisorID());
+        courseData.put("dateJoined", currentTime);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference userRef = db.collection("USER_DETAILS").document(advisorID);
-
-        userRef.collection("COURSES_JOINED").add(courseData)
+        DocumentReference userRef = db.collection("USER_DETAILS").document(userID);
+        userRef.collection("COURSES_COMPLETED").document(course.getCourseID()).set(courseData)
                 .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "Course ID added to collection!");
-                })
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error adding course ID to collection", e);
+                    Log.d(TAG, "Course ID added to completed");
                 });
     }
 
@@ -136,7 +188,7 @@ public class activity_individual_course_joined extends AppCompatActivity {
     private void displayCoverImage() {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + courseID + "/");
-        storageReference.child("Cover Image.jpeg").getDownloadUrl().addOnSuccessListener(uri -> { // Need remove jpeg
+        storageReference.child("Cover Image").getDownloadUrl().addOnSuccessListener(uri -> { // Need remove jpeg
             String imageUri = uri.toString();
             Picasso.get().load(imageUri).into(courseCoverImage);
             Log.d("Cover Image", "Successful");

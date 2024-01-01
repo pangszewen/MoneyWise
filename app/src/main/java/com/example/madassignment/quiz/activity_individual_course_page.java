@@ -11,13 +11,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.madassignment.R;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,20 +34,21 @@ import java.util.Map;
 
 public class activity_individual_course_page extends AppCompatActivity {
     FirebaseFirestore db;
-    String courseID, advisorID;
+    String courseID, advisorID, userID;
     TextView title, advisor;
     ImageView courseCoverImage;
-    Boolean atDesc = true, saved = false;
     Course course = new Course();
     ImageButton backButton;
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    Button joinCourse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_course_page);
-        Bundle bundle = new Bundle();
-        fragment_course_lesson_single fragLesson = new fragment_course_lesson_single();
-        fragment_course_desc fragDesc = new fragment_course_desc();
+        db = FirebaseFirestore.getInstance();
 
+        course.setAdvisorID(getIntent().getStringExtra("advisorID"));
         course.setCourseID(getIntent().getStringExtra("courseID"));
         course.setCourseDesc(getIntent().getStringExtra("description"));
         course.setCourseTitle(getIntent().getStringExtra("title"));
@@ -52,62 +56,41 @@ public class activity_individual_course_page extends AppCompatActivity {
         course.setCourseLanguage(getIntent().getStringExtra("language"));
         course.setCourseLevel(getIntent().getStringExtra("level"));
 
+        courseID = course.getCourseID();
+        Bundle bundle = new Bundle();
+        bundle.putString("advisorID", course.getAdvisorID());
         bundle.putString("description", course.getCourseDesc());
         bundle.putString("level", course.getCourseLevel());
         bundle.putString("mode", course.getCourseMode());
         bundle.putString("language", course.getCourseLanguage());
         bundle.putString("courseID", course.getCourseID());
-        fragDesc.setArguments(bundle);
-        fragLesson.setArguments(bundle);
 
-        courseID = course.getCourseID();
-        db = FirebaseFirestore.getInstance();
         courseCoverImage = findViewById(R.id.courseImage);
         title = findViewById(R.id.TVCourseTitle);
         advisor = findViewById(R.id.TVAdvisorName);
-        Button desc_lessonButton = findViewById(R.id.desc_lessonButton);
-        Button joinCourse = findViewById(R.id.joinCourseButton);
+        joinCourse = findViewById(R.id.joinCourseButton);
         backButton = findViewById(R.id.backButton);
+        tabLayout = findViewById(R.id.TLCourse);
+        viewPager = findViewById(R.id.VPCourse);
+
+        CourseViewpagerAdapter courseViewpagerAdapter = new CourseViewpagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        fragment_course_desc fragDesc = new fragment_course_desc();
+        fragDesc.setArguments(bundle);
+        fragment_course_lesson_single fragLesson = new fragment_course_lesson_single();
+        fragLesson.setArguments(bundle);
+        courseViewpagerAdapter.addFragment(fragDesc, "Description");
+        courseViewpagerAdapter.addFragment(fragLesson, "Lessons");
+        viewPager.setAdapter(courseViewpagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+        userID = "UrymMm91GEbdKUsAIQgj15ZMoOy2"; // Need to change
 
         displayCourse();
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.FCVSingleCourse, fragLesson, "fragLesson")
-                .hide(fragLesson)
-                .add(R.id.FCVSingleCourse, fragDesc, "fragDesc")
-                .commit();
-        desc_lessonButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("courseID", courseID);
-                if (atDesc) {
-                    getSupportFragmentManager().beginTransaction()
-                            .show(fragLesson)
-                            .hide(fragDesc)
-                            .commit();
-                    atDesc = false;
-                    desc_lessonButton.setText("DESCRIPTION");
-                } else if (!atDesc){
-                    getSupportFragmentManager().beginTransaction()
-                            .show(fragDesc)
-                            .hide(fragLesson)
-                            .commit();
-                    atDesc = true;
-                    desc_lessonButton.setText("LESSON");
-                }
-            }
-        });
 
         joinCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!saved)
-                    showDialog();
-                else {
-                    View rootView = findViewById(android.R.id.content);
-                    Snackbar.make(rootView, "Already enroll in course!", Snackbar.LENGTH_SHORT).show();
-                }
+                showDialog();
             }
         });
 
@@ -128,10 +111,6 @@ public class activity_individual_course_page extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 saveStatusToDatabase();
-                fragment_course_lesson_full fragFullLesson = new fragment_course_lesson_full();
-                Bundle bundle = new Bundle();
-                bundle.putString("courseID", courseID);
-
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -146,17 +125,25 @@ public class activity_individual_course_page extends AppCompatActivity {
 
     private void saveStatusToDatabase() {
         Map<String, Object> courseData = new HashMap<>();
-        courseData.put("courseID", courseID);
-        courseData.put("progress", 0);
-
+        Timestamp currentTime = Timestamp.now();
+        courseData.put("title", course.getCourseTitle());
+        courseData.put("advisorID", course.getAdvisorID());
+        courseData.put("dateCompleted", currentTime);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference userRef = db.collection("USER_DETAILS").document(advisorID);
-
-        userRef.collection("COURSES_JOINED").add(courseData)
+        DocumentReference userRef = db.collection("USER_DETAILS").document(userID);
+        userRef.collection("COURSES_JOINED").document(courseID).set(courseData)
                 .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "Course ID added to collection!");
-                    saved = true;
-                    Toast.makeText(activity_individual_course_page.this, "Successfully enrolled in course!", Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar.make(rootView, "Successfully enrolled in course!", Snackbar.LENGTH_SHORT).show();
+                    Intent intent = new Intent(activity_individual_course_page.this, activity_individual_course_joined.class);
+                    intent.putExtra("title", course.getCourseTitle());
+                    intent.putExtra("courseID", course.getCourseID());
+                    intent.putExtra("description", course.getCourseDesc());
+                    intent.putExtra("mode", course.getCourseMode());
+                    intent.putExtra("level", course.getCourseLevel());
+                    intent.putExtra("language", course.getCourseLanguage());
+                    intent.putExtra("advisorID", course.getAdvisorID());
+                    startActivity(intent);
                 })
                 .addOnFailureListener(e -> {
                     Log.w(TAG, "Error adding course ID to collection", e);
@@ -173,7 +160,6 @@ public class activity_individual_course_page extends AppCompatActivity {
                             String titleText = document.getString("title");
                             advisorID = document.getString("advisorID");
                             title.setText(titleText);
-
                             displayAdvisorName(advisorID);
                             displayCoverImage();
                         }

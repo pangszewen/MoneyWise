@@ -32,7 +32,11 @@ public class fragment_course_lesson_full extends Fragment {
         View view = inflater.inflate(R.layout.fragment_course_lesson_full, container, false);
         db = FirebaseFirestore.getInstance();
         recyclerView = view.findViewById(R.id.RVLessons);
-        courseID = "C0085050";
+
+        Bundle bundle = getArguments();
+        if (bundle != null)
+            courseID = bundle.getString("courseID");
+
         setUpRVLesson();
         return view;
     }
@@ -42,22 +46,23 @@ public class fragment_course_lesson_full extends Fragment {
         retrieveVideoUrlsForLessons();
     }
 
-    private void retrieveVideoUrlsForLessons() {
+    private void retrieveVideoUrlsForLessons() { // Not in sequence!!!!!!
         lessonList = new ArrayList<>();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference("COURSE_LESSONS").child(courseID);
         storageRef.listAll()
                 .addOnSuccessListener(listResult -> {
-                    final int lessonNumber = 1;
+                    int lessonNumber = 1; // Initialize lesson number
                     for (StorageReference item : listResult.getItems()) {
+                        final int currentLessonNumber = lessonNumber; // Store the current lesson number
                         item.getDownloadUrl().addOnSuccessListener(uri -> {
-                            Lesson lesson = new Lesson("Lesson " + lessonNumber, "", uri.toString());
+                            Lesson lesson = new Lesson("Lesson " + currentLessonNumber, "", uri.toString());
                             lessonList.add(lesson);
                             lessonsAdapter.notifyDataSetChanged();
                         }).addOnFailureListener(exception -> {
                             Log.d("Lesson URL", "Fail to retrieve");
                         });
-//                        lessonNumber++;
+                        lessonNumber++; // Increment lesson number for the next iteration
                     }
                     setAdapter();
                 })

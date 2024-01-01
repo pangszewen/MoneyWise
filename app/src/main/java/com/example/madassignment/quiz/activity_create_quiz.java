@@ -188,7 +188,6 @@ public class activity_create_quiz extends AppCompatActivity {
                         createQues(question.getQuestionText(), question.getCorrectAns(), question.getOption1(), question.getOption2(), question.getOption3());
                     }
                 } else {
-                    Log.d("TAG", "Failed to fetch quizzes");
                     Toast.makeText(activity_create_quiz.this, "Failed to fetch quizzes", Toast.LENGTH_SHORT).show();
                 }
             }

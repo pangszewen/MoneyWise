@@ -1,15 +1,17 @@
 package com.example.madassignment.quiz;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,36 +24,29 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class activity_complete_course extends AppCompatActivity {
+public class fragment_course_continue extends Fragment {
+    FirebaseFirestore db;
+    String userID;
     private RecyclerView recyclerView;
     private CoursesCompletedAdapter coursesCompletedAdapter;
-    FirebaseFirestore db;
     List<Course> courseList;
     Button continueButton;
-//    SwipeRefreshLayout RVForumRefresh;
-
+    SwipeRefreshLayout RVForumRefresh;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_complete_course);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_course_continue, container, false);
         db = FirebaseFirestore.getInstance();
 //        RVForumRefresh = findViewById(R.id.RVForumRefresh);
-        recyclerView = findViewById(R.id.course_recycle_view);
+        recyclerView = view.findViewById(R.id.course_recycle_view);
+        userID = "UrymMm91GEbdKUsAIQgj15ZMoOy2"; // Need change
         setUpRVCourse();
-
-        continueButton = findViewById(R.id.continueButton);
-        continueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity_complete_course.this, activity_continue_course.class);
-                startActivity(intent);
-            }
-        });
+        return view;
     }
 
     public void setUpRVCourse(){
         courseList = new ArrayList<>();
-        CollectionReference collectionReference = db.collection("COURSE");
+        CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("COURSES_JOINED");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -60,8 +55,8 @@ public class activity_complete_course extends AppCompatActivity {
                     Course topic = convertDocumentToListOfCourse(dc);
                     listOfCourse.add(topic);
                 }
-                coursesCompletedAdapter = new CoursesCompletedAdapter(activity_complete_course.this, listOfCourse);
-                prepareRecyclerView(activity_complete_course.this, recyclerView, listOfCourse);
+                coursesCompletedAdapter = new CoursesCompletedAdapter(getContext(), listOfCourse);
+                prepareRecyclerView(getContext(), recyclerView, listOfCourse);
             }
         });
     }
@@ -82,7 +77,6 @@ public class activity_complete_course extends AppCompatActivity {
         course.setCourseID(dc.getId());
         course.setCourseTitle(dc.get("title").toString());
         course.setAdvisorID(dc.get("advisorID").toString());
-        course.setLessonNum(Integer.parseInt(dc.get("lessonNum").toString()));
         return course;
     }
 }

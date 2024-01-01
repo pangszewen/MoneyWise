@@ -23,7 +23,7 @@ public class main_page extends AppCompatActivity {
         seeAllContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (main_page.this, activity_continue_course.class);
+                Intent intent = new Intent (main_page.this, activity_complete_continue_course.class);
                 startActivity(intent);
             }
         });
