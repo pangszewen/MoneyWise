@@ -99,6 +99,8 @@ public class AdminAddScholarshipActivity extends AppCompatActivity {
                 if (title.isEmpty() || institution.isEmpty() || about.isEmpty() ||
                         valueOfScho.isEmpty() || details.isEmpty() || website.isEmpty()) {
                     // Display an error message or prevent the save action
+
+
                     Toast.makeText(AdminAddScholarshipActivity.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
                     return;
                 }
