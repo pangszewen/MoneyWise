@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,7 @@ public class activity_course_display extends AppCompatActivity {
     FloatingActionButton createCourse;
     SwipeRefreshLayout RVCourseRefresh;
     ImageButton backButton;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class activity_course_display extends AppCompatActivity {
         recyclerView = findViewById(R.id.course_recycle_view);
         createCourse = findViewById(R.id.createCourseButton);
         backButton = findViewById(R.id.backButton);
+        searchView = findViewById(R.id.search);
+        searchView.clearFocus();
         setUpRVCourse();
 
         createCourse.setOnClickListener(new View.OnClickListener() {
@@ -64,8 +68,20 @@ public class activity_course_display extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity_course_display.this, main_page.class);
-                startActivity(intent);
+                onBackPressed();
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                coursesAdapter.getFilter().filter(s);
+                return false;
             }
         });
     }

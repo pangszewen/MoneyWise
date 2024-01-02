@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class activity_quiz_display extends AppCompatActivity {
     List<Quiz> quizList;
     FloatingActionButton createQuiz;
     SwipeRefreshLayout RVQuizRefresh;
+    SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,7 @@ public class activity_quiz_display extends AppCompatActivity {
         RVQuizRefresh = findViewById(R.id.RVQuizRefresh);
         recyclerView = findViewById(R.id.quiz_recycle_view);
         createQuiz = findViewById(R.id.createQuizButton);
+        searchView = findViewById(R.id.search);
         setUpRVQuiz();
 
         createQuiz.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +57,19 @@ public class activity_quiz_display extends AppCompatActivity {
             public void onRefresh() {
                 setUpRVQuiz();
                 RVQuizRefresh.setRefreshing(false);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                quizzesAdapter.getFilter().filter(s);
+                return false;
             }
         });
     }

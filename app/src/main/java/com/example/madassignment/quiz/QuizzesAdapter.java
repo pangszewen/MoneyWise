@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,10 +30,12 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizViewHolder>{
+public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizViewHolder> implements Filterable {
     List<Quiz> quizList;
+    List<Quiz> quizListFull;
     FirebaseFirestore db;
     FirebaseStorage storage;
     Context context;
@@ -39,6 +43,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
     public QuizzesAdapter(Context context, List<Quiz> quizList) {
         this.quizList = quizList;
         this.context = context;
+        quizListFull = new ArrayList<>(quizList);
     }
 
     @NonNull
@@ -113,6 +118,39 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
     public int getItemCount() {
         return quizList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return quizFilter;
+    }
+
+    public Filter quizFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Quiz> filteredList = new ArrayList<>();
+            if (charSequence == null || charSequence.length() == 0){
+                filteredList.addAll(quizListFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for (Quiz quiz : quizListFull){
+                    if (quiz.getQuizTitle().toLowerCase().contains(filterPattern)){
+                        filteredList.add(quiz);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            quizList.clear();
+            quizList.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class QuizViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewQuizCover;

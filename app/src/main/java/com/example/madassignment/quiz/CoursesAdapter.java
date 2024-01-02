@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,10 +28,12 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseViewHolder> {
+public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseViewHolder> implements Filterable {
     List<Course> courseList;
+    List<Course> courseListFull;
     FirebaseFirestore db;
     FirebaseStorage storage;
     Context context;
@@ -37,6 +41,7 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
     public CoursesAdapter(Context context, List<Course> courseList) {
         this.courseList = courseList;
         this.context = context;
+        courseListFull = new ArrayList<>(courseList);
     }
 
     @NonNull
@@ -109,6 +114,40 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
     public int getItemCount() {
         return courseList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return courseFilter;
+    }
+
+    public Filter courseFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Course> filteredList = new ArrayList<>();
+            if (charSequence == null || charSequence.length() == 0){
+                filteredList.addAll(courseListFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for (Course course : courseListFull){
+                    if (course.getCourseTitle().toLowerCase().contains(filterPattern)){
+                        filteredList.add(course);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            courseList.clear();
+            courseList.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     public class CourseViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewCourseCover;
