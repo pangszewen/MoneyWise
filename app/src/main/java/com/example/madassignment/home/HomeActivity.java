@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.madassignment.R;
 import com.example.madassignment.forum.Forum_MainActivity;
+import com.example.madassignment.login_register.LoginActivity;
 import com.example.madassignment.login_register.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -42,6 +43,10 @@ public class HomeActivity extends AppCompatActivity {
         welcome=findViewById(R.id.TVWelcome);
 
         //need set welcome text
+        if(user == null){
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+        }
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

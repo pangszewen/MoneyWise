@@ -106,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
-            android:hint="MM/DD/YYYY"
+            android:hint="YYYY/MM/DD"
             android:textColorHint="#928E8E"
             android:textSize="15sp" />
     </com.google.android.material.textfield.TextInputLayout>

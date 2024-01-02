@@ -18,13 +18,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".login_register.MyAccActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login_register.VerifyEmailActivity"
+            android:exported="false" />
+        <activity
             android:name=".login_register.ForgetPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".login_register.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".login_register.Select_Role_Activity"
             android:exported="false" />
         <activity
             android:name=".login_register.ProfileActivity"

@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if(currentUser != null && currentUser.isEmailVerified()){
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             finish();
         }
@@ -95,13 +95,19 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d("TAG", "signInWithEmail:success");
-                                    Toast.makeText(LoginActivity.this, "Login Successful.",
-                                            Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                    //FirebaseUser user = mAuth.getCurrentUser();
-                                    //updateUI(user);
+                                    if (mAuth.getCurrentUser().isEmailVerified()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d("TAG", "signInWithEmail:success");
+                                        Toast.makeText(LoginActivity.this, "Login Successful.",
+                                                Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                        //FirebaseUser user = mAuth.getCurrentUser();
+                                        //updateUI(user);
+                                    }else {
+                                        Toast.makeText(LoginActivity.this, "Please verify your email.",
+                                                Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(), VerifyEmailActivity.class));
+                                    }
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w("TAG", "signInWithEmail:failure", task.getException());

@@ -49,17 +49,6 @@ public class RegisterActivity extends AppCompatActivity {
     String uid;
 
     @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-            finish();
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
@@ -178,30 +167,16 @@ public class RegisterActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("TAG", "createUserWithEmail:success");
-                                    //FirebaseUser user = mAuth.getCurrentUser();
                                     progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(RegisterActivity.this, "Account created.",
-                                            Toast.LENGTH_SHORT).show();
                                     uid=mAuth.getCurrentUser().getUid();
-                                    DocumentReference documentReference=fstore.collection("USER_DETAILS").document(uid);
-                                    Map<String,Object> userdetails=new HashMap<>();
-                                    userdetails.put("name",name);
-                                    userdetails.put("gender",gender);
-                                    userdetails.put("dob",DOB);
-                                    userdetails.put("role",role);
-                                    documentReference.set(userdetails).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            Log.d("TAG", "User info saved");
-                                        }
-                                    });
-                                    startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                                    saveUserDetails(uid,name,gender,DOB,role);
+                                    startActivity(new Intent(getApplicationContext(),VerifyEmailActivity.class));
                                     finish();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     progressBar.setVisibility(View.GONE);
                                     Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                    Toast.makeText(RegisterActivity.this, task.getException().getMessage(),
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -209,5 +184,22 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void saveUserDetails(String uid,String name,String gender,String DOB,String role) {
+        DocumentReference documentReference=fstore.collection("USER_DETAILS").document(uid);
+        Map<String,Object> userdetails=new HashMap<>();
+        userdetails.put("name",name);
+        userdetails.put("gender",gender);
+        userdetails.put("dob",DOB);
+        userdetails.put("role",role);
+        documentReference.set(userdetails).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("TAG", "User info saved");
+            }
+        });
+    }
+
+
 
 }
