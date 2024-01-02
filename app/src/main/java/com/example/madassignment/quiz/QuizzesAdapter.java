@@ -170,5 +170,5 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
             takeQuizButton = itemView.findViewById(R.id.takeQuizButton);
         }
     }
-
+//
 }
