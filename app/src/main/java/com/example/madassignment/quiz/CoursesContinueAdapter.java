@@ -116,15 +116,12 @@ public class CoursesContinueAdapter extends RecyclerView.Adapter<CoursesContinue
         ImageView imageViewCourseCover;
         TextView textViewCourseTitle;
         TextView textViewAuthorName;
-        TextView textViewCourseProgress;
 
         public CourseContinueViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewCourseCover = itemView.findViewById(R.id.image_course_cover);
             textViewCourseTitle = itemView.findViewById(R.id.text_course_title);
             textViewAuthorName = itemView.findViewById(R.id.text_author_name);
-//            courseProgress = itemView.findViewById(R.id.lessonProgressBar);
-//            textViewCourseProgress = itemView.findViewById(R.id.TVLessonProgress);
         }
     }
 }

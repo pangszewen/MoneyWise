@@ -27,7 +27,7 @@ public class fragment_course_completed extends Fragment {
     FirebaseFirestore db;
     String userID;
     private RecyclerView recyclerView;
-    private CoursesCompletedAdapter coursesCompletedAdapter;
+    private CoursesCompletedContinueAdapter coursesCompletedContinueAdapter;
     List<Course> courseList;
     SwipeRefreshLayout RVForumRefresh;
     @Override
@@ -35,10 +35,17 @@ public class fragment_course_completed extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_completed, container, false);
         db = FirebaseFirestore.getInstance();
-//        RVForumRefresh = findViewById(R.id.RVForumRefresh);
+        RVForumRefresh = view.findViewById(R.id.RVCourseRefresh);
         recyclerView = view.findViewById(R.id.course_recycle_view);
         userID = "UrymMm91GEbdKUsAIQgj15ZMoOy2"; // Need change
         setUpRVCourse();
+        RVForumRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setUpRVCourse();
+                RVForumRefresh.setRefreshing(false);
+            }
+        });
         return view;
     }
 
@@ -53,10 +60,14 @@ public class fragment_course_completed extends Fragment {
                     Course topic = convertDocumentToListOfCourse(dc);
                     listOfCourse.add(topic);
                 }
-                coursesCompletedAdapter = new CoursesCompletedAdapter(getContext(), listOfCourse);
+                coursesCompletedContinueAdapter = new CoursesCompletedContinueAdapter(getContext(), listOfCourse);
                 prepareRecyclerView(getContext(), recyclerView, listOfCourse);
             }
         });
+    }
+
+    public void onSearch(String s){
+        coursesCompletedContinueAdapter.getFilter().filter(s);
     }
 
     public void prepareRecyclerView(Context context, RecyclerView RV, List<Course> object){
@@ -66,8 +77,8 @@ public class fragment_course_completed extends Fragment {
     }
 
     public void preAdapter(Context context, RecyclerView RV, List<Course> object){
-        coursesCompletedAdapter = new CoursesCompletedAdapter(context, object);
-        RV.setAdapter(coursesCompletedAdapter);
+        coursesCompletedContinueAdapter = new CoursesCompletedContinueAdapter(context, object);
+        RV.setAdapter(coursesCompletedContinueAdapter);
     }
 
     public Course convertDocumentToListOfCourse(QueryDocumentSnapshot dc){

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,29 +29,32 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CoursesCompletedAdapter extends RecyclerView.Adapter<CoursesCompletedAdapter.CourseCompletedViewHolder>{
+public class CoursesCompletedContinueAdapter extends RecyclerView.Adapter<CoursesCompletedContinueAdapter.CourseCompletedViewHolder> implements Filterable {
     List<Course> courseList;
+    List<Course> courseListFull;
     FirebaseFirestore db;
     FirebaseStorage storage;
     Context context;
 
-    public CoursesCompletedAdapter(Context context, List<Course> courseList) {
+    public CoursesCompletedContinueAdapter(Context context, List<Course> courseList) {
         this.courseList = courseList;
         this.context = context;
+        courseListFull = new ArrayList<>(courseList);
     }
 
     @NonNull
     @Override
-    public CoursesCompletedAdapter.CourseCompletedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CoursesCompletedContinueAdapter.CourseCompletedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.single_complete_course, parent, false);
-        return new CoursesCompletedAdapter.CourseCompletedViewHolder(view);
+        return new CoursesCompletedContinueAdapter.CourseCompletedViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CoursesCompletedAdapter.CourseCompletedViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull CoursesCompletedContinueAdapter.CourseCompletedViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Course course = courseList.get(position);
         String courseTitle = course.getCourseTitle();
         String advisorID = course.getAdvisorID();
@@ -111,21 +116,49 @@ public class CoursesCompletedAdapter extends RecyclerView.Adapter<CoursesComplet
     public int getItemCount() {
         return courseList.size();
     }
+    public Filter courseFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Course> filterList = new ArrayList<>();
+                if (charSequence == null || charSequence.length() == 0){
+                    filterList.addAll(courseListFull);
+                } else{
+                    String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                    for (Course course : courseListFull){
+                        if (course.getCourseTitle().toLowerCase().contains(filterPattern)){
+                            filterList.add(course);
+                        }
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filterList;
+                return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            courseList.clear();;
+            courseList.addAll((List)filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    @Override
+    public Filter getFilter() {
+        return courseFilter;
+    }
 
     public class CourseCompletedViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewCourseCover;
         TextView textViewCourseTitle;
         TextView textViewAuthorName;
-//        LinearProgressIndicator courseProgress;
-//        TextView textViewCourseProgress;
 
         public CourseCompletedViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewCourseCover = itemView.findViewById(R.id.image_course_cover);
             textViewCourseTitle = itemView.findViewById(R.id.text_course_title);
             textViewAuthorName = itemView.findViewById(R.id.text_author_name);
-//            courseProgress = itemView.findViewById(R.id.lessonProgressBar);
-//            textViewCourseProgress = itemView.findViewById(R.id.TVLessonProgress);
         }
     }
 }
