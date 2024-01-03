@@ -1,5 +1,6 @@
 package com.example.madassignment.quiz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -52,7 +53,8 @@ public class activity_complete_continue_course extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                startActivity(new Intent(getApplicationContext(), activity_course_display.class));
+                finish();
             }
         });
 
