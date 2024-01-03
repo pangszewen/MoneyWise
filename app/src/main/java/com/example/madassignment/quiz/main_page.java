@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,6 +42,7 @@ public class main_page extends AppCompatActivity {
     String userID;
     List<Course> courseList;
     List<Quiz> quizList;
+    ImageButton bookmarkButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,15 @@ public class main_page extends AppCompatActivity {
         authorName = findViewById(R.id.TVAuthorName);
         recyclerViewCourse = findViewById(R.id.RVCourse);
         recyclerViewQuiz = findViewById(R.id.RVQuiz);
+        bookmarkButton = findViewById(R.id.bookmarkButton);
+
+        bookmarkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(main_page.this, activity_course_bookmark.class);
+                startActivity(intent);
+            }
+        });
 
         seeAllContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +116,7 @@ public class main_page extends AppCompatActivity {
                 quizzesAdapter = new QuizzesAdapter(main_page.this, listOfQuiz);
                 quizzesAdapter.loadBookmarkedCourses();
                 prepareRecyclerViewQuiz(main_page.this, recyclerViewQuiz, listOfQuiz);
+                quizzesAdapter.loadBookmarkedCourses();
             }
         });
     }

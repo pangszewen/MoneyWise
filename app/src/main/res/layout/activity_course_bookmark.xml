@@ -8,7 +8,7 @@
     android:background="#F2F2F2">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/TBCourses"
+        android:id="@+id/TBBookmark"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/high_class_blue"
@@ -41,57 +41,79 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
-        android:id="@+id/CourseBookmark"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/SRLBookmark"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/bookmark_white_frame"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/TBCourses"
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/TVCourseCollection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="COURSES COLLECTION"
-            android:fontFamily="@font/pt_sans_bold"
-            android:textSize="20dp"
-            android:textColor="#27437B"
-            android:gravity="center_horizontal"></TextView>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RVCourse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TBBookmark"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/bookmark_white_frame"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/CourseBookmark"
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/TVQuizCollection"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="QUIZZES COLLECTION"
-            android:fontFamily="@font/pt_sans_bold"
-            android:textSize="20dp"
-            android:textColor="#27437B"
-            android:gravity="center_horizontal"></TextView>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RVQuiz"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
+            android:layout_marginTop="0dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/CourseBookmark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bookmark_white_frame"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/TBCourses">
+
+                <TextView
+                    android:id="@+id/TVCourseCollection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/pt_sans_bold"
+                    android:gravity="center_horizontal"
+                    android:text="COURSES COLLECTION"
+                    android:textColor="#27437B"
+                    android:textSize="20dp"></TextView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RVCourse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bookmark_white_frame"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/CourseBookmark">
+
+                <TextView
+                    android:id="@+id/TVQuizCollection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/pt_sans_bold"
+                    android:gravity="center_horizontal"
+                    android:text="QUIZZES COLLECTION"
+                    android:textColor="#27437B"
+                    android:textSize="20dp"></TextView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RVQuiz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

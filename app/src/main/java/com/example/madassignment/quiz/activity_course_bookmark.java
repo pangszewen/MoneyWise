@@ -1,6 +1,7 @@
 package com.example.madassignment.quiz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -9,13 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -32,6 +33,7 @@ public class activity_course_bookmark extends AppCompatActivity {
     RecyclerView recyclerViewQuiz;
     private CoursesAdapter coursesAdapter;
     private QuizzesAdapter quizzesAdapter;
+    SwipeRefreshLayout refreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,13 +43,23 @@ public class activity_course_bookmark extends AppCompatActivity {
         back = findViewById(R.id.backButton);
         recyclerViewCourse = findViewById(R.id.RVCourse);
         recyclerViewQuiz = findViewById(R.id.RVQuiz);
+        refreshLayout = findViewById(R.id.SRLBookmark);
 
         userID = "UrymMm91GEbdKUsAIQgj15ZMoOy2"; // Need to change
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setUpRVCourse();
+                setUpRVQuiz();
+                refreshLayout.setRefreshing(false);
+            }
+        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent intent = new Intent(activity_course_bookmark.this, main_page.class);
+                startActivity(intent);
             }
         });
         setUpRVCourse();
@@ -56,10 +68,9 @@ public class activity_course_bookmark extends AppCompatActivity {
 
     public void setUpRVCourse() {
         courseList = new ArrayList<>();
-        CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("COURSE_BOOKMARK");
+        CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("COURSES_BOOKMARK");
 
-        collectionReference.orderBy("dateBookmarked", Query.Direction.DESCENDING)
-                .get()
+        collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -70,7 +81,9 @@ public class activity_course_bookmark extends AppCompatActivity {
                                 listOfCourse.add(topic);
                             }
                             coursesAdapter = new CoursesAdapter(activity_course_bookmark.this, listOfCourse);
+                            coursesAdapter.loadBookmarkedCourses();
                             prepareRecyclerViewCourse(activity_course_bookmark.this, recyclerViewCourse, listOfCourse);
+                            coursesAdapter.loadBookmarkedCourses();
                         }
                     }
                 });
@@ -101,7 +114,7 @@ public class activity_course_bookmark extends AppCompatActivity {
 
     private void setUpRVQuiz() {
         quizList = new ArrayList<>();
-        CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("QUIZ_BOOKMARK");
+        CollectionReference collectionReference = db.collection("USER_DETAILS").document(userID).collection("QUIZZES_BOOKMARK");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -111,7 +124,9 @@ public class activity_course_bookmark extends AppCompatActivity {
                     listOfQuiz.add(topic);
                 }
                 quizzesAdapter = new QuizzesAdapter(activity_course_bookmark.this, listOfQuiz);
-                prepareRecyclerView(activity_course_bookmark.this, recyclerViewCourse, listOfQuiz);
+                quizzesAdapter.loadBookmarkedCourses();
+                prepareRecyclerView(activity_course_bookmark.this, recyclerViewQuiz, listOfQuiz);
+                quizzesAdapter.loadBookmarkedCourses();
             }
         });
     }
