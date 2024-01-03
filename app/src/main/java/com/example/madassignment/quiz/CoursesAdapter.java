@@ -4,11 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madassignment.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,7 +30,9 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseViewHolder> implements Filterable {
     List<Course> courseList;
@@ -55,20 +58,21 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Course course = courseList.get(position);
+        holder.setCourse(course);
         String courseTitle = course.getCourseTitle();
         String advisorID = course.getAdvisorID();
 
         db = FirebaseFirestore.getInstance();
-            DocumentReference ref = db.collection("USER_DETAILS").document(advisorID); // Need change
-            ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
-                }
-            });
+        DocumentReference ref = db.collection("USER_DETAILS").document(advisorID); // Need change
+        ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                holder.textViewAuthorName.setText(documentSnapshot.getString("name"));
+            }
+        });
         holder.imageViewCourseCover.setImageResource(R.drawable.outline_image_grey);
         storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + course.getCourseID()+"/");
+        StorageReference storageReference = storage.getReference("COURSE_COVER_IMAGE/" + course.getCourseID() + "/");
         storageReference.listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() {
             @Override
             public void onComplete(@NonNull Task<ListResult> task) {
@@ -82,11 +86,6 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
                                 if (position == holder.getAdapterPosition()) {
                                     Picasso.get().load(firstImageUri).into(holder.imageViewCourseCover);
                                 }
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Handle failure if needed
                             }
                         });
                     }
@@ -108,6 +107,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
                 context.startActivity(intent);
             }
         });
+        if (course.isBookmarked()){
+            holder.bookmark.setImageResource(R.drawable.baseline_bookmark_filled_24);
+        }
     }
 
     @Override
@@ -124,13 +126,13 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Course> filteredList = new ArrayList<>();
-            if (charSequence == null || charSequence.length() == 0){
+            if (charSequence == null || charSequence.length() == 0) {
                 filteredList.addAll(courseListFull);
             } else {
                 String filterPattern = charSequence.toString().toLowerCase().trim();
 
-                for (Course course : courseListFull){
-                    if (course.getCourseTitle().toLowerCase().contains(filterPattern)){
+                for (Course course : courseListFull) {
+                    if (course.getCourseTitle().toLowerCase().contains(filterPattern)) {
                         filteredList.add(course);
                     }
                 }
@@ -153,13 +155,87 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
         ImageView imageViewCourseCover;
         TextView textViewCourseTitle;
         TextView textViewAuthorName;
-
+        ImageButton bookmark;
+        Course course;
+        public void setCourse(Course course) {
+            this.course = course;
+        }
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewCourseCover = itemView.findViewById(R.id.image_quiz_cover);
             textViewCourseTitle = itemView.findViewById(R.id.text_course_title);
             textViewAuthorName = itemView.findViewById(R.id.text_author_name);
+            bookmark = itemView.findViewById(R.id.button_bookmark);
+
+            bookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggleBookmark();
+                }
+            });
         }
+
+        private void toggleBookmark() {
+            if (course.isBookmarked()) {
+                bookmark.setImageResource(R.drawable.baseline_bookmark_filled_24);
+                course.setBookmarked(false);
+                Log.d("Title at toggle true", course.getCourseTitle());
+                saveBookmarkState(course, false);
+            } else {
+                bookmark.setImageResource(R.drawable.baseline_bookmark_border_24);
+                course.setBookmarked(true);
+                Log.d("Title at toggle false", course.getCourseTitle());
+                saveBookmarkState(course, false);
+            }
+        }
+    }
+
+    private void saveBookmarkState(Course course, boolean isBookmarked) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("courseID", course.getCourseID());
+        map.put("advisorID", course.getAdvisorID());
+        map.put("title", course.getCourseTitle());
+        map.put("description", course.getCourseDesc());
+        map.put("level", course.getCourseLevel());
+        map.put("language", course.getCourseLanguage());
+        map.put("mode", course.getCourseMode());
+
+        String userID = "UrymMm91GEbdKUsAIQgj15ZMoOy2"; // Need to change
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference bookmarkRef = db.collection("USER_DETAILS")
+                .document(userID)
+                .collection("COURSES_BOOKMARK")
+                .document(course.getCourseID());
+        Log.d("CourseID", course.getCourseID());
+        if (course.isBookmarked()) {
+            bookmarkRef.delete();
+            Log.d(("TAG"), "Delete from database");
+        } else {
+            bookmarkRef.set(map);
+            Log.d(("TAG"), "Save to database");
+        }
+    }
+
+    public void loadBookmarkedCourses() {
+        String userID = "UrymMm91GEbdKUsAIQgj15ZMoOy2"; // Need to change
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("USER_DETAILS")
+                .document(userID)
+                .collection("COURSES_BOOKMARK")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        String courseID = documentSnapshot.getId();
+
+                        for (Course course : courseList) {
+                            if (course.getCourseID().equals(courseID)) {
+                                course.setBookmarked(true);
+                                break;
+                            }
+                        }
+                    }
+                    notifyDataSetChanged();
+                });
     }
 }
 

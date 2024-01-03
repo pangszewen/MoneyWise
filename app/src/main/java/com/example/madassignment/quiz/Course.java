@@ -16,6 +16,7 @@ public class Course {
     private String courseLanguage;
     private String courseMode;
     private Uri coverImageUri;
+    private boolean isBookmarked;
     public Course(){}
     public Course(String courseID, String advisorID, String courseTitle, String courseDesc, String courseLevel, String courseLanguage, String courseMode){
         this.courseID = courseID;
@@ -87,4 +88,6 @@ public class Course {
                 .toFormatter();
         this.dateCreated = LocalDateTime.parse(dateCreated, formatter);
     }
+    public boolean isBookmarked() {return isBookmarked;}
+    public void setBookmarked(boolean bookmarked) {isBookmarked = bookmarked;}
 }

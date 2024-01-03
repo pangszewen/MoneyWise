@@ -103,6 +103,7 @@ public class activity_course_display extends AppCompatActivity {
                             }
                             coursesAdapter = new CoursesAdapter(activity_course_display.this, listOfCourse);
                             prepareRecyclerView(activity_course_display.this, recyclerView, listOfCourse);
+                            coursesAdapter.loadBookmarkedCourses();
                         }
                     }
                 });
@@ -125,6 +126,9 @@ public class activity_course_display extends AppCompatActivity {
         course.setCourseTitle(dc.get("title").toString());
         course.setAdvisorID(dc.get("advisorID").toString());
         course.setCourseDesc(dc.get("description").toString());
+        course.setCourseLanguage(dc.get("language").toString());
+        course.setCourseLevel(dc.get("level").toString());
+        course.setCourseMode(dc.get("mode").toString());
         return course;
     }
 }
