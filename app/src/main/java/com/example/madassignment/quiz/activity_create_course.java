@@ -26,10 +26,8 @@ public class activity_create_course extends AppCompatActivity {
         Button nextButton = findViewById(R.id.nextButton);
         ImageButton cancelButton = findViewById(R.id.cancelButton);
 
-        ArrayAdapter<CharSequence> adapterLevel = ArrayAdapter.createFromResource(getApplicationContext(), R.array.level_array, android.R.layout.simple_spinner_item);
-        ArrayAdapter<CharSequence> adapterLanguage = ArrayAdapter.createFromResource(getApplicationContext(), R.array.language_array, android.R.layout.simple_spinner_item);
-        adapterLevel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapterLanguage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapterLevel = ArrayAdapter.createFromResource(getApplicationContext(), R.array.level_array,R.layout.course_dropdown_item);
+        ArrayAdapter<CharSequence> adapterLanguage = ArrayAdapter.createFromResource(getApplicationContext(), R.array.language_array, R.layout.course_dropdown_item);
         levelSpinner.setAdapter(adapterLevel);
         languageSpinner.setAdapter(adapterLanguage);
         levelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

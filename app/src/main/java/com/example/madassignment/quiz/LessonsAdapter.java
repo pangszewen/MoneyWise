@@ -1,6 +1,11 @@
 package com.example.madassignment.quiz;
 
+import static android.app.PendingIntent.getActivity;
+
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +54,13 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.LessonVi
             holder.TVLessonDuration.setText(durationString); // Update duration in the ViewHolder
         });
 
-        videoView.setOnClickListener(v -> {
+        videoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FullScreenVideoActivity.class);
+                intent.putExtra("videoUri", lesson.getLessonUrl());
+                context.startActivity(intent);
+            }
         });
     }
     @Override
