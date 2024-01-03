@@ -137,8 +137,7 @@ public class activity_individual_quiz_page extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (activity_individual_quiz_page.this, activity_quiz_display.class);
-                startActivity(intent);
+                onBackPressed();
             }
         });
     }

@@ -143,19 +143,59 @@ public class main_page extends AppCompatActivity {
     }
 
     private void setUpRVCourse() {
-        db = FirebaseFirestore.getInstance();
         courseList = new ArrayList<>();
-        CollectionReference collectionReference = db.collection("COURSE");
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                List<Course> listOfCourse = new ArrayList<>();
-                for(QueryDocumentSnapshot dc : task.getResult()){
-                    Course topic = convertDocumentToListOfCourse(dc);
-                    listOfCourse.add(topic);
-                }
-                newCoursesAdapter = new NewCoursesAdapter(main_page.this, listOfCourse);
-                prepareRecyclerView(main_page.this, recyclerViewCourse, listOfCourse);
+        db = FirebaseFirestore.getInstance();
+        CollectionReference coursesRef = db.collection("COURSE");
+        String currentUserID = "UrymMm91GEbdKUsAIQgj15ZMoOy2";
+
+        CollectionReference joinedRef = db.collection("USER_DETAILS")
+                .document(currentUserID)
+                .collection("COURSES_JOINED");
+
+        CollectionReference completedRef = db.collection("USER_DETAILS")
+                .document(currentUserID)
+                .collection("COURSES_COMPLETED");
+
+        coursesRef.get().addOnCompleteListener(coursesTask -> {
+            if (coursesTask.isSuccessful()) {
+                joinedRef.get().addOnCompleteListener(joinedTask -> {
+                    if (joinedTask.isSuccessful()) {
+                        completedRef.get().addOnCompleteListener(completedTask -> {
+                            if (completedTask.isSuccessful()) {
+                                List<Course> listOfCourse = new ArrayList<>();
+                                for (QueryDocumentSnapshot dc : coursesTask.getResult()) {
+                                    String courseId = dc.getId();
+                                    boolean isJoined = false;
+                                    boolean isCompleted = false;
+
+                                    for (DocumentSnapshot joinedSnapshot : joinedTask.getResult()) {
+                                        if (joinedSnapshot.getId().equals(courseId)) {
+                                            isJoined = true;
+                                            break;
+                                        }
+                                    }
+
+                                    for (DocumentSnapshot completedSnapshot : completedTask.getResult()) {
+                                        if (completedSnapshot.getId().equals(courseId)) {
+                                            isCompleted = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!isJoined && !isCompleted) {
+                                        Course course = convertDocumentToListOfCourse(dc);
+                                        listOfCourse.add(course);
+                                    }
+                                }
+
+                                CoursesAdapter coursesAdapter = new CoursesAdapter(main_page.this, listOfCourse);
+                                coursesAdapter.loadBookmarkedCourses();
+                                prepareRecyclerView(main_page.this, recyclerViewCourse, listOfCourse);
+                                coursesAdapter.loadBookmarkedCourses();
+                            }
+                        });
+                    }
+                });
             }
         });
     }

@@ -7,22 +7,18 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.madassignment.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,29 +113,65 @@ public class activity_course_display extends AppCompatActivity {
     }
 
 
-    public void setUpRVCourse() { // Not in latest sequence
+    public void setUpRVCourse() {
         courseList = new ArrayList<>();
-        CollectionReference collectionReference = db.collection("COURSE");
+        CollectionReference coursesRef = db.collection("COURSE");
+        String currentUserID = "UrymMm91GEbdKUsAIQgj15ZMoOy2";
 
-        collectionReference.orderBy("dateCreated", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Course> listOfCourse = new ArrayList<>();
-                            for (QueryDocumentSnapshot dc : task.getResult()) {
-                                Course topic = convertDocumentToListOfCourse(dc);
-                                listOfCourse.add(topic);
+        CollectionReference joinedRef = db.collection("USER_DETAILS")
+                .document(currentUserID)
+                .collection("COURSES_JOINED");
+
+        CollectionReference completedRef = db.collection("USER_DETAILS")
+                .document(currentUserID)
+                .collection("COURSES_COMPLETED");
+
+        coursesRef.get().addOnCompleteListener(coursesTask -> {
+            if (coursesTask.isSuccessful()) {
+                joinedRef.get().addOnCompleteListener(joinedTask -> {
+                    if (joinedTask.isSuccessful()) {
+                        completedRef.get().addOnCompleteListener(completedTask -> {
+                            if (completedTask.isSuccessful()) {
+                                List<Course> listOfCourse = new ArrayList<>();
+                                for (QueryDocumentSnapshot dc : coursesTask.getResult()) {
+                                    String courseId = dc.getId();
+                                    boolean isJoined = false;
+                                    boolean isCompleted = false;
+
+                                    for (DocumentSnapshot joinedSnapshot : joinedTask.getResult()) {
+                                        if (joinedSnapshot.getId().equals(courseId)) {
+                                            isJoined = true;
+                                            break;
+                                        }
+                                    }
+
+                                    for (DocumentSnapshot completedSnapshot : completedTask.getResult()) {
+                                        if (completedSnapshot.getId().equals(courseId)) {
+                                            isCompleted = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!isJoined && !isCompleted) {
+                                        Course course = convertDocumentToListOfCourse(dc);
+                                        listOfCourse.add(course);
+                                    }
+                                }
+
+                                coursesAdapter = new CoursesAdapter(activity_course_display.this, listOfCourse);
+                                coursesAdapter.loadBookmarkedCourses();
+                                prepareRecyclerView(activity_course_display.this, recyclerView, listOfCourse);
+                                coursesAdapter.loadBookmarkedCourses();
                             }
-                            coursesAdapter = new CoursesAdapter(activity_course_display.this, listOfCourse);
-                            coursesAdapter.loadBookmarkedCourses();
-                            prepareRecyclerView(activity_course_display.this, recyclerView, listOfCourse);
-                            coursesAdapter.loadBookmarkedCourses();
-                        }
+                        });
                     }
                 });
+            }
+        });
     }
+
+
+
 
     public void prepareRecyclerView(Context context, RecyclerView RV, List<Course> object){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
@@ -157,10 +189,12 @@ public class activity_course_display extends AppCompatActivity {
         course.setCourseID(dc.getId());
         course.setCourseTitle(dc.get("title").toString());
         course.setAdvisorID(dc.get("advisorID").toString());
-        course.setCourseDesc(dc.get("description").toString());
-        course.setCourseLanguage(dc.get("language").toString());
-        course.setCourseLevel(dc.get("level").toString());
-        course.setCourseMode(dc.get("mode").toString());
+        if (dc.get("description") != null) {
+            course.setCourseDesc(dc.get("description").toString());
+            course.setCourseLanguage(dc.get("language").toString());
+            course.setCourseLevel(dc.get("level").toString());
+            course.setCourseMode(dc.get("mode").toString());
+        }
         return course;
     }
 }

@@ -53,8 +53,8 @@ public class activity_complete_continue_course extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), activity_course_display.class));
-                finish();
+                Intent intent = new Intent(activity_complete_continue_course.this, main_page.class);
+                startActivity(intent);
             }
         });
 

@@ -97,8 +97,7 @@ public class activity_individual_course_page extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity_individual_course_page.this, activity_course_display.class);
-                startActivity(intent);
+                onBackPressed();
             }
         });
     }
