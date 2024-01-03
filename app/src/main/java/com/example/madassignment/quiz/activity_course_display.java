@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -49,6 +50,10 @@ public class activity_course_display extends AppCompatActivity {
         searchView.clearFocus();
         setUpRVCourse();
 
+        isAdvisor("UrymMm91GEbdKUsAIQgj15ZMoOy2", isAdvisor -> { // Need to change
+            if (!isAdvisor)
+                createCourse.setVisibility(View.GONE);
+        });
         createCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +73,8 @@ public class activity_course_display extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent intent = new Intent (activity_course_display.this, main_page.class);
+                startActivity(intent);
             }
         });
 
@@ -86,6 +92,31 @@ public class activity_course_display extends AppCompatActivity {
         });
     }
 
+    public interface AdvisorCheckCallback {
+        void onRoleChecked(boolean isAdvisor);
+    }
+
+    private void isAdvisor(String userID, AdvisorCheckCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference userRef = db.collection("USER_DETAILS").document(userID);
+
+        userRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String role = documentSnapshot.getString("role");
+                if (role != null && role.equals("advisor")) {
+                    callback.onRoleChecked(true);
+                } else {
+                    callback.onRoleChecked(false);
+                }
+            } else {
+                callback.onRoleChecked(false);
+            }
+        }).addOnFailureListener(e -> {
+            callback.onRoleChecked(false);
+        });
+    }
+
+
     public void setUpRVCourse() { // Not in latest sequence
         courseList = new ArrayList<>();
         CollectionReference collectionReference = db.collection("COURSE");
@@ -102,6 +133,7 @@ public class activity_course_display extends AppCompatActivity {
                                 listOfCourse.add(topic);
                             }
                             coursesAdapter = new CoursesAdapter(activity_course_display.this, listOfCourse);
+                            coursesAdapter.loadBookmarkedCourses();
                             prepareRecyclerView(activity_course_display.this, recyclerView, listOfCourse);
                             coursesAdapter.loadBookmarkedCourses();
                         }

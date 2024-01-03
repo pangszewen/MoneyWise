@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -32,6 +34,7 @@ public class activity_quiz_display extends AppCompatActivity {
     FloatingActionButton createQuiz;
     SwipeRefreshLayout RVQuizRefresh;
     SearchView searchView;
+    ImageButton back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +45,21 @@ public class activity_quiz_display extends AppCompatActivity {
         recyclerView = findViewById(R.id.quiz_recycle_view);
         createQuiz = findViewById(R.id.createQuizButton);
         searchView = findViewById(R.id.search);
+        back = findViewById(R.id.backButton);
         setUpRVQuiz();
+
+        isAdvisor("UrymMm91GEbdKUsAIQgj15ZMoOy2", isAdvisor -> { // Need to change
+            if (!isAdvisor)
+                createQuiz.setVisibility(View.GONE);
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity_quiz_display.this, main_page.class);
+                startActivity(intent);
+            }
+        });
 
         createQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +91,30 @@ public class activity_quiz_display extends AppCompatActivity {
         });
     }
 
+    public interface AdvisorCheckCallback {
+        void onRoleChecked(boolean isAdvisor);
+    }
+
+    private void isAdvisor(String userID, activity_course_display.AdvisorCheckCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference userRef = db.collection("USER_DETAILS").document(userID);
+
+        userRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String role = documentSnapshot.getString("role");
+                if (role != null && role.equals("advisor")) {
+                    callback.onRoleChecked(true);
+                } else {
+                    callback.onRoleChecked(false);
+                }
+            } else {
+                callback.onRoleChecked(false);
+            }
+        }).addOnFailureListener(e -> {
+            callback.onRoleChecked(false);
+        });
+    }
+
     private void setUpRVQuiz() {
         quizList = new ArrayList<>();
         CollectionReference collectionReference = db.collection("QUIZ");
@@ -86,7 +127,9 @@ public class activity_quiz_display extends AppCompatActivity {
                     listOfQuiz.add(topic);
                 }
                 quizzesAdapter = new QuizzesAdapter(activity_quiz_display.this, listOfQuiz);
+                quizzesAdapter.loadBookmarkedCourses();
                 prepareRecyclerView(activity_quiz_display.this, recyclerView, listOfQuiz);
+                quizzesAdapter.loadBookmarkedCourses();
             }
         });
     }

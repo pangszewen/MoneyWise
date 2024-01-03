@@ -31,7 +31,9 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizViewHolder> implements Filterable {
     List<Quiz> quizList;
@@ -59,6 +61,7 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         Quiz quiz = quizList.get(position);
         String quizTitle = quiz.getQuizTitle();
         String advisorID = quiz.getAdvisorID();
+        holder.setQuiz(quiz);
 
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("USER_DETAILS").document(advisorID);
@@ -111,7 +114,9 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
                 context.startActivity(intent);
             }
         });
-
+        if (quiz.isBookmarked()){
+            holder.bookmark.setImageResource(R.drawable.baseline_bookmark_filled_24);
+        }
     }
 
     @Override
@@ -157,8 +162,12 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
         TextView textViewQuizTitle;
         TextView textViewAuthorName;
         TextView numOfQues;
-        TextView numofPeopleTook;
-        ImageButton takeQuizButton;
+        ImageButton bookmark;
+        Quiz quiz;
+
+        public void setQuiz(@NonNull Quiz quiz){
+            this.quiz = quiz;
+        }
 
         public QuizViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -166,8 +175,71 @@ public class QuizzesAdapter extends RecyclerView.Adapter<QuizzesAdapter.QuizView
             textViewQuizTitle = itemView.findViewById(R.id.text_quiz_title);
             textViewAuthorName = itemView.findViewById(R.id.text_author_name);
             numOfQues = itemView.findViewById(R.id.numOfQues);
-            numofPeopleTook = itemView.findViewById(R.id.numofPeopleTook);
-            takeQuizButton = itemView.findViewById(R.id.takeQuizButton);
+            bookmark = itemView.findViewById(R.id.bookmark);
+
+            bookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggleBookmark();
+                }
+            });
         }
+        private void toggleBookmark() {
+            if (quiz.isBookmarked()) {
+                bookmark.setImageResource(R.drawable.baseline_bookmark_filled_24);
+                quiz.setBookmarked(false);
+                Log.d("Title at toggle true", quiz.getQuizTitle());
+                saveBookmarkState(quiz, false);
+            } else {
+                bookmark.setImageResource(R.drawable.baseline_bookmark_border_24);
+                quiz.setBookmarked(true);
+                Log.d("Title at toggle false", quiz.getQuizTitle());
+                saveBookmarkState(quiz, false);
+            }
+        }
+    }
+
+    private void saveBookmarkState(Quiz quiz, boolean isBookmarked) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("quizID", quiz.getQuizID());
+        map.put("advisorID", quiz.getAdvisorID());
+        map.put("title", quiz.getQuizTitle());
+        map.put("numOfQues", quiz.getNumOfQues());
+
+        String userID = "UrymMm91GEbdKUsAIQgj15ZMoOy2"; // Need to change
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference bookmarkRef = db.collection("USER_DETAILS")
+                .document(userID)
+                .collection("QUIZZES_BOOKMARK")
+                .document(quiz.getQuizID());
+        if (quiz.isBookmarked()) {
+            bookmarkRef.delete();
+            Log.d(("TAG"), "Delete from database");
+        } else {
+            bookmarkRef.set(map);
+            Log.d(("TAG"), "Save to database");
+        }
+    }
+
+    public void loadBookmarkedCourses() {
+        String userID = "UrymMm91GEbdKUsAIQgj15ZMoOy2"; // Need to change
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("USER_DETAILS")
+                .document(userID)
+                .collection("QUIZZES_BOOKMARK")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        String courseID = documentSnapshot.getId();
+
+                        for (Quiz quiz : quizList) {
+                            if (quiz.getQuizID().equals(courseID)) {
+                                quiz.setBookmarked(true);
+                                break;
+                            }
+                        }
+                    }
+                    notifyDataSetChanged();
+                });
     }
 }

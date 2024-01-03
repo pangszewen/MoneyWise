@@ -100,7 +100,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/pt_sans_bold"
-                android:text="Financial Modelling abd Analysis"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -154,12 +154,12 @@
             app:layout_constraintRight_toRightOf="parent"></androidx.appcompat.widget.AppCompatButton>
 
         <TextView
-            android:id="@+id/TVNewCourse"
+            android:id="@+id/TVCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/pt_sans"
-            android:text="New Courses"
+            android:text="Courses Offeref"
             android:textColor="@color/black"
             android:textSize="20dp"
             android:layout_marginLeft="20dp"
@@ -170,7 +170,7 @@
             android:id="@+id/RVCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/TVNewCourse"
+            app:layout_constraintTop_toBottomOf="@id/TVCourse"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginHorizontal="20dp"
@@ -211,7 +211,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginEnd="30dp"></androidx.recyclerview.widget.RecyclerView>
+                android:foregroundGravity="center_horizontal"></androidx.recyclerview.widget.RecyclerView>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/BtnSeeAllQuiz"

@@ -103,6 +103,7 @@ public class main_page extends AppCompatActivity {
                     }
                 }
                 quizzesAdapter = new QuizzesAdapter(main_page.this, listOfQuiz);
+                quizzesAdapter.loadBookmarkedCourses();
                 prepareRecyclerViewQuiz(main_page.this, recyclerViewQuiz, listOfQuiz);
             }
         });

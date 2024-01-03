@@ -40,13 +40,13 @@ public class LessonsAdapter extends RecyclerView.Adapter<LessonsAdapter.LessonVi
         videoView.setVideoPath(lesson.getLessonUrl());
         videoView.setOnPreparedListener(mp -> {
             mp.start();
-            int totalDuration = videoView.getDuration(); // Get total duration in milliseconds
+            int totalDuration = videoView.getDuration();
             int durationSeconds = totalDuration / 1000;
             int minutes = durationSeconds / 60;
             int seconds = durationSeconds % 60;
             String durationString = String.format("%02d:%02d", minutes, seconds);
-            lesson.setLessonDuration(durationString); // Set duration to Lesson object
-            holder.TVLessonDuration.setText(durationString); // Update duration in the ViewHolder
+            lesson.setLessonDuration(durationString);
+            holder.TVLessonDuration.setText(durationString);
         });
 
         videoView.setOnClickListener(v -> {
